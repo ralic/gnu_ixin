@@ -1,0 +1,227 @@
+#!/bin/sh
+exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
+!#
+;;; retrieve
+
+;; Copyright (C) 2012 Thien-Thi Nguyen
+;;
+;; This file is part of IXIN.
+;;
+;; IXIN is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; IXIN is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Code:
+
+(load "./z-fixed-pp.scm")
+
+(define-module (retrieve)
+  #:export (main))
+
+(use-modules
+ ((srfi srfi-1) #:select (fold))
+ ((srfi srfi-11) #:select (let-values))
+ ((ice-9 pretty-print) #:select (pretty-print))
+ ((ice-9 format) #:select (format))
+ ((ice-9 rw) #:select (read-string!/partial))
+ ((ice-9 popen) #:select (open-input-pipe
+                          close-pipe)))
+
+(define-macro (FE . args)
+  (let ((proc (car (last-pair args))))
+    `(for-each ,proc ,@(delq proc args))))
+
+(define (uncrunch s)
+  (call-with-output-file "TMP-R"
+    (lambda (port)
+      (display s port)
+      (force-output)))
+  (let* ((p (open-input-pipe "base64 -d TMP-R | gzip -d -c"))
+         (form (read p)))
+    (close-pipe p)
+    (delete-file "TMP-R")
+    form))
+
+(define index-index (make-object-property))
+
+(define (in filename)
+  (let ((p (open-input-file filename))
+        (vers #f)
+        (meta #f)
+        (counts #f)
+        (index #f)
+        (base #f))
+    (or (eq? 'ixin (read p))
+        (error "bad magic:" filename))
+    (set! vers (read p))
+    (case vers
+      ((1)
+       (set! meta (read p))
+       (set! counts (read p))
+       (set! base (+ 1 (car counts) (ftell p)))
+       (set! index (make-vector (cadr counts) #f))
+       (do ((i 0 (1+ i)))
+           ((= (cadr counts) i))
+         (let ((ent (read p)))
+           (set! (index-index ent) i)
+           (vector-set! index i ent)))
+       ;; Adjust w/ ‘1+’ to include trailing newline.
+       (set! base (1+ (ftell p))))
+      (else
+       (error "unhandled version:" vers)))
+
+    ;; rv
+    (lambda ()
+      (values vers
+              meta
+              counts
+              index
+              base
+              p))))
+
+(define (fso s . args)
+  (apply format #t s args))
+
+(define-macro (shunt proc-names . otherwise)
+  ;; (put 'shunt 'scheme-indent-function 1)
+  `(lambda (command . args)
+     (apply (case command
+              ,@(map (lambda (name)
+                       `((,name) ,name))
+                     proc-names)
+              (else
+               ,(if (null? otherwise)
+                    '(error "bad command:" command)
+                    `(lambda args
+                       ,(car otherwise)))))
+            args)))
+
+(define (read-string!/partial/never-fewer buf port rd-offset len wr-offset)
+  (let ((end (+ wr-offset len)))
+
+    (define (smore-please start)
+      (read-string!/partial buf port start end))
+
+    (and rd-offset (seek port rd-offset SEEK_SET))
+    (let loop ((this-time (smore-please wr-offset))
+               (so-far 0))
+      (and (< (+ so-far this-time) len)
+           (loop (smore-please (+ so-far wr-offset))
+                 (+ so-far this-time))))))
+
+(define (out command . args)
+  ;; rv
+  (lambda (vers meta counts index base port)
+    (let* ((total (cadr counts))
+           (alist (vector->list index))
+           (plus (list->vector
+                  (reverse!
+                   (fold (lambda (n so-far)
+                           ;; Adjust by 1 for trailing newline.
+                           (cons (+ (car so-far) 1 n)
+                                 so-far))
+                         (list base)
+                         (map cadr alist))))))
+
+      (define (by-name name)
+        (assoc name alist))
+
+      (define (by-id id)
+        (vector-ref index id))
+
+      (define (node-data id len)
+        (let ((s (make-string len #\z)))
+          (read-string!/partial/never-fewer
+           s port (vector-ref plus id) len 0)
+          s))
+
+      (define (--dump abbrev)
+        (FE '(vers meta counts index base)
+            (list vers meta counts index base)
+            (lambda (name thing)
+              (fso "~A:~%~Y~%" name thing)))
+        (do ((i 0 (1+ i)))
+            ((= total i))
+          (let ((len (cadr (by-id i))))
+            (fso "data-~A: ~S" i
+                 (node-data i (or abbrev len)))
+            (and abbrev
+                 (fso " [+ ~A]" (- len abbrev)))
+            (newline))))
+
+      (define (dump)
+        (--dump #f))
+
+      (define (dump/abbrev n)
+        (--dump (string->number n)))
+
+      (define (dump-meta)
+        (fso "~Y" meta))
+
+      (define (dump-counts)
+        (fso "~S~%" counts))
+
+      (define (dump-index)
+        (FE (iota total)
+            alist
+            (lambda (i ent)
+              (fso "~6,D  ~Y" i ent))))
+
+      (define (show-node which)
+
+        (define (details en)
+          (let ((id (index-index en)))
+            (fso "~A: ~Y" id (car en))
+            (let ((links (cddr en)))
+
+              (define (maybe blurb get)
+                (let ((id (get links)))
+                  (or (negative? id)
+                      (fso "\t~A: ~Y" blurb (car (by-id id))))))
+
+              (maybe 'next car)
+              (maybe 'prev cadr)
+              (maybe 'up caddr))
+            (fso "~Y" (uncrunch (node-data id (cadr en))))))
+
+        (cond ((and (string? which)
+                    (by-name which))
+               => details)
+              ((false-if-exception (by-id (if (string? which)
+                                              (string->number which)
+                                              which)))
+               => details)
+              (else (error "no such node:" which))))
+
+      (define (show-all-nodes)
+        (do ((i 0 (1+ i)))
+            ((= total i))
+          (show-node i)))
+
+      (apply (shunt (dump
+                     dump/abbrev
+                     dump-meta
+                     dump-counts
+                     dump-index
+                     show-node
+                     show-all-nodes))
+             (string->symbol command)
+             args))))
+
+(define (main args)
+  (call-with-values (in (cadr args))
+    (apply out (if (pair? (cddr args))
+                   (cddr args)
+                   (list "dump/abbrev" "42"))))
+  (exit #t))
+
+;;; retrieve ends here

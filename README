@@ -1,0 +1,186 @@
+README for IXIN
+See end for copying conditions.
+
+* What is it?
+
+  IXIN is an EXPERIMENTAL distribution of EXPERIMENTAL code.
+  IXIN stands for "indexed texinfo".
+
+  All code is under GPLv3+.  All (.xml) docs are under GFDL.
+
+* Who is it for?
+
+  The intended audience is Texinfo hackers and others who wish to
+  build on Texinfo, adding to it the capability of producing files
+  that are:
+
+  - arbitrarily accessible
+  - runtime configurable (e.g., paragraph indentation)
+
+  You need to install Mixp (http://www.nongnu.org/mixp/) (Guile 1.8),
+  or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course, you need
+  to have one of those Guile versions installed, too.
+
+* What does it do?
+
+  It defines a documentation file format and provides two simple
+  tools to write and read, respectively, files in that format.
+  The file format is described below, in this file.
+
+* What does it NOT do?
+
+  This package does not include a program to view documents in the
+  new format.  You can do "make demo" to see some of the potential,
+  though.
+
+  Even more basic, it does NOT include the Texinfo DTD, which is
+  expected under /usr/share (see [[file:zomg][zomg]] to manually tweak).
+
+* file format definition
+
+  In the following description, ‘(???)’ indicates points that are
+  not very firm in the author's mind.
+
+  Overall, the format is text (???), using UTF-8.  With the exception
+  of the ‘meta’ portion, all SXML trees are third-normal form, w/
+  abutting character-data sequences coalesced, attributes explicit
+  in the tree's CADR, "default" namespace that defined in the Texinfo
+  DTD.
+
+*** magic: "ixin "
+
+    The beginning of the file is five bytes (hex) 69, 78, 69, 6E, 20.
+
+*** version
+
+    The version number as a character string.  For now: "1".
+
+*** coding (???)
+
+    The coding system used for this file in the format:
+    "; -*- coding: CODING -*-" followed by newline.
+
+*** meta
+
+    The list (ATTRIBUTES ELEMENT...) that comprise the immediate
+    children of the (input) ‘texinfo’ tree, truncated at the first
+    ‘node’, and also omitting the element name.  That is, to
+    reconstruct the original input, you could "evaluate" the
+    expression:
+
+    `(texinfo ,@META NODE...)
+
+    A newline ends the ‘meta’ portion.
+
+*** counts
+
+    The list (INDEX-LENGTH COUNT TOP TLI).
+
+    INDEX-LENGTH is the byte-length of the index (described below).
+
+    COUNT is the total number of nodes.
+
+    TOP is the 0-based index of the ‘Top’ node, or -1 if there is no
+    such node..
+
+    TLI is an alist with symbolic key TYPE (such as ‘cp’ or ‘fn’),
+    and value (INDEX...), where each INDEX is the index of a node
+    containing a ‘printindex’ element.  "TLI" is for "two-letter"
+    named index, which is what the Texinfo docs use.
+
+    A newline ends the ‘counts’ portion.
+
+*** index
+
+    A series of COUNT lists of the form (NAME LENGTH NEXT PREV UP),
+    each followed by newline.
+
+    NAME is a string, e.g., "Top".  This is the only "direct string"
+    in the file format and the reason that we need to specify coding.
+
+    LENGTH is an integer, the number of bytes required to read the
+    raw "node data" (described below).
+
+    NEXT, PREV, and UP are integers, pointing to other members of the
+    index.  A value of -1 indicates a missing component (e.g., UP and
+    PREV for "Top" is typically -1).
+
+*** node data
+
+    This is a series of COUNT ‘node’ element forms, each gzipped,
+    base64-encoded (???), and followed by newline.
+
+    The order is the same as in the index portion of the file.
+
+* possible access patterns
+
+  The retrieve program illustrates one access pattern: read up
+  through the index, and then use that information to dig out node
+  data on demand.
+
+  Another one, which optimizes for size and speed, is to use
+  INDEX-LENGTH and the file position after reading the ‘counts’
+  portion to compute the "base" of the node data, then read up
+  through the "Top" index entry (typically the first).  This way,
+  both subsequent index entries as well as data can be accessed on
+  demand.
+
+* invoking a1-nf3-{mixp,guile2}
+
+  Usage: a1-nf3-{mixp,guile2} FILENAME
+
+  Display the XML file in "SXML format" to stdout.
+
+  FILENAME should be produced by "makeinfo --xml".
+
+* invoking a2ixin
+
+  Usage: a2ixin FILENAME
+
+  If FILENAME ends with ".sxml", create STEM.ixin, where STEM is the
+  basename of FILENAME.  If FILENAME ends with ".xml" invoke one of
+  the a1-nf3-* programs to internally convert it to "SXML format" first.
+
+* invoking retrieve
+
+  Usage: retrieve IXIN [COMMAND [ARGS...]]
+
+  IXIN is the name of a file created by a2ixin.
+
+  COMMAND (and args) is one of the following:
+
+  - dump
+  - dump/abbrev COLUMNS
+  - dump-meta
+  - dump-counts
+  - dump-index
+  - show-node WHICH
+  - show-all-nodes
+
+  WHICH can be a name, like "Top", or a number, like "0".
+  If no COMMAND is specified, it is taken as "dump/abbrev 42".
+
+* What needs to be done, still?
+
+  - add "retrieve FILENAME repl"
+  - write ixin.el that uses it
+  - w/ upstream (Texinfo) hackers:
+    - discuss what is missing
+      - actual entries in the indices
+      - macros (maybe i'm missing something?)
+      - images, etc
+    - work towards v2
+  - fix a1-nf3-guile2
+  - (depending on viability) clean up impl
+
+* copying conditions
+
+  Copyright (C) 2012 Thien-Thi Nguyen
+
+  Copying and distribution of this file, with or without modification,
+  are permitted provided the copyright notice and this notice are preserved.
+
+  ________________
+  Local Variables:
+  mode: org
+  End:

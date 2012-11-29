@@ -1,0 +1,189 @@
+#!/bin/sh
+exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
+!#
+;;; a1-nf3-mixp
+
+;; Copyright (C) 2012 Thien-Thi Nguyen
+;;
+;; This file is part of IXIN.
+;;
+;; IXIN is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; IXIN is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; This is "ttn-do xml2sexp", stripped down and
+;; de-generalized to hard code ‘--map DIR/zomg --sxml 3’
+;; with DIR the same as the program invocation filename's.
+
+;;; Code:
+
+(load "./z-fixed-pp.scm")
+
+(define-module (a1-nf3-mixp)
+  #:export (main)
+  #:use-module ((srfi srfi-13) #:select (string-prefix?
+                                         substring/shared
+                                         string-concatenate-reverse
+                                         string-every))
+  #:use-module ((srfi srfi-14) #:select (char-set:whitespace))
+  #:use-module ((ice-9 popen) #:select (open-input-pipe))
+  #:use-module ((ice-9 pretty-print) #:select (pretty-print))
+  #:use-module ((mixp expat) #:select (parser-create
+                                       set-param-entity-parsing
+                                       hset!))
+  #:use-module ((mixp utils) #:select (xml->tree)))
+
+(define-macro (FE . args)
+  (let ((proc (car (last-pair args))))
+    `(for-each ,proc ,@(delq proc args))))
+
+(define (fse s . args)
+  (apply simple-format (current-error-port) s args))
+
+(define HOME (getenv "HOME"))
+
+(define (expand-file-name filename)
+  (if (string-prefix? "~" filename)
+      (in-vicinity HOME (substring/shared filename 1))
+      filename))
+
+(define (forms<-port port)
+  (let loop ((acc '()))
+    (let ((form (read port)))
+      (if (eof-object? form)
+          (reverse! acc)
+          (loop (cons form acc))))))
+
+(define (open-input-file-if-exists filename)
+  (let ((filename (expand-file-name filename)))
+    (and (file-exists? filename)
+         (open-input-file filename))))
+
+(define (parser)
+  (let ((eemap (in-vicinity (dirname (car (command-line)))
+                            "zomg"))
+        (p (parser-create)))
+
+    (define (external-entity-ref context base system-id public-id)
+      (and (string? eemap)
+           (set! eemap (false-if-exception
+                        (forms<-port (open-input-file-if-exists
+                                      (expand-file-name eemap))))))
+      (cond ((and (not (string-prefix? "http://" system-id))
+                  (open-input-file-if-exists system-id)))
+            ((and (pair? eemap)
+                  (assoc-ref eemap system-id))
+             => open-input-file-if-exists)
+            (else
+             (fse "~A: cannot open external entity ref~%"
+                  (basename (car (command-line))))
+             (FE `((context ,context)
+                   (base ,base)
+                   (system-id ,system-id)
+                   (public-id ,public-id))
+                 (lambda (x)
+                   (apply fse " (~A) ~S~%" x)))
+             (exit #f))))
+
+    (set-param-entity-parsing p 'XML_PARAM_ENTITY_PARSING_ALWAYS)
+    (hset! p `((external-entity-ref . ,external-entity-ref)))
+    p))
+
+(define (combine-character-data-children node)
+  (let ((acc '()))
+
+    (define (acc! x)
+      (set! acc (cons x acc)))
+
+    (let loop ((parts #f) (ls (cddr node)))
+
+      (define (squeeze!)
+        (and parts
+             (acc! (list 'character-data (string-concatenate-reverse
+                                          parts)))))
+
+      (if (null? ls)
+          (begin (squeeze!)
+                 (reverse! acc))
+          (let ((one (car ls)))
+            (case (car one)
+              ((character-data)
+               (loop (cons (cadr one) (or parts '()))
+                     (cdr ls)))
+              (else
+               (squeeze!)
+               (acc! one)
+               (loop #f (cdr ls)))))))))
+
+(define (crunch port)
+
+  (define (no-s s)
+    (string-every char-set:whitespace s))
+
+  (define (crunch-1 form)
+    (let ((acc '()))
+
+      (define (acc! x)
+        (set! acc (cons x acc)))
+
+      (let loop ((ls form))
+        (if (null? ls)
+            (reverse! acc)
+            (let ((head (car ls))
+                  (tail (cdr ls)))
+              (or (pair? head)
+                  (error "(not (pair? head)) !!!" head))
+              (and (pair? (car head))
+                   (error "(pair? (car head)) !!!" head))
+              (case (car head)
+                ((element)
+                 (let* ((x (cadr head))
+                        (name (string->symbol (car x)))
+                        (attrs (map (lambda (pair)
+                                      (list (string->symbol (car pair))
+                                            (cdr pair)))
+                                    (cadr x))))
+                   (acc! name)
+                   (acc! (cons '@ attrs))
+                   (FE (map crunch-1 (map list (combine-character-data-children
+                                                head)))
+                       (lambda (res)
+                         (cond ((null? res))
+                               ((and-map string? res)
+                                (FE res acc!))
+                               (else
+                                (acc! res)))))))
+                ((character-data)
+                 (let ((s (cadr head)))
+                   (or (no-s s)
+                       (acc! s))))
+                ((comment)
+                 ;; ignore
+                 #t)
+                (else
+                 (acc! head)))
+              (loop tail))))))
+
+  (crunch-1 (xml->tree port (parser))))
+
+(define (one port)
+  (pretty-print (crunch port))
+  (force-output))
+
+(define (main args)
+  (call-with-input-file (cadr args)
+    one)
+  (exit #t))
+
+;;; a1-nf3-mixp ends here

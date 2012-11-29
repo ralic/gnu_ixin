@@ -1,0 +1,178 @@
+#!/bin/sh
+exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
+!#
+;;; a2ixin
+
+;; Copyright (C) 2012 Thien-Thi Nguyen
+;;
+;; This file is part of IXIN.
+;;
+;; IXIN is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; IXIN is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Code:
+
+(load "./z-fixed-pp.scm")
+
+(define-module (a2ixin)
+  #:export (main))
+
+(use-modules
+ ((srfi srfi-1) #:select (break!))
+ ((srfi srfi-11) #:select (let*-values))
+ ((srfi srfi-13) #:select (string-suffix?
+                           string-join))
+ ((ice-9 pretty-print) #:select (pretty-print))
+ ((ice-9 popen) #:select (open-input-pipe
+                          open-output-pipe
+                          close-pipe))
+ ((ice-9 rdelim) #:select (read-line write-line)))
+
+(define-macro (FE . args)
+  (let ((proc (car (last-pair args))))
+    `(for-each ,proc ,@(delq proc args))))
+
+(define (crunch x)
+  (call-with-output-file "TMP-W" (lambda (port) (pretty-print x port)))
+  (let* ((p (open-input-pipe "gzip -q -n -c --best TMP-W | base64 -w 0"))
+         (line (read-line p 'concat)))
+    (close-pipe p)
+    (delete-file "TMP-W")
+    line))
+
+(define (xnode! element)
+  (lambda (node)
+    (let ((rest (cdr node)))
+      (and=> (assq element rest)
+             (lambda (sub)
+               (let ((rv (caddr sub)))
+                 (set-cdr! node (delq! sub rest)) ; DWR!
+                 rv))))))
+
+(define node-name (xnode! 'nodename))
+(define node-next (xnode! 'nodenext))
+(define node-prev (xnode! 'nodeprev))
+(define node-up   (xnode! 'nodeup))
+
+(define (find-printindex node)
+  (call-with-current-continuation
+   (lambda (return)
+     (let repeat ((node node))
+       (cond ((string? node)
+              #f)
+             ((null? node)
+              #f)
+             ((eq? 'printindex (car node))
+              (return (string->symbol (caddr node))))
+             (else
+              (FE (cddr node) repeat)
+              #f))))))
+
+(define (in filename)
+
+  (define (how-to-handle)
+
+    (define (w/o ext)
+      (basename filename ext))
+
+    (if (string-suffix? ".sxml" filename)
+        (values (w/o ".sxml")
+                (lambda ()
+                  (call-with-input-file filename
+                    read)))
+        (values (w/o ".xml")
+                (lambda ()
+                  (let* ((p (open-input-pipe
+                             (simple-format
+                              #f "~A/a1-nf3-~A ~S"
+                              (dirname (car (command-line)))
+                              (if #f
+                                  'guile2 ; TODO
+                                  'mixp)
+                              filename)))
+                         (form (read p)))
+                    (close-pipe p)
+                    form)))))
+
+  (let*-values (((stem snarf) (how-to-handle))
+                ((meta nodes) (break! (lambda (x)
+                                        (eq? 'node (car x)))
+                                      (cdr (snarf)))))
+    (let* ((count (length nodes))
+           (ids (iota count))
+           (names (map node-name nodes))
+           (top -1)
+           (tli '()))                   ; "two-letter" indices
+
+      (define id<-name
+        (let ((alist (map cons names ids)))
+          ;; id<-name
+          (lambda (name)
+            (or (assoc-ref alist name)
+                -1))))
+
+      (define (grok name node id)
+
+        (define (deref get)
+          (id<-name (get node)))
+
+        (and=> (find-printindex node)
+               (lambda (type)
+                 (let ((was (or (assq-ref tli type)
+                                '())))
+                   (set! tli (assq-set! tli type (cons id was))))))
+        ;; Do node-{next,prev,up} before ‘crunch’; they are destructive!
+        (let* ((loc (map deref (list node-next
+                                     node-prev
+                                     node-up)))
+               (s (crunch node)))
+          (and (negative? (caddr loc))
+               (set! top id))
+          (cons `(,name
+                  ,(string-length s)
+                  ,@loc)
+                s)))
+
+      (let* ((grokked (map grok names nodes ids))
+             (index (string-join (map object->string
+                                      (map car grokked))
+                                 "\n" 'suffix)))
+
+        ;; rv
+        (lambda ()
+          (values stem
+                  'utf-8
+                  meta
+                  (list (string-length index) count top tli)
+                  index
+                  (map cdr grokked)))))))
+
+(define (out stem coding meta counts index nodes)
+  (let ((port (open-output-file (string-append stem ".ixin"))))
+
+    (define (fso s . args)
+      (apply simple-format port s args))
+
+    (fso "ixin 1; -*- coding: ~A -*-~%" coding)
+    (pretty-print meta port)
+    (fso "~S~%" counts)
+    (fso "~A" index)
+    (FE nodes (lambda (s)
+                (write-line s port)))))
+
+(define (main args)
+  (let ((filename (cadr (command-line))))
+    (call-with-values (in filename)
+      out)))
+
+;;; a2ixin ends here

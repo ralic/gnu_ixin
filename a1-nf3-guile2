@@ -1,0 +1,75 @@
+#!/bin/sh
+exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
+!#
+;;; a1-nf3-guile2
+
+;; Copyright (C) 2012 Thien-Thi Nguyen
+;;
+;; This file is part of IXIN.
+;;
+;; IXIN is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; IXIN is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; This is supposed to do what a1-nf3-mixp does, using Guile 2
+;; facilities.  Unfortunately, those facilities are practically
+;; undocumented (as of Guile 2.0.6), and so this program fails:
+;;
+;;| -*- mode: compilation -*-
+;;| Compilation started at Wed Nov 28 16:41:23
+;;|
+;;| ./a1-nf3-guile2 hello.xml
+;;| Backtrace:
+;;| In ice-9/boot-9.scm:
+;;|  157: 8 [catch #t #<catch-closure 9e60e30> ...]
+;;| In unknown file:
+;;|    ?: 7 [apply-smob/1 #<catch-closure 9e60e30>]
+;;| In ice-9/boot-9.scm:
+;;|   63: 6 [call-with-prompt prompt0 ...]
+;;| In ice-9/eval.scm:
+;;|  414: 5 [eval # #]
+;;|  399: 4 [eval # #]
+;;| In ice-9/r4rs.scm:
+;;|  147: 3 [call-with-input-file "hello.xml" #<procedure xml->sxml (#:optional port)>]
+;;| In sxml/upstream/SSAX.scm:
+;;| 2846: 2 [ssax:xml->sxml #<input: hello.xml 5> ()]
+;;| 2846: 1 [loop #<input: hello.xml 5> () ...]
+;;| 2846: 0 [loop #<input: hello.xml 5> () #f ()]
+;;|
+;;| sxml/upstream/SSAX.scm:2846:12: In procedure loop:
+;;| sxml/upstream/SSAX.scm:2846:12: Throw to key `parser-error' with args `(#<input: hello.xml 5> "[wf-entdeclared] broken for " copyright)'.
+;;|
+;;| Compilation exited abnormally with code 1 at Wed Nov 28 16:41:23
+;;
+;; because it's written in ignorance.  Too bad.  Maybe next time.
+
+;;; Code:
+
+(define-module (a1-nf3-guile2)
+  #:export (main))
+
+(use-modules
+ (sxml simple)
+ (ice-9 pretty-print))
+
+(define (one port)
+  (pretty-print (xml->sxml port))
+  (force-output))
+
+(define (main args)
+  (call-with-input-file (cadr args)
+    one)
+  (exit #t))
+
+;;; a1-nf3-guile2 ends here
