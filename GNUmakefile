@@ -38,10 +38,10 @@ dist-files := \
  z-fixed-pp.scm zomg \
  COPYING NEWS README
 
-dist:
+dist: $(addsuffix .sxml, $(hmm)) $(addsuffix .ixin, $(hmm))
 	rm -rf $(dd)
 	mkdir $(dd)
-	cp -p $(dist-files) $(dd)
+	cp -p $(dist-files) $^ $(dd)
 	tar cf $(dd).tar.xz --auto-compress $(dd)
 	rm -rf $(dd)
 

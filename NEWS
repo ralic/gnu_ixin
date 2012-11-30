@@ -2,6 +2,16 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.1 | NOT YET RELEASED
+
+  - included in dist: .sxml, .ixin files
+
+	This is for the benefit of Guile 2-only users, and those who
+	choose not to install Mixp.  If you modify foo.xml, however, you
+	will still need Mixp (or a fixed a1-nf3-guile2) to update the
+	foo.sxml (optionally) and foo.ixin (certainly) files.
+
+
 - 1.0 | 2012-11-29
   - initial release
 
