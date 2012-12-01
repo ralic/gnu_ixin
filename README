@@ -204,8 +204,7 @@ See end for copying conditions.
 
     The many "~Y" in the format strings (instead of simpler "~S") forces
     control through ‘string-xrep’ ([[file:z-fixed-pp.scm]]).  Surprisingly,
-    this is necessary even for Guile 2, but maybe that's because none of
-    these programs ‘setlocale’ properly.  Hmmm.
+    this is necessary even for Guile 2.  Hmmm.
 
 * copying conditions
 

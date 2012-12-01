@@ -56,6 +56,8 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 
 ;;; Code:
 
+(setlocale LC_ALL "")
+
 (define-module (a1-nf3-guile2)
   #:export (main))
 

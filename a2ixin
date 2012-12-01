@@ -22,6 +22,8 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
 
 ;;; Code:
 
+(setlocale LC_ALL "")
+
 (load "./z-fixed-pp.scm")
 
 (define-module (a2ixin)

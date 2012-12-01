@@ -1,5 +1,14 @@
 2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Call ‘setlocale’ for all programs, first thing.
+
+	* a1-nf3-guile2: ...here.
+	* a2-nf3-mixp: Likewise.
+	* a2ixin: Likewise.
+	* retrieve: Likewise.
+
+2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[slog] Sync ‘string-xrep’ from upstream.
 
 	This is "slog" because it affects Guile 2,

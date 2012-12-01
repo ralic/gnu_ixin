@@ -28,6 +28,8 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
 
 ;;; Code:
 
+(setlocale LC_ALL "")
+
 (load "./z-fixed-pp.scm")
 
 (define-module (a1-nf3-mixp)
