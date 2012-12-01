@@ -26,11 +26,13 @@
 ;; - Don't import (ice-9 optargs).
 ;; - Import SRFIs 13, 14.
 ;; - Add ‘(database postgres-qcons) string-xrep’ from Guile-PG 0.44.
-;; - In ‘generic-write’ in ‘wr’: If ‘obj’ is a string and we are doing
-;;   "write" (as opposed to "display") output, use ‘string-xrep’.
+;; - Add ‘obj->string’.
+;; - In ‘generic-write’ in ‘wr’: If we are doing "write"
+;;   (as opposed to "display") output, use ‘obj->string’.
 ;;
-;; Since this module provides ‘(ice-9 pretty-print)’ you need to
-;; ‘load’ it manually before any ‘use-modules’ forms.
+;; Since this file provides ‘(ice-9 pretty-print)’ you need to ‘load’
+;; it explicitly before ‘define-module’ or any ‘use-modules’ forms,
+;; thus precluding the module system's normal filesystem search.
 
 ;;; Code:
 
@@ -78,6 +80,30 @@
       ;; Cool.
       object->string))
 
+(define (obj->string obj)
+  (cond ((string? obj)
+         (string-xrep obj))
+        ((pair? obj)
+         (let ((acc '()))
+           (define (acc! x)
+             (set! acc (cons x acc)))
+           (acc! "(")
+           (acc! (obj->string (car obj)))
+           (let loop ((ls (cdr obj)))
+             (cond ((null? ls))
+                   ((pair? ls)
+                    (acc! " ")
+                    (acc! (obj->string (car ls)))
+                    (loop (cdr ls)))
+                   (else (acc! " . ")
+                         (acc! (obj->string (cdr ls))))))
+           (acc! ")")
+           (string-concatenate-reverse acc)))
+        ((vector? obj)
+         (string-append "#" (obj->string (vector->list obj))))
+        (else
+         (object->string obj))))
+
 ;; From SLIB.
 
 ;;"genwrite.scm" generic write used by pretty-print and truncated-print.
@@ -115,10 +141,10 @@
 		(read-macro? obj))
 	   (wr (read-macro-body obj)
 	       (out (read-macro-prefix obj) col)))
-          ((and (string? obj) (not display?))
-           (out (string-xrep obj) col))
+          ((not display?)
+           (out (obj->string obj) col))
 	  (else
-	   (out (object->string obj (if display? display write)) col))))
+	   (out (object->string obj display) col))))
 
   (define (pp obj col)
 

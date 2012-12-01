@@ -1,3 +1,12 @@
+2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Fix bug: Apply ‘(ice-9 pretty-print)’ fix more/less deeply.
+
+	* z-fixed-pp.scm (obj->string): New proc.
+	(generic-write wr): Replace "string w/ ‘write’" case
+	with more ‘(not display?)’ case, using ‘obj->string’ there;
+	update ‘else’ case to no longer check for ‘(not display?)’.
+
 2012-11-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Include .sxml and .ixin files in dist.

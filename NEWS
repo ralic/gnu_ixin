@@ -11,6 +11,30 @@ See end for copying conditions.
 	will still need Mixp (or a fixed a1-nf3-guile2) to update the
 	foo.sxml (optionally) and foo.ixin (certainly) files.
 
+  - bugfix: ‘(ice-9 pretty-print)’ fix applied more/less deeply
+
+	Previously, the ‘string-xrep’ fix was applied only when the
+	object to be output was directly a string.  Now, we intervene
+	for any object (subverting ‘object->string’), to be able to
+	handle two compound types, list and vector, which themselves may
+	contain strings (and thus must be walked).  So much for the
+	"more deeply" side.
+
+	The "less deeply" comes from the incomplete (application
+	specific) coverage of compound types.  Everything besides
+	string, list or vector is still shunted to ‘object->string’.
+	This imposes a maintenance burden: should programs one day wish
+	to pretty-print other compound types that involve ‘write’ or
+	‘object->string’ on strings internally, the subversion needs
+	to be appropriately updated.
+
+	Anyway, this bug manifested in the improper output of:
+
+	  (punct (@ (end-of-sentence "no")) "…")
+
+	under Guile 1.8.7 (mangled ‘U+2026 HORIZONTAL ELLIPSES’), and
+	possibly other places, where the form's xrep fits on one line.
+
 
 - 1.0 | 2012-11-29
   - initial release
