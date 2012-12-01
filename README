@@ -3,8 +3,8 @@ See end for copying conditions.
 
 * What is it?
 
-  IXIN is an EXPERIMENTAL distribution of EXPERIMENTAL code.
-  IXIN stands for "indexed texinfo".
+  IXIN is an EXPERIMENTAL distribution of EXPERIMENTAL code and
+  some pre-built IXIN files.  IXIN stands for "indexed texinfo".
 
   All code is under GPLv3+.  All (.xml) docs are under GFDL.
 
@@ -17,9 +17,9 @@ See end for copying conditions.
   - arbitrarily accessible
   - runtime configurable (e.g., paragraph indentation)
 
-  You need to install Mixp (http://www.nongnu.org/mixp/) (Guile 1.8),
-  or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course, you need
-  to have one of those Guile versions installed, too.
+  See also:
+  http://mail.gnu.org/archive/html/gnu-system-discuss/
+  http://mail.gnu.org/archive/html/help-texinfo/
 
 * What does it do?
 
@@ -35,6 +35,14 @@ See end for copying conditions.
 
   Even more basic, it does NOT include the Texinfo DTD, which is
   expected under /usr/share (see [[file:zomg][zomg]] to manually tweak).
+
+* dependencies
+
+  The distribution includes pre-built .sxml and .ixin files, so the
+  write tool is not necessary unless you modify the source .xml, in
+  which case you will need to install Mixp (http://www.nongnu.org/mixp/)
+  (Guile 1.8), or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course,
+  you need to have one of those Guile versions installed, too.
 
 * file format definition
 
