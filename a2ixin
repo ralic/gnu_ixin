@@ -59,11 +59,6 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                  (set-cdr! node (delq! sub rest)) ; DWR!
                  rv))))))
 
-(define node-name (xnode! 'nodename))
-(define node-next (xnode! 'nodenext))
-(define node-prev (xnode! 'nodeprev))
-(define node-up   (xnode! 'nodeup))
-
 (define (find-printindex node)
   (call-with-current-continuation
    (lambda (return)
@@ -110,7 +105,8 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                                       (cdr (snarf)))))
     (let* ((count (length nodes))
            (ids (iota count))
-           (names (map node-name nodes))
+           (names (map (xnode! 'nodename)
+                       nodes))
            (top -1)
            (tli '()))                   ; "two-letter" indices
 
@@ -131,10 +127,10 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                  (let ((was (or (assq-ref tli type)
                                 '())))
                    (set! tli (assq-set! tli type (cons id was))))))
-        ;; Do node-{next,prev,up} before ‘crunch’; they are destructive!
-        (let* ((loc (map deref (list node-next
-                                     node-prev
-                                     node-up)))
+        ;; Do ‘xnode!’ stuff before ‘crunch’; they are destructive!
+        (let* ((loc (map deref (map xnode! '(nodenext
+                                             nodeprev
+                                             nodeup))))
                (s (crunch node)))
           (and (negative? (caddr loc))
                (set! top id))

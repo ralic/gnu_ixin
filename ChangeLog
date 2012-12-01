@@ -1,5 +1,13 @@
 2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] a2ixin: Inline ‘xnode!’-derived procs.
+
+	* a2ixin (node-name, node-next, node-prev, node-up): Delete.
+	(in): Use ‘(xnode! 'nodename)’ directly.
+	(in grok): Map ‘xnode!’ over ‘nodenext’, ‘nodeprev’, ‘nodeup’.
+
+2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Fix bug: Apply ‘(ice-9 pretty-print)’ fix more/less deeply.
 
 	* z-fixed-pp.scm (obj->string): New proc.
