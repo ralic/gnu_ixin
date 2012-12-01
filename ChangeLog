@@ -1,5 +1,14 @@
 2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[slog] Sync ‘string-xrep’ from upstream.
+
+	This is "slog" because it affects Guile 2,
+	for which ‘char-set:full’ is unwieldy to filter.
+
+	* z-fixed-pp.scm (string-xrep): Synch.
+
+2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] a2ixin: Inline ‘xnode!’-derived procs.
 
 	* a2ixin (node-name, node-next, node-prev, node-up): Delete.

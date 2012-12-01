@@ -25,7 +25,8 @@
 ;; - De-generalize ‘pretty-print’ (call ‘generic-write’ directly).
 ;; - Don't import (ice-9 optargs).
 ;; - Import SRFIs 13, 14.
-;; - Add ‘(database postgres-qcons) string-xrep’ from Guile-PG 0.44.
+;; - Add ‘(database postgres-qcons) string-xrep’ from
+;;   Guile-PG 0.45 (not yet released as of 2012-12-01).
 ;; - Add ‘obj->string’.
 ;; - In ‘generic-write’ in ‘wr’: If we are doing "write"
 ;;   (as opposed to "display") output, use ‘obj->string’.
@@ -46,7 +47,9 @@
             (ugh (char-set-filter
                   (lambda (ch)
                     (string-prefix? "\"\\x" (object->string (string ch))))
-                  char-set:full)))
+                  (if (< 256 (char-set-size char-set:full))
+                      (ucs-range->char-set 0 256)
+                      char-set:full))))
         (and (positive? (char-set-size ugh))
              ;; Lame.
              (let ((v (make-vector 256)))
