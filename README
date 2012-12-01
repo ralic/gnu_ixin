@@ -173,6 +173,32 @@ See end for copying conditions.
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 
+* implementation notes
+
+*** generally
+
+    The gzip/base64 temp-file interaction is quick (to write) and dirty.
+    Kids, laugh all you want, but don't do this in your own code!
+
+*** a2ixin
+
+    The ‘(node ...)’ form is not identical to the input SXML;
+    [[file:a2ixin::xnode!][xnode!]] removes the element by side-effect.
+
+    The upshot is to move name, next, prev and up elements (actually,
+    their decoded (and re-encoded, for the links) contents) into the
+    index.
+
+    This is the only non-functional (destructive) operation, aside from
+    partitioning children of element ‘texinfo’ into pre-node and node.
+
+*** retrieve
+
+    The many "~Y" in the format strings (instead of simpler "~S") forces
+    control through ‘string-xrep’ ([[file:z-fixed-pp.scm]]).  Surprisingly,
+    this is necessary even for Guile 2, but maybe that's because none of
+    these programs ‘setlocale’ properly.  Hmmm.
+
 * copying conditions
 
   Copyright (C) 2012 Thien-Thi Nguyen
