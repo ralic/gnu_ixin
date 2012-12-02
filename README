@@ -25,7 +25,7 @@ See end for copying conditions.
 
   It defines a documentation file format and provides two simple
   tools to write and read, respectively, files in that format.
-  The file format is described below, in this file.
+  The [[file format definition]] is described below.
 
 * What does it NOT do?
 
@@ -34,7 +34,7 @@ See end for copying conditions.
   though.
 
   Even more basic, it does NOT include the Texinfo DTD, which is
-  expected under /usr/share (see [[file:zomg][zomg]] to manually tweak).
+  expected under /usr/share (see [[file:zomg]] to manually tweak).
 
 * dependencies
 
@@ -198,7 +198,7 @@ See end for copying conditions.
     index.
 
     This is the only non-functional (destructive) operation, aside from
-    partitioning children of element ‘texinfo’ into pre-node and node.
+    partitioning children of element ‘texinfo’ into pre-nodes and nodes.
 
 *** retrieve
 
