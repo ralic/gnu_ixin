@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = 1.1
+VERSION = 1.2
 
 hmm := hello alive prob rcs
 ixin := $(addsuffix .ixin, $(hmm))
