@@ -1,0 +1,12 @@
+dump-meta
+dump-index
+where
+nav
+next
+next
+goto 10
+show 0
+up
+show
+raw 5
+quit

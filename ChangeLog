@@ -1,5 +1,14 @@
 2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Support "make demo-zow".
+
+	* zow: New file.
+	* GNUmakefile (dist-files): Add zow.
+	(ZOW): New var.
+	(demo-zow): New target.
+
+2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Support "make sxml".
 
 	* GNUmakefile (hmm): Use ‘:=’.

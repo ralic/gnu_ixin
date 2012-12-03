@@ -39,7 +39,7 @@ sxml: $(sxml)
 dd := ixin-$(VERSION)
 dist-files := \
  *.xml a1-nf3-* a2ixin retrieve GNUmakefile \
- z-fixed-pp.scm zomg \
+ z-fixed-pp.scm zomg zow \
  COPYING NEWS README
 
 dist: $(sxml) $(ixin)
@@ -62,5 +62,10 @@ demo-%: all
 	$($*) show-node Top
 
 demo: demo-hello demo-alive demo-rcs
+
+ZOW = alive
+
+demo-zow: $(ZOW).ixin
+	./retrieve $(ZOW).ixin repl 17 < zow
 
 # GNUmakefile ends here

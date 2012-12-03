@@ -20,8 +20,11 @@ See end for copying conditions.
   - new retrieve command: repl
 
 	This runs a simple command loop that reads from stdin and writes to
-	stdout.  The program maintains a "current node", and recognizes some
-	simple navigation and display commands.  Type ‘quit’ to quit.
+	stdout.  The program maintains a "current node", and recognizes
+	some simple navigation and display commands.  Type ‘quit’ to quit.
+
+	To see this in action, try "make demo-zow".  Add ‘ZOW=rcs’, e.g.,
+	to choose rcs.ixin (defaults to alive.ixin if not specified).
 
   - ‘meta’ format defined
 
