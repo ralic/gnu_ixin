@@ -178,6 +178,21 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (lambda (i ent)
               (fso "~6,D  ~Y" i ent))))
 
+      (define (nd! which go)
+        (cond ((and (string? which)
+                    (by-name which))
+               => go)
+              ((false-if-exception (by-id (if (string? which)
+                                              (string->number which)
+                                              which)))
+               => go)
+              (else (error "no such node:" which))))
+
+      (define (dump-node which)
+        (nd! which (lambda (en)
+                     (fso "~A~%" (node-data (index-index en)
+                                            (cadr en))))))
+
       (define (show-node which)
 
         (define (details en)
@@ -195,14 +210,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               (maybe 'up caddr))
             (fso "~Y" (uncrunch (node-data id (cadr en))))))
 
-        (cond ((and (string? which)
-                    (by-name which))
-               => details)
-              ((false-if-exception (by-id (if (string? which)
-                                              (string->number which)
-                                              which)))
-               => details)
-              (else (error "no such node:" which))))
+        (nd! which details))
 
       (define (show-all-nodes)
         (do ((i 0 (1+ i)))
@@ -214,6 +222,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-meta
                      dump-counts
                      dump-index
+                     dump-node
                      show-node
                      show-all-nodes))
              (string->symbol command)

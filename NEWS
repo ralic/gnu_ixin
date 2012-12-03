@@ -12,6 +12,11 @@ See end for copying conditions.
 	release and running "make prob.ixin".  Contrast to the prob.ixin
 	distributed in this release.
 
+  - new retrieve command: dump-node
+
+	This displays the raw node data for a selected node to stdout.
+	To get the tree, do: ‘./retrieve ... | base64 -d | gzip -d’.
+
 
 - 1.1 | 2012-12-01
 

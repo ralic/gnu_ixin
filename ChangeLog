@@ -1,5 +1,13 @@
 2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	retrieve: Add command: dump-node
+
+	* retrieve (out nd!): New proc.
+	(out dump-node): Likewise.
+	(out show-node): Use ‘nd!’.
+
+2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	a2ixin: Fix bug: Avoid ‘object->string’ for index.
 
 	* prob.xml: New file.

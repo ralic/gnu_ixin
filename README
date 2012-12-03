@@ -162,6 +162,7 @@ See end for copying conditions.
   - dump-meta
   - dump-counts
   - dump-index
+  - dump-node
   - show-node WHICH
   - show-all-nodes
 
