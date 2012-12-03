@@ -165,13 +165,34 @@ See end for copying conditions.
   - dump-node
   - show-node WHICH
   - show-all-nodes
+  - repl END-CODE
 
   WHICH can be a name, like "Top", or a number, like "0".
   If no COMMAND is specified, it is taken as "dump/abbrev 42".
 
+  For ‘repl’, END-CODE is a decimal number that specifies the first
+  character in the two character sequence used to terminate a response.
+  The second char is always newline (aka ‘\n’).  For example, use 12 for
+  formfeed (aka, ‘\f’).
+
+  In ‘repl’ mode, retrieve maintains a "current node", initially id 0
+  (name "Top"), and loops reading a line from stdin and displaying
+  results to stdout.  Valid commands (and args) are:
+
+  - where        -- display current node information
+  - nav          -- display next/prev/up links (subset of ‘where’)
+  - next         -- move to ‘next’ node, if possible
+  - prev         -- move to ‘prev’ node, if possible
+  - up           -- move to ‘up’ node, if possible
+  - goto WHICH   -- jump directly to node WHICH
+  - show [WHICH] -- do ‘show-node’ for WHICH or current node
+  - raw [WHICH]  -- do ‘dump-node’ for WHICH or current node
+  - dump-meta    -- as from command-line (above)
+  - dump-index   -- as from command-line (above)
+  - quit         -- exit immediately
+
 * What needs to be done, still?
 
-  - add "retrieve FILENAME repl"
   - write ixin.el that uses it
   - w/ upstream (Texinfo) hackers:
     - discuss what is missing

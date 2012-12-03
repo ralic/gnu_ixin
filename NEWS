@@ -17,6 +17,12 @@ See end for copying conditions.
 	This displays the raw node data for a selected node to stdout.
 	To get the tree, do: ‘./retrieve ... | base64 -d | gzip -d’.
 
+  - new retrieve command: repl
+
+	This runs a simple command loop that reads from stdin and writes to
+	stdout.  The program maintains a "current node", and recognizes some
+	simple navigation and display commands.  Type ‘quit’ to quit.
+
 
 - 1.1 | 2012-12-01
 

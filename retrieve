@@ -35,6 +35,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 format) #:select (format))
  ((ice-9 rw) #:select (read-string!/partial))
+ ((ice-9 rdelim) #:select (read-line))
  ((ice-9 popen) #:select (open-input-pipe
                           close-pipe)))
 
@@ -217,6 +218,85 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             ((= total i))
           (show-node i)))
 
+      (define (repl end-code)
+        (let ((done (string (integer->char (string->number end-code))
+                            #\newline))
+              (cur 0))
+
+          (define (quit)
+            (exit #t))
+
+          (define (where)
+            (fso "~Y" (list cur (by-id cur))))
+
+          (define (rel id)
+            (cddr (by-id id)))
+
+          (define (nav)
+            (fso "~Y" (map cons
+                           '(next prev up)
+                           (map (lambda (id)
+                                  (if (negative? id)
+                                      '()
+                                      (list id (by-id id))))
+                                (rel cur)))))
+
+          (define (move! get)
+            (let ((id (get (rel cur))))
+              (if (negative? id)
+                  (fso "sorry~%")
+                  (begin (set! cur id)
+                         (where)))))
+
+          (define (next) (move! car))
+          (define (prev) (move! cadr))
+          (define (up)   (move! caddr))
+
+          (define (goto which)
+            (nd! which (lambda (en)
+                         (set! cur (index-index en))
+                         (where))))
+
+          (define (show . which)
+            (nd! (if (pair? which)
+                     (car which)
+                     cur)
+                 (lambda (en)
+                   (fso "~Y" (uncrunch (node-data (index-index en)
+                                                  (cadr en)))))))
+
+          (define (raw . which)
+            (dump-node (if (pair? which)
+                           (car which)
+                           cur)))
+
+          (define (loop)
+            (let* ((line (read-line (current-input-port)))
+                   (sp (string-index line #\space))
+                   (cmd (string->symbol (if sp
+                                            (string-take line sp)
+                                            line)))
+                   (args (if sp
+                             (list (string-trim-both (string-drop line sp)))
+                             '())))
+              (apply (shunt (quit
+                             where
+                             nav
+                             next
+                             prev
+                             up
+                             goto
+                             show
+                             raw
+                             dump-meta
+                             dump-index))
+                     cmd args)
+              (display done)
+              (force-output)
+              (loop)))
+
+          (loop)))
+
       (apply (shunt (dump
                      dump/abbrev
                      dump-meta
@@ -224,7 +304,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-index
                      dump-node
                      show-node
-                     show-all-nodes))
+                     show-all-nodes
+                     repl))
              (string->symbol command)
              args))))
 
