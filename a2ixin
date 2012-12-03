@@ -33,7 +33,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
  ((srfi srfi-1) #:select (break!))
  ((srfi srfi-11) #:select (let*-values))
  ((srfi srfi-13) #:select (string-suffix?
-                           string-join))
+                           string-drop-right))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 popen) #:select (open-input-pipe
                           open-output-pipe
@@ -45,12 +45,17 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
     `(for-each ,proc ,@(delq proc args))))
 
 (define (crunch x)
-  (call-with-output-file "TMP-W" (lambda (port) (pretty-print x port)))
-  (let* ((p (open-input-pipe "gzip -q -n -c --best TMP-W | base64 -w 0"))
-         (line (read-line p 'concat)))
+
+  (define (sz)
+    (stat:size (stat "TMP-W-NODES")))
+
+  (let* ((bef (sz))
+         (p (open-output-pipe
+             "{ gzip -q -n -c --best - | base64 -w 0 ; echo ; } >> TMP-W-NODES")))
+    (pretty-print x p)
     (close-pipe p)
-    (delete-file "TMP-W")
-    line))
+    ;; Subtract 1 to ignore the trailing newline.
+    (- (sz) bef 1)))
 
 (define (xnode! element)
   (lambda (node)
@@ -75,37 +80,42 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
               (FE (cddr node) repeat)
               #f))))))
 
-(define (in filename)
+(define (fs s . args)
+  (apply simple-format #f s args))
 
-  (define (how-to-handle)
+(define (how-to-handle filename)
 
-    (define (w/o ext)
-      (basename filename ext))
+  (define (w/o ext)
+    (string-drop-right filename (string-length ext)))
 
-    (if (string-suffix? ".sxml" filename)
-        (values (w/o ".sxml")
-                (lambda ()
-                  (call-with-input-file filename
-                    read)))
-        (values (w/o ".xml")
-                (lambda ()
-                  (let* ((p (open-input-pipe
-                             (simple-format
-                              #f "~A/a1-nf3-~A ~S"
-                              (dirname (car (command-line)))
-                              (if #f
-                                  'guile2 ; TODO
-                                  'mixp)
-                              filename)))
-                         (form (read p)))
-                    (close-pipe p)
-                    form)))))
+  (if (string-suffix? ".sxml" filename)
+      (values (w/o ".sxml")
+              (lambda ()
+                (call-with-input-file filename
+                  read)))
+      (values (w/o ".xml")
+              (lambda ()
+                (let* ((p (open-input-pipe
+                           (fs "~A/a1-nf3-~A ~S"
+                               (dirname (car (command-line)))
+                               (if #f
+                                   'guile2 ; TODO
+                                   'mixp)
+                               filename)))
+                       (form (read p)))
+                  (close-pipe p)
+                  form)))))
 
-  (let*-values (((stem snarf) (how-to-handle))
+(define (do-it! filename)
+  (let*-values (((stem snarf) (how-to-handle filename))
                 ((meta nodes) (break! (lambda (x)
                                         (eq? 'node (car x)))
                                       (cdr (snarf)))))
-    (let* ((count (length nodes))
+    (call-with-output-file "TMP-W-NODES"
+      identity)
+    (let* ((coding 'utf-8)              ; TODO
+           (pidx (open-output-file "TMP-W-INDEX"))
+           (count (length nodes))
            (ids (iota count))
            (names (map (xnode! 'nodename)
                        nodes))
@@ -119,7 +129,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
             (or (assoc-ref alist name)
                 -1))))
 
-      (define (grok name node id)
+      (define (grok! name node id)
 
         (define (deref get)
           (id<-name (get node)))
@@ -133,44 +143,34 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
         (let* ((loc (map deref (map xnode! '(nodenext
                                              nodeprev
                                              nodeup))))
-               (s (crunch node)))
+               (len (crunch node)))
           (and (negative? (caddr loc))
                (set! top id))
-          (cons `(,name
-                  ,(string-length s)
-                  ,@loc)
-                s)))
+          (pretty-print (cons* name len loc)
+                        pidx)))
 
-      (let* ((grokked (map grok names nodes ids))
-             (index (string-join (map object->string
-                                      (map car grokked))
-                                 "\n" 'suffix)))
+      (FE names nodes ids grok!)
+      (let* ((index-length (ftell pidx))
+             (ixin (string-append stem ".ixin"))
+             (port (open-output-file ixin)))
 
-        ;; rv
-        (lambda ()
-          (values stem
-                  'utf-8
-                  meta
-                  (list (string-length index) count top tli)
-                  index
-                  (map cdr grokked)))))))
+        (define (fso s . args)
+          (apply simple-format port s args))
 
-(define (out stem coding meta counts index nodes)
-  (let ((port (open-output-file (string-append stem ".ixin"))))
+        (close-port pidx)
+        (fso "ixin 1; -*- coding: ~A -*-~%" coding)
+        (pretty-print meta port)
+        (fso "~S~%" (list index-length count top tli))
+        (close-port port)
+        (let ((tail "TMP-W-INDEX TMP-W-NODES"))
 
-    (define (fso s . args)
-      (apply simple-format port s args))
+          (define (fsys s . args)
+            (zero? (system (apply fs s args))))
 
-    (fso "ixin 1; -*- coding: ~A -*-~%" coding)
-    (pretty-print meta port)
-    (fso "~S~%" counts)
-    (fso "~A" index)
-    (FE nodes (lambda (s)
-                (write-line s port)))))
+          (and (fsys "cat ~A >> ~A" tail ixin)
+               (fsys "rm  ~A" tail)))))))
 
 (define (main args)
-  (let ((filename (cadr (command-line))))
-    (call-with-values (in filename)
-      out)))
+  (exit (do-it! (cadr (command-line)))))
 
 ;;; a2ixin ends here

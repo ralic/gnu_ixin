@@ -19,7 +19,7 @@
 
 VERSION = 1.1
 
-hmm = hello alive rcs
+hmm = hello alive prob rcs
 
 all: $(addsuffix .ixin, $(hmm))
 

@@ -1,3 +1,11 @@
+2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	a2ixin: Fix bug: Avoid ‘object->string’ for index.
+
+	* prob.xml: New file.
+	* GNUmakefile (hmm): Add prob.
+	* a2ixin: Rewrite.
+
 2012-12-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.1
