@@ -52,8 +52,8 @@ See end for copying conditions.
   Overall, the format is text (???), using UTF-8.  With the exception
   of the ‘meta’ portion, all SXML trees are third-normal form, w/
   abutting character-data sequences coalesced, attributes explicit
-  in the tree's CADR, "default" namespace that defined in the Texinfo
-  DTD.
+  in the tree's CADR, and in the "default" namespace defined in the
+  Texinfo DTD, version 1.13, 2008/01/31.
 
 *** magic: "ixin "
 
@@ -70,15 +70,61 @@ See end for copying conditions.
 
 *** meta
 
-    The list (ATTRIBUTES ELEMENT...) that comprise the immediate
-    children of the (input) ‘texinfo’ tree, truncated at the first
-    ‘node’, and also omitting the element name.  That is, to
-    reconstruct the original input, you could "evaluate" the
-    expression:
+    The list (ATTRS XID VARS SETTINGS COPYING TITLEPAGE ELEMENT...),
+    that comprise the immediate children of the (input) ‘texinfo’ tree,
+    truncated at the first ‘node’, and reformatted to make client access
+    less tedious.  A newline ends the ‘meta’ portion.
 
-    `(texinfo ,@META NODE...)
+***** attrs
 
-    A newline ends the ‘meta’ portion.
+      The SXML attributes sans ‘(@)’, usually: ‘((xml:lang "en"))’.
+
+***** xid
+
+      The list (FILENAME TITLE DIRCATEGORY), all elements strings.
+      These are from the ‘setfilename’, ‘settitle’ and ‘dircategory’
+      elements, respectively.  "XID" stands for "external identifiers".
+
+***** vars
+
+      The list ((NAME VALUE)...), from ‘setvalue’ elements.  NAME is a
+      symbol, and VALUE is a string.
+
+***** settings
+
+      The list ((NAME VALUE)...), reserved for ‘@paragraphindent’ et al.
+      NAME is a symbol, VALUE type depends on NAME.
+
+      This element is "reserved" because at time of writing, makeinfo
+      does not actually write any such information to the XML file.
+
+***** copying
+
+      The SXML '(copying (@) (para ...)...)', which contains the Texinfo
+      ‘@copying’ block.
+
+***** titlepage
+
+      The SXML-ish (???) element ‘titlepage’.  If the original Texinfo
+      contains ‘@insertcopying’, this has the form:
+
+      (titlepage (@ (copying "copying"))
+        ...
+        "@insertcopying"
+        ...)
+
+      Otherwise, it has the form:
+
+      (titlepage (@)
+        ...)
+
+      That is, there is no ‘copying’ attribute, and no "@insertcopying".
+      The "-ish" is because we're not sure how valid a naked string is.
+
+***** element...
+
+      These are the rest of the elements after ‘titlepage’ but before
+      the first ‘node’.  Usually: ‘((contents (@)))’.
 
 *** counts
 
@@ -219,8 +265,7 @@ See end for copying conditions.
     their decoded (and re-encoded, for the links) contents) into the
     index.
 
-    This is the only non-functional (destructive) operation, aside from
-    partitioning children of element ‘texinfo’ into pre-nodes and nodes.
+    This is the only non-functional (destructive) operation on the nodes.
 
 *** retrieve
 

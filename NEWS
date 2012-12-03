@@ -23,6 +23,16 @@ See end for copying conditions.
 	stdout.  The program maintains a "current node", and recognizes some
 	simple navigation and display commands.  Type ‘quit’ to quit.
 
+  - ‘meta’ format defined
+
+	Previously, it was simply the portion of the (input) SXML prior to
+	the first ‘node’ element.  Now, it has the form:
+
+	(ATTRS XID VARS SETTINGS COPYING TITLEPAGE ELEMENT...)
+
+	This change is a move from underspecified to specified, so the
+	version number of the format remains at 1.  See README.
+
 
 - 1.1 | 2012-12-01
 

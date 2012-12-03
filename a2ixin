@@ -30,8 +30,11 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
   #:export (main))
 
 (use-modules
- ((srfi srfi-1) #:select (break!))
- ((srfi srfi-11) #:select (let*-values))
+ ((srfi srfi-1) #:select (break!
+                          car+cdr
+                          take drop))
+ ((srfi srfi-11) #:select (let-values
+                           let*-values))
  ((srfi srfi-13) #:select (string-suffix?
                            string-drop-right))
  ((ice-9 pretty-print) #:select (pretty-print))
@@ -65,6 +68,10 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                (let ((rv (caddr sub)))
                  (set-cdr! node (delq! sub rest)) ; DWR!
                  rv))))))
+
+(define (element? element)
+  (lambda (form)
+    (eq? element (car form))))
 
 (define (find-printindex node)
   (call-with-current-continuation
@@ -105,6 +112,73 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                        (form (read p)))
                   (close-pipe p)
                   form)))))
+
+(define (rescue meta)                   ; from (S)XML, well, partially
+                                        ;   obviously, Someone needs
+                                        ;     to learn (S)XLST  :-/
+
+  (let-values (((attributes rest) (car+cdr meta)))
+
+    (define (grab-xid! element)         ; external identifiers
+      (or (and=> (assq-ref rest element)
+                 (lambda (x)
+                   (set! rest (assq-remove! rest element)) ; DWR!
+                   (cadr x)))
+          'none))
+
+    (define (grab-variables!)
+      (let loop ((acc '()))
+        (cond ((assq 'setvalue rest)
+               => (lambda (sub)
+                    (set! rest (delq! sub rest)) ; DWR!
+                    (loop (acons (string->symbol
+                                  (car (assq-ref (cdadr sub) 'name)))
+                                 (cddr sub)
+                                 acc))))
+              (else
+               (reverse! acc)))))
+
+    (define (grab/dedup-copying!)
+      (let-values (((copying new-rest) (break! (element? 'titlepage)
+                                               rest)))
+        (set! rest new-rest)            ; DWR!
+        (or (null? rest)
+            (let* ((len (length copying))
+                   (tp (car rest))      ; titlepage
+                   (body (cddr tp))
+                   (blen (length body)))
+              (let loop ((left blen)
+                         (ls body))
+                (cond ((> len left))
+                      ((and (equal? (car copying) (car ls))
+                            (equal? copying (take ls len)))
+                       (let* ((tp-rest (drop ls len))
+                              (new-tp (append (take body (- blen left))
+                                              (list "@insertcopying")
+                                              tp-rest))
+                              (attr (cadr tp))
+                              (new-attr `(@ (copying "copying")
+                                            ,@(cdr attr))))
+                         (set-cdr! tp (cons new-attr new-tp))))
+                      (else
+                       (loop (1- left)
+                             (cdr ls)))))))
+        `(copying (@) ,@copying)))
+
+    (let* ((xid (map grab-xid! '(setfilename
+                                 settitle
+                                 dircategory)))
+           (variables (grab-variables!))
+           (settings '())               ; TODO
+           (copying (grab/dedup-copying!)))
+
+      ;; rv
+      `(,(cdr attributes)               ; omit ‘(@)’
+        ,xid
+        ,variables
+        ,settings
+        ,copying
+        ,@rest))))
 
 (define (do-it! filename)
   (let*-values (((stem snarf) (how-to-handle filename))
@@ -159,7 +233,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
 
         (close-port pidx)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
-        (pretty-print meta port)
+        (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count top tli))
         (close-port port)
         (let ((tail "TMP-W-INDEX TMP-W-NODES"))
