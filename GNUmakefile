@@ -19,9 +19,10 @@
 
 VERSION = 1.1
 
-hmm = hello alive prob rcs
+hmm := hello alive prob rcs
+ixin := $(addsuffix .ixin, $(hmm))
 
-all: $(addsuffix .ixin, $(hmm))
+all: $(ixin)
 
 %.ixin : %.xml
 	./a2ixin $<
@@ -32,13 +33,16 @@ all: $(addsuffix .ixin, $(hmm))
 clean:
 	rm -f *.ixin
 
+sxml := $(addsuffix .sxml, $(hmm))
+sxml: $(sxml)
+
 dd := ixin-$(VERSION)
 dist-files := \
  *.xml a1-nf3-* a2ixin retrieve GNUmakefile \
  z-fixed-pp.scm zomg \
  COPYING NEWS README
 
-dist: $(addsuffix .sxml, $(hmm)) $(addsuffix .ixin, $(hmm))
+dist: $(sxml) $(ixin)
 	rm -rf $(dd)
 	mkdir $(dd)
 	cp -p $(dist-files) $^ $(dd)

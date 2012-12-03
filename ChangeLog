@@ -1,5 +1,16 @@
 2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[maint] Support "make sxml".
+
+	* GNUmakefile (hmm): Use ‘:=’.
+	(ixin): New var.
+	(all): Use $(ixin).
+	(sxml): New var.
+	(sxml): New target.
+	(dist): Use new vars.
+
+2012-12-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Use ‘element?’ more.
 
 	* a2ixin (find-printindex printindex?): New proc.
