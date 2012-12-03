@@ -5,7 +5,7 @@
   <setvalue name="☯">☯</setvalue>
   <settitle>προβ</settitle>
   <para>This manual is moot.</para>
-  <para>Copyright &copyright; 2012 Nobody</para>
+  <para>Copyright &copyright; 2012 Thien-Thi Nguyen</para>
   <quotation>
     <para>Permission is granted to bend, spindle and/or mutilate this document.</para>
   </quotation>
@@ -13,9 +13,9 @@
   <titlepage>
     <booktitle>προβ</booktitle>
     <booksubtitle>zow!</booksubtitle>
-    <author>nobody</author>
-    <para>προβ</para>
-    <para>Copyright &copyright; 2012 nobody</para>
+    <author>Thien-Thi Nguyen</author>
+    <para>This manual is moot.</para>
+    <para>Copyright &copyright; 2012 Thien-Thi Nguyen</para>
     <quotation>
       <para>Permission is granted to bend, spindle and/or mutilate this document.</para>
     </quotation>
