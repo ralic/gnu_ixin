@@ -189,10 +189,10 @@ See end for copying conditions.
 
 * invoking a2ixin
 
-  Usage: a2ixin FILENAME
+  Usage: a2ixin FILENAME...
 
   If FILENAME ends with ".sxml", create STEM.ixin, where STEM is the
-  basename of FILENAME.  If FILENAME ends with ".xml" invoke one of
+  FILENAME w/o the ".sxml".  If FILENAME ends with ".xml" invoke one of
   the a1-nf3-* programs to internally convert it to "SXML format" first.
 
 * invoking retrieve

@@ -2,6 +2,14 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.3 | NOT YET RELEASED
+
+  - a2ixin processes all files
+
+	Instead of ‘for f in F1 F2... ; do ./a2ixin $f ; done’,
+	you can simply do ‘./a2ixin F1 F2...’.
+
+
 - 1.2 | 2012-12-03
 
   - bugfix: use ‘pretty-print’ also for index
