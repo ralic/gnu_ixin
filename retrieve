@@ -194,6 +194,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      (fso "~A~%" (node-data (index-index en)
                                             (cadr en))))))
 
+      (define (show-node-tree en)
+        (fso "~Y" (uncrunch (node-data (index-index en)
+                                       (cadr en)))))
+
       (define (show-node which)
 
         (define (details en)
@@ -209,7 +213,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               (maybe 'next car)
               (maybe 'prev cadr)
               (maybe 'up caddr))
-            (fso "~Y" (uncrunch (node-data id (cadr en))))))
+            (show-node-tree en)))
 
         (nd! which details))
 
@@ -261,9 +265,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (nd! (if (pair? which)
                      (car which)
                      cur)
-                 (lambda (en)
-                   (fso "~Y" (uncrunch (node-data (index-index en)
-                                                  (cadr en)))))))
+                 show-node-tree))
 
           (define (raw . which)
             (dump-node (if (pair? which)
