@@ -43,6 +43,10 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                           close-pipe))
  ((ice-9 rdelim) #:select (read-line write-line)))
 
+(define (ppp port)
+  (lambda (x)
+    (pretty-print x port)))
+
 (define-macro (FE . args)
   (let ((proc (car (last-pair args))))
     `(for-each ,proc ,@(delq proc args))))
@@ -174,6 +178,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                                       (cdr (snarf)))))
     (let* ((coding 'utf-8)              ; TODO
            (pnodes (open-output-file "TMP-W-NODES"))
+           (pp-nodes (ppp pnodes))
            (count (length nodes))
            (index (make-vector count #f))
            (ids (iota count))
@@ -200,7 +205,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
             (ftell pnodes))
 
           (let ((bef (sz)))
-            (pretty-print node pnodes)
+            (pp-nodes node)
             (force-output)
             ;; Subtract 1 to ignore the trailing newline.
             (- (sz) bef 1)))
@@ -222,9 +227,10 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
       (define (write-index!)
         (call-with-output-file "TMP-W-INDEX"
           (lambda (port)
-            (do ((i 0 (1+ i)))
-                ((= count i))
-              (pretty-print (vector-ref index i) port))
+            (let ((pp-i (ppp port)))
+              (do ((i 0 (1+ i)))
+                  ((= count i))
+                (pp-i (vector-ref index i))))
             (force-output)
             (ftell port))))
 

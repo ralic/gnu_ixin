@@ -1,5 +1,13 @@
 2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Add abstraction: ppp
+
+	* a2ixin (ppp): New proc.
+	(do-it!): Use it.
+	(do-it! write-index!): Likewise.
+
+2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Accumulate index and write it out afterwards.
 
 	* a2ixin (do-it! write-index!): New proc.
