@@ -1,5 +1,13 @@
 2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	retrieve: Iterate to pretty-print index.
+
+	There's no need to externalize Scheme vector syntax.
+
+	* retrieve (out --dump): ...here.
+
+2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Add abstraction: ppp
 
 	* a2ixin (ppp): New proc.
