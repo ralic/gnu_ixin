@@ -47,19 +47,6 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
   (let ((proc (car (last-pair args))))
     `(for-each ,proc ,@(delq proc args))))
 
-(define (crunch x)
-
-  (define (sz)
-    (stat:size (stat "TMP-W-NODES")))
-
-  (let* ((bef (sz))
-         (p (open-output-pipe
-             "{ gzip -q -n -c --best - | base64 -w 0 ; echo ; } >> TMP-W-NODES")))
-    (pretty-print x p)
-    (close-pipe p)
-    ;; Subtract 1 to ignore the trailing newline.
-    (- (sz) bef 1)))
-
 (define (xnode! element)
   (lambda (node)
     (let ((rest (cdr node)))
@@ -185,10 +172,9 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
   (let*-values (((stem snarf) (how-to-handle filename))
                 ((meta nodes) (break! (element? 'node)
                                       (cdr (snarf)))))
-    (call-with-output-file "TMP-W-NODES"
-      identity)
     (let* ((coding 'utf-8)              ; TODO
            (pidx (open-output-file "TMP-W-INDEX"))
+           (pnodes (open-output-file "TMP-W-NODES"))
            (count (length nodes))
            (ids (iota count))
            (names (map (xnode! 'nodename)
@@ -208,16 +194,27 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
         (define (deref get)
           (id<-name (get node)))
 
+        (define (stash!)
+
+          (define (sz)
+            (ftell pnodes))
+
+          (let ((bef (sz)))
+            (pretty-print node pnodes)
+            (force-output)
+            ;; Subtract 1 to ignore the trailing newline.
+            (- (sz) bef 1)))
+
         (and=> (find-printindex node)
                (lambda (type)
                  (let ((was (or (assq-ref tli type)
                                 '())))
                    (set! tli (assq-set! tli type (cons id was))))))
-        ;; Do ‘xnode!’ stuff before ‘crunch’; they are destructive!
+        ;; Do ‘xnode!’ stuff before ‘stash!’; they are destructive!
         (let* ((loc (map deref (map xnode! '(nodenext
                                              nodeprev
                                              nodeup))))
-               (len (crunch node)))
+               (len (stash!)))
           (and (negative? (caddr loc))
                (set! top id))
           (pretty-print (cons* name len loc)
@@ -232,6 +229,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
           (apply simple-format port s args))
 
         (close-port pidx)
+        (close-port pnodes)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count top tli))

@@ -9,6 +9,15 @@ See end for copying conditions.
 	Instead of ‘for f in F1 F2... ; do ./a2ixin $f ; done’,
 	you can simply do ‘./a2ixin F1 F2...’.
 
+  - node data now SXML (text)
+
+	Node data is no longer written gzipped and base64-encoded.
+	Now it is simply SXML (text), plus trailing newline.
+
+	With this change, the only difference betwen retrieve commands
+	‘show-node’ and ‘dump-node’ is that the former also displays name
+	and link info.
+
 
 - 1.2 | 2012-12-03
 

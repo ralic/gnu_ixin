@@ -43,17 +43,6 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
   (let ((proc (car (last-pair args))))
     `(for-each ,proc ,@(delq proc args))))
 
-(define (uncrunch s)
-  (call-with-output-file "TMP-R"
-    (lambda (port)
-      (display s port)
-      (force-output)))
-  (let* ((p (open-input-pipe "base64 -d TMP-R | gzip -d -c"))
-         (form (read p)))
-    (close-pipe p)
-    (delete-file "TMP-R")
-    form))
-
 (define index-index (make-object-property))
 
 (define (in filename)
@@ -195,8 +184,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                                             (cadr en))))))
 
       (define (show-node-tree en)
-        (fso "~Y" (uncrunch (node-data (index-index en)
-                                       (cadr en)))))
+        (seek port (vector-ref plus (index-index en)) SEEK_SET)
+        (fso "~Y" (read port)))
 
       (define (show-node which)
 

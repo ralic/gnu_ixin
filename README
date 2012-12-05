@@ -161,8 +161,8 @@ See end for copying conditions.
 
 *** node data
 
-    This is a series of COUNT ‘node’ element forms, each gzipped,
-    base64-encoded (???), and followed by newline.
+    This is a series of COUNT ‘node’ element forms, each in SXML (text)
+    format, and followed by newline.
 
     The order is the same as in the index portion of the file.
 
@@ -253,7 +253,7 @@ See end for copying conditions.
 
 *** generally
 
-    The gzip/base64 temp-file interaction is quick (to write) and dirty.
+    Thes temp-file interaction is quick (to write) and dirty.
     Kids, laugh all you want, but don't do this in your own code!
 
 *** a2ixin
