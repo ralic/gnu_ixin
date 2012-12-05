@@ -1,5 +1,12 @@
 2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Fix bug: Pretty-print improper lists correctly.
+
+	* z-fixed-pp.scm (obj->string): For an improper list,
+	recurse on the tail element directly.
+
+2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Save nodes as SXML.
 
 	* a2ixin (crunch): Delete proc.

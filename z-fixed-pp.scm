@@ -99,7 +99,7 @@
                     (acc! (obj->string (car ls)))
                     (loop (cdr ls)))
                    (else (acc! " . ")
-                         (acc! (obj->string (cdr ls))))))
+                         (acc! (obj->string ls)))))
            (acc! ")")
            (string-concatenate-reverse acc)))
         ((vector? obj)
