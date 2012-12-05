@@ -68,4 +68,8 @@ ZOW = alive
 demo-zow: $(ZOW).ixin
 	./retrieve $(ZOW).ixin repl 17 < zow
 
+try-%:
+	./a2ixin $*.sxml
+	./retrieve $*.ixin
+
 # GNUmakefile ends here
