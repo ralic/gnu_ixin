@@ -173,9 +173,9 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                 ((meta nodes) (break! (element? 'node)
                                       (cdr (snarf)))))
     (let* ((coding 'utf-8)              ; TODO
-           (pidx (open-output-file "TMP-W-INDEX"))
            (pnodes (open-output-file "TMP-W-NODES"))
            (count (length nodes))
+           (index (make-vector count #f))
            (ids (iota count))
            (names (map (xnode! 'nodename)
                        nodes))
@@ -217,18 +217,25 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                (len (stash!)))
           (and (negative? (caddr loc))
                (set! top id))
-          (pretty-print (cons* name len loc)
-                        pidx)))
+          (vector-set! index id (cons* name len loc))))
+
+      (define (write-index!)
+        (call-with-output-file "TMP-W-INDEX"
+          (lambda (port)
+            (do ((i 0 (1+ i)))
+                ((= count i))
+              (pretty-print (vector-ref index i) port))
+            (force-output)
+            (ftell port))))
 
       (FE names nodes ids grok!)
-      (let* ((index-length (ftell pidx))
+      (let* ((index-length (write-index!))
              (ixin (string-append stem ".ixin"))
              (port (open-output-file ixin)))
 
         (define (fso s . args)
           (apply simple-format port s args))
 
-        (close-port pidx)
         (close-port pnodes)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue meta) port)

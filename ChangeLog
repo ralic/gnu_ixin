@@ -1,5 +1,12 @@
 2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Accumulate index and write it out afterwards.
+
+	* a2ixin (do-it! write-index!): New proc.
+	(do-it!): Accumulate index; use ‘write-index!’.
+
+2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Add "make try-STEM" support.
 
 	* GNUmakefile (try-%): New target.
