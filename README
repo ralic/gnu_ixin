@@ -137,10 +137,15 @@ See end for copying conditions.
     TOP is the 0-based index of the ‘Top’ node, or -1 if there is no
     such node..
 
-    TLI is an alist with symbolic key TYPE (such as ‘cp’ or ‘fn’),
-    and value (INDEX...), where each INDEX is the index of a node
-    containing a ‘printindex’ element.  "TLI" is for "two-letter"
-    named index, which is what the Texinfo docs use.
+    TLI is a list of entries (TYPE TLI-LENGTH TLI-COUNT [NI...]).
+    TYPE is the symbolic name of these "two-letter"-named indices,
+    (as called by the Texinfo docs), such as ‘cp’ or ‘fn’.
+    TLI-LENGTH is the byte-length of this tli.  TLI-COUNT is the
+    number of entries in this tli.  NI... are zero or more node
+    indexes that contain the ‘printindex’ element for TYPE.
+    TLI-LENGTH and TLI-COUNT may both be zero (always concurrently).
+    In this case there must be at least one NI.  This is the case
+    when there is a ‘printindex’ but no entries for it.
 
     A newline ends the ‘counts’ portion.
 
@@ -159,6 +164,15 @@ See end for copying conditions.
     index.  A value of -1 indicates a missing component (e.g., UP and
     PREV for "Top" is typically -1).
 
+*** tli (zero or more)
+
+    A series of TLI-COUNT lists of the form (TERM NI...), where TERM
+    is either a string or a list of (possibly-nested) SXML elements
+    and strings, and NI... are one or more node indices in which
+    TERM appears.
+
+    A newline ends the tli portion.
+
 *** node data
 
     This is a series of COUNT ‘node’ element forms, each in SXML (text)
@@ -168,16 +182,17 @@ See end for copying conditions.
 
 * possible access patterns
 
-  The retrieve program illustrates one access pattern: read up
+  The retrieve program illustrates one access pattern: read up and
   through the index, and then use that information to dig out node
   data on demand.
 
-  Another one, which optimizes for size and speed, is to use
-  INDEX-LENGTH and the file position after reading the ‘counts’
-  portion to compute the "base" of the node data, then read up
-  through the "Top" index entry (typically the first).  This way,
-  both subsequent index entries as well as data can be accessed on
-  demand.
+  Another, more incremental, approach is to read up through COUNTS,
+  and then subsequently access index, tli and node data on demand.
+  This is supported by design; the file position for the start of
+  the node data is the sum of (always including trailing newline):
+  - file position after reading COUNTS
+  - INDEX-LENGTH
+  - TLI-LENGTH...
 
 * invoking a1-nf3-{mixp,guile2}
 

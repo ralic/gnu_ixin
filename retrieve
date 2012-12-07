@@ -45,12 +45,16 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define index-index (make-object-property))
 
+(define (tli-list counts)
+  (cadddr counts))
+
 (define (in filename)
   (let ((p (open-input-file filename))
         (vers #f)
         (meta #f)
         (counts #f)
         (index #f)
+        (tli #f)
         (base #f))
     (or (eq? 'ixin (read p))
         (error "bad magic:" filename))
@@ -59,13 +63,32 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
       ((1)
        (set! meta (read p))
        (set! counts (read p))
-       (set! base (+ 1 (car counts) (ftell p)))
        (set! index (make-vector (cadr counts) #f))
        (do ((i 0 (1+ i)))
            ((= (cadr counts) i))
          (let ((ent (read p)))
            (set! (index-index ent) i)
            (vector-set! index i ent)))
+       (set! tli (let loop ((acc '()) (ls (tli-list counts)))
+                   (if (pair? ls)
+                       (let ((tli (car ls)))
+
+                         (define (go type size n . nodes)
+
+                           (define (entries)
+                             (let more ((acc '()) (n n))
+                               (if (zero? n)
+                                   (reverse! acc)
+                                   (more (cons (read p) acc)
+                                         (1- n)))))
+
+                           (loop (if (positive? size)
+                                     (acons type (entries) acc)
+                                     acc)
+                                 (cdr ls)))
+
+                         (apply go tli))
+                       (reverse! acc))))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
       (else
@@ -77,6 +100,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               meta
               counts
               index
+              tli
               base
               p))))
 
@@ -112,7 +136,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index base port)
+  (lambda (vers meta counts index tli base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -145,7 +169,12 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (do ((i 0 (1+ i)))
             ((= total i))
           (fso "~Y" (by-id i)))
-        (fso "~%base: ~A~%" base)
+        (newline)
+        (FE (map car tli)
+            (map cdr tli)
+            (lambda (type tli)
+              (fso "tli: ~A~%~{~Y~}~%" type tli)))
+        (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))
           (let ((len (cadr (by-id i))))
@@ -172,6 +201,28 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             alist
             (lambda (i ent)
               (fso "~6,D  ~Y" i ent))))
+
+      (define (list-tli)
+        (fso "~{~Y~}" (tli-list counts)))
+
+      (define (dump-tli . name)
+
+        (define (one ls)
+          (FE (iota (length ls))
+              ls
+              (lambda (i ent)
+                (fso "~6,D  ~Y" i ent))))
+
+        (if (pair? name)
+            (let* ((name (car name))
+                   (ls (or (assq-ref tli (string->symbol name))
+                           (error "no such tli:" name))))
+              (one ls))
+            (FE (map car tli)
+                (map cdr tli)
+                (lambda (name ls)
+                  (fso "~A: ~A~%" name (length ls))
+                  (one ls)))))
 
       (define (nd! which go)
         (cond ((and (string? which)
@@ -285,7 +336,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              show
                              raw
                              dump-meta
-                             dump-index))
+                             dump-index
+                             list-tli
+                             dump-tli))
                      cmd args)
               (display done)
               (force-output)
@@ -298,6 +351,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-meta
                      dump-counts
                      dump-index
+                     list-tli
+                     dump-tli
                      dump-node
                      show-node
                      show-all-nodes

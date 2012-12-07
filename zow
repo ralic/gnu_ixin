@@ -1,5 +1,7 @@
 dump-meta
 dump-index
+list-tli
+dump-tli cp
 where
 nav
 next
