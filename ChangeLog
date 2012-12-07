@@ -1,3 +1,14 @@
+2012-12-07  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] Add abstractions: node-id, identify
+
+	* a2ixin (node-id): New object property.
+	(identify): New proc.
+	(do-it!): Use ‘identify’.
+	(do-it! id<-name): Delete proc.
+	(do-it! grok!): Don't take ‘id’; use ‘node-id’ instead.
+	(do-it!): Update call to ‘grok!’.
+
 2012-12-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	retrieve: Iterate to pretty-print index.

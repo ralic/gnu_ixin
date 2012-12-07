@@ -172,29 +172,36 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
         ,copying
         ,@rest))))
 
+(define node-id (make-object-property))
+
+(define (identify nodes)
+  (let* ((count (length nodes))
+         (ids (iota count))
+         (names (map (xnode! 'nodename)
+                     nodes)))
+    (FE ids nodes
+        (lambda (id node)
+          (set! (node-id node) id)))
+    (values count
+            names
+            (let ((alist (map cons names ids)))
+              (lambda (name)
+                (or (assoc-ref alist name)
+                    -1))))))
+
 (define (do-it! filename)
   (let*-values (((stem snarf) (how-to-handle filename))
                 ((meta nodes) (break! (element? 'node)
-                                      (cdr (snarf)))))
+                                      (cdr (snarf))))
+                ((count names id<-name) (identify nodes)))
     (let* ((coding 'utf-8)              ; TODO
            (pnodes (open-output-file "TMP-W-NODES"))
            (pp-nodes (ppp pnodes))
-           (count (length nodes))
            (index (make-vector count #f))
-           (ids (iota count))
-           (names (map (xnode! 'nodename)
-                       nodes))
            (top -1)
            (tli '()))                   ; "two-letter" indices
 
-      (define id<-name
-        (let ((alist (map cons names ids)))
-          ;; id<-name
-          (lambda (name)
-            (or (assoc-ref alist name)
-                -1))))
-
-      (define (grok! name node id)
+      (define (grok! name node)
 
         (define (deref get)
           (id<-name (get node)))
@@ -210,19 +217,20 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
             ;; Subtract 1 to ignore the trailing newline.
             (- (sz) bef 1)))
 
-        (and=> (find-printindex node)
-               (lambda (type)
-                 (let ((was (or (assq-ref tli type)
-                                '())))
-                   (set! tli (assq-set! tli type (cons id was))))))
         ;; Do ‘xnode!’ stuff before ‘stash!’; they are destructive!
         (let* ((loc (map deref (map xnode! '(nodenext
                                              nodeprev
                                              nodeup))))
-               (len (stash!)))
+               (len (stash!))
+               (id (node-id node)))
           (and (negative? (caddr loc))
                (set! top id))
-          (vector-set! index id (cons* name len loc))))
+          (vector-set! index id (cons* name len loc))
+          (and=> (find-printindex node)
+                 (lambda (type)
+                 (let ((was (or (assq-ref tli type)
+                                '())))
+                   (set! tli (assq-set! tli type (cons id was))))))))
 
       (define (write-index!)
         (call-with-output-file "TMP-W-INDEX"
@@ -234,7 +242,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
             (force-output)
             (ftell port))))
 
-      (FE names nodes ids grok!)
+      (FE names nodes grok!)
       (let* ((index-length (write-index!))
              (ixin (string-append stem ".ixin"))
              (port (open-output-file ixin)))
