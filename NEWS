@@ -6,9 +6,9 @@ See end for copying conditions.
 
   - changes to the distribution
 
-    - ChangeLog included
+    - ChangeLog files included
 
-	Its previous omission was an oversight.
+	Previous omission was an oversight.
 
     - programs now in c/ (control), documents in d/ (data)
 
