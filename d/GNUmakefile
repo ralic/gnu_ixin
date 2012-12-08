@@ -33,6 +33,9 @@ all: $(ixin)
 clean:
 	rm -f *.ixin
 
+maintainer-clean: clean
+	rm -f *.sxml
+
 sxml := $(addsuffix .sxml, $(hmm))
 sxml: $(sxml)
 
