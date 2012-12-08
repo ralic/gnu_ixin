@@ -278,13 +278,13 @@ See end for copying conditions.
 
 * What needs to be done, still?
 
-  - write ixin.el that uses it
+  - write ixin.el that uses retrieve repl
   - w/ upstream (Texinfo) hackers:
+    - obtain "torture.xml"
     - discuss what is missing
-      - actual entries in the indices
       - macros (maybe i'm missing something?)
-      - images, etc
-    - work towards v2
+      - images, floats, etc
+    - work towards finalizing v1
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 
