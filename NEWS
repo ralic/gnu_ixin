@@ -19,14 +19,16 @@ See end for copying conditions.
 	Instead of ‘for f in F1 F2... ; do ./a2ixin $f ; done’,
 	you can simply do ‘./a2ixin F1 F2...’.
 
-  - node data now SXML (text)
+  - node data now almost-SXML (text)
 
 	Node data is no longer written gzipped and base64-encoded.
-	Now it is simply SXML (text), plus trailing newline.
+	Now it is simply text (ATTRS ELEMENT...), plus trailing newline.
 
-	With this change, the only difference betwen retrieve commands
-	‘show-node’ and ‘dump-node’ is that the former also displays
-	name and link info.
+	To get a valid SXML element, ‘read’ it and cons ‘node’ to it.
+	This what retrieve commands ‘show-node’ and (repl) ‘show’ do.
+	In contrast, ‘dump’, ‘dump/abbrev’ and ‘dump-node’ do not.
+
+	Relatedly, ‘dump/abbrev’ now takes N-BYTES instead of COLUMNS.
 
   - new top-level block: "two-letter" indices
 

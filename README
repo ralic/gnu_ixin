@@ -198,8 +198,9 @@ See end for copying conditions.
 
 *** node data
 
-    This is a series of COUNT ‘node’ element forms, each in SXML (text)
-    format, and followed by newline.
+    This is a series of COUNT forms, each w/ form (ATTRS ELEMENT...),
+    i.e., a ‘node’ element sans the initial symbol ‘node’, and followed
+    by newline.
 
     The order is the same as in the index portion of the file.
 
@@ -243,7 +244,7 @@ See end for copying conditions.
   COMMAND (and args) is one of the following:
 
   - dump
-  - dump/abbrev BYTE-COUNT
+  - dump/abbrev N-BYTES
   - dump-meta
   - dump-counts
   - dump-index

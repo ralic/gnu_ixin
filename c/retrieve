@@ -261,7 +261,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
       (define (show-node-tree en)
         (seek port (vector-ref plus (index-index en)) SEEK_SET)
-        (fso "~Y" (read port)))
+        (fso "~Y" (cons 'node (read port))))
 
       (define (show-node which)
 
