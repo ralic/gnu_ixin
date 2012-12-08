@@ -17,26 +17,46 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = 1.2
+C := ../c/
 
-all demo demo-% try-%:
-	$(MAKE) $(MAKEFLAGS) -C d $@
+hmm := hello alive prob rcs
+ixin := $(addsuffix .ixin, $(hmm))
 
-dd := ixin-$(VERSION)
-dist-files := \
- COPYING README NEWS \
- d/*.xml d/*.sxml d/*.ixin d/zow \
- d/GNUmakefile d/ChangeLog \
- c/a1-nf3-* c/a2ixin c/retrieve \
- c/z-fixed-pp.scm c/zomg \
- c/ChangeLog \
- ChangeLog
+all: $(ixin)
 
-dist:
-	rm -rf $(dd)
-	mkdir $(dd)
-	cp -p --parents $(dist-files) $(dd)
-	tar cf $(dd).tar.xz --auto-compress $(dd)
-	rm -rf $(dd)
+%.ixin : %.xml
+	$(C)a2ixin $<
+
+%.sxml : %.xml
+	$(C)a1-nf3-mixp $< > $@
+
+clean:
+	rm -f *.ixin
+
+sxml := $(addsuffix .sxml, $(hmm))
+sxml: $(sxml)
+
+r := @printf '\f\n' ; $(C)retrieve
+hello := $(r) hello.ixin
+alive := $(r) alive.ixin
+rcs   := $(r) rcs.ixin
+
+demo-%: all
+	@printf '\n======================================== %s\n' $*
+	$($*) dump-meta
+	$($*) dump-counts
+	$($*) dump-index
+	$($*) show-node Top
+
+demo: demo-hello demo-alive demo-rcs
+
+ZOW = alive
+
+demo-zow: $(ZOW).ixin
+	$(C)retrieve $(ZOW).ixin repl 17 < zow
+
+try-%:
+	$(C)a2ixin $*.sxml
+	$(C)retrieve $*.ixin
 
 # GNUmakefile ends here

@@ -34,7 +34,7 @@ See end for copying conditions.
   though.
 
   Even more basic, it does NOT include the Texinfo DTD, which is
-  expected under /usr/share (see [[file:zomg]] to manually tweak).
+  expected under /usr/share (see [[file:c/zomg]] to manually tweak).
 
 * dependencies
 
@@ -298,7 +298,7 @@ See end for copying conditions.
 *** a2ixin
 
     The ‘(node ...)’ form is not identical to the input SXML;
-    [[file:a2ixin::xnode!][xnode!]] removes the element by side-effect.
+    [[file:c/a2ixin::xnode!][xnode!]] removes the element by side-effect.
 
     The upshot is to move name, next, prev and up elements (actually,
     their decoded (and re-encoded, for the links) contents) into the
@@ -309,7 +309,7 @@ See end for copying conditions.
 *** retrieve
 
     The many "~Y" in the format strings (instead of simpler "~S") forces
-    control through ‘string-xrep’ ([[file:z-fixed-pp.scm]]).  Surprisingly,
+    control through ‘string-xrep’ ([[file:c/z-fixed-pp.scm]]).  Surprisingly,
     this is necessary even for Guile 2.  Hmmm.
 
 * copying conditions

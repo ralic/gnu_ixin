@@ -1,5 +1,21 @@
 2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[dist] Move programs to c/, documents to d/.
+
+	* GNUmakefile (hmm, ixin): Delete vars.
+	(%.ixin : %.sxml): Delete pattern rule.
+	(%.sxml : %.xml): Likewise.
+	(clean): Delete target.
+	(sxml): Delete var.
+	(sxml): Delete target.
+	(dist-files): Rewrite.
+	(dist): Clear prereq list; use ‘cp --parents’.
+	(r, hello, alive, rcs, ZOW): Delete vars.
+	(demo-zow): Delete target.
+	(all, demo, demo-%, try-%): Rewrite.
+
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Add support for top-level S-TREE.
 
 	* a2ixin (section-tree): New proc.

@@ -1,0 +1,16 @@
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[dist] Move programs to c/, documents to d/.
+
+	* GNUmakefile: New file.
+	* alive.xml: Move here from parent dir.
+	* hello.xml: Likewise.
+	* prob.xml: Likewise.
+	* rcs.xml: Likewise.
+	* zow: Likewise.
+
+
+Copyright (C) 2012 Thien-Thi Nguyen
+
+Copying and distribution of this file, with or without modification,
+are permitted provided the copyright notice and this notice are preserved.

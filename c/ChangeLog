@@ -1,0 +1,16 @@
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[dist] Move programs to c/, documents to d/.
+
+	* a1-nf3-guile2: Move here from parent dir.
+	* a1-nf3-mixp: Likewise.
+	* a2ixin: Likewise.
+	* retrieve: Likewise.
+	* z-fixed-pp.scm: Likewise.
+	* zomg: Likewise.
+
+
+Copyright (C) 2012 Thien-Thi Nguyen
+
+Copying and distribution of this file, with or without modification,
+are permitted provided the copyright notice and this notice are preserved.
