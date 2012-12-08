@@ -1,5 +1,12 @@
 2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add doc: serveez
+
+	* serveez.xml: New file.
+	* GNUmakefile (hmm): Add serveez.
+
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Add "make maintainer-clean".
 
 	* GNUmakefile (maintainer-clean): New target.

@@ -47,6 +47,14 @@ See end for copying conditions.
 	the "chapter structuring".  Correspondingly, COUNTS now includes
 	the byte-length.  See README.
 
+  - new doc: serveez.{xml,sxml,ixin}
+
+	This is from GNU Serveez 0.2.0 (not yet released), which makes
+	use of ‘@set txideftypefnnl’, in particular.  In serveez.ixin,
+	this appears in the VARS section of META, somewhat weirdly,
+	considering its semantics, but not entirely unexpected, given
+	its syntax.  Sigh, bugward comp[au]tability issues...  :-/
+
 
 - 1.2 | 2012-12-03
 

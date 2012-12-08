@@ -19,7 +19,7 @@
 
 C := ../c/
 
-hmm := hello alive prob rcs
+hmm := hello alive prob rcs serveez
 ixin := $(addsuffix .ixin, $(hmm))
 
 all: $(ixin)
