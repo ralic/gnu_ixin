@@ -1,3 +1,18 @@
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add support for top-level S-TREE.
+
+	* a2ixin (section-tree): New proc.
+	(do-it! write-section-tree!): New proc.
+	(do-it!): Include section-tree length in counts;
+	arrange to write section tree after tli, before nodes.
+	* retrieve (in): Read section tree; return it.
+	(out): Take arg ‘s-tree’.
+	(out --dump): Also display ‘s-tree’.
+	(out dump-s-tree): New proc.
+	(out repl loop): Add ‘dump-s-tree’ to shunt.
+	(out): Likewise.
+
 2012-12-07  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Add support for top-level TLI.

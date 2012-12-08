@@ -274,6 +274,71 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
           (close-port port)
           counts))))
 
+(define (section-tree nodes)
+  (let* ((title? (element? 'title))
+         (lev-1 '(top chapter unnumbered appendix))
+         (lev-2 '(section unnumberedsec appendixsec))
+         (lev-3 '(subsection unnumberedsubsec appendixsubsec))
+         (lev-4 '(subsubsection unnumberedsubsubsec appendixsubsubsec))
+         (ok `(the-good-earth ,@lev-1
+                              ,@lev-2
+                              ,@lev-3
+                              ,@lev-4))
+         (ni #f)
+         (last 0)
+         (rv (make-vector 5 '())))
+
+    (define (vr i)       (vector-ref rv i))
+    (define (v! i value) (vector-set! rv i value))
+
+    (define (level name)
+      (cond ((memq name lev-1) 1)
+            ((memq name lev-2) 2)
+            ((memq name lev-3) 3)
+            ((memq name lev-4) 4)
+            (else 0)))
+
+    (define (try x)
+      (and (memq (car x) ok)
+           (let* ((name (car x))
+                  (lev (level name))
+                  (rel (- lev last))
+                  (ent (list (cons* ni name
+                                    (let ((first (and (pair? (cddr x))
+                                                      (caddr x))))
+                                      (and first
+                                           (title? first)
+                                           (cddr first)))))))
+             (and (negative? rel)
+                  (let loop ((old last))
+                    (or (= lev old)
+                        ;; Flip and tuck the out-hanging leaves.
+                        (let* ((branch (reverse! (vr old)))
+                               (par (1- old))
+                               (lucky (car (vr par))))
+                          (v! old (list))
+                          (set-cdr! (last-pair lucky)
+                                    branch)
+                          (loop par)))))
+             (v! lev (if (positive? rel)
+                         ;; new bud
+                         (list ent)
+                         ;; grow current branch
+                         (cons ent (vr lev))))
+             (set! last lev))))
+
+    (define (walk x)
+      (and (pair? x)
+           (begin (try x)
+                  (FE (cddr x) walk))))
+
+    (v! 0 (list (list 'the-good-earth)))
+    (FE nodes (lambda (node)
+                (set! ni (node-id node))
+                (FE (cddr node) walk)))
+    (walk '(the-good-earth over-my-head))
+    (cdadr (vr 0))))
+
 (define (identify nodes)
   (let* ((count (length nodes))
          (ids (iota count))
@@ -351,8 +416,16 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
             (force-output)
             (ftell port))))
 
+      (define (write-section-tree!)
+        (call-with-output-file "TMP-W-S-TREE"
+          (lambda (port)
+            (pretty-print (section-tree nodes) port)
+            (force-output)
+            (ftell port))))
+
       (FE names nodes grok!)
       (let* ((index-length (write-index!))
+             (s-tree-length (write-section-tree!))
              (ixin (string-append stem ".ixin"))
              (port (open-output-file ixin)))
 
@@ -362,9 +435,11 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
         (close-port pnodes)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue meta) port)
-        (fso "~S~%" (list index-length count top (append tli (lonely-tli))))
+        (fso "~S~%" (list index-length count top
+                          (append tli (lonely-tli))
+                          s-tree-length))
         (close-port port)
-        (let ((tail (fs "TMP-W-INDEX ~A TMP-W-NODES"
+        (let ((tail (fs "TMP-W-INDEX ~A TMP-W-S-TREE TMP-W-NODES"
                         (if (pair? tli)
                             "TMP-W-TLI"
                             ""))))

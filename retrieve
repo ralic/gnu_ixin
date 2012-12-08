@@ -55,6 +55,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (counts #f)
         (index #f)
         (tli #f)
+        (s-tree #f)
         (base #f))
     (or (eq? 'ixin (read p))
         (error "bad magic:" filename))
@@ -89,6 +90,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
                          (apply go tli))
                        (reverse! acc))))
+       (set! s-tree (read p))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
       (else
@@ -101,6 +103,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               counts
               index
               tli
+              s-tree
               base
               p))))
 
@@ -136,7 +139,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index tli base port)
+  (lambda (vers meta counts index tli s-tree base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -174,6 +177,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (map cdr tli)
             (lambda (type tli)
               (fso "tli: ~A~%~{~Y~}~%" type tli)))
+        (fso "s-tree:~%~Y~%" s-tree)
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))
@@ -223,6 +227,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                 (lambda (name ls)
                   (fso "~A: ~A~%" name (length ls))
                   (one ls)))))
+
+      (define (dump-s-tree)
+        (fso "~Y" s-tree))
 
       (define (nd! which go)
         (cond ((and (string? which)
@@ -338,7 +345,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              dump-meta
                              dump-index
                              list-tli
-                             dump-tli))
+                             dump-tli
+                             dump-s-tree))
                      cmd args)
               (display done)
               (force-output)
@@ -353,6 +361,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-index
                      list-tli
                      dump-tli
+                     dump-s-tree
                      dump-node
                      show-node
                      show-all-nodes

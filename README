@@ -128,7 +128,7 @@ See end for copying conditions.
 
 *** counts
 
-    The list (INDEX-LENGTH COUNT TOP TLI).
+    The list (INDEX-LENGTH COUNT TOP TLI S-TREE-LENGTH).
 
     INDEX-LENGTH is the byte-length of the index (described below).
 
@@ -146,6 +146,8 @@ See end for copying conditions.
     TLI-LENGTH and TLI-COUNT may both be zero (always concurrently).
     In this case there must be at least one NI.  This is the case
     when there is a ‘printindex’ but no entries for it.
+
+    S-TREE-LENGTH is the byte-length of the section tree.
 
     A newline ends the ‘counts’ portion.
 
@@ -173,6 +175,27 @@ See end for copying conditions.
 
     A newline ends the tli portion.
 
+*** s-tree
+
+    The list of sections, each w/ the form (SECTION-ENTRY [SUB...]).
+    SECTION-ENTRY has the form (NI TYPE TITLE...), where NI is the node
+    index containing that section, TYPE is one of:
+
+    level 1: top chapter unnumbered appendix
+    level 2: section unnumberedsec appendixsec
+    level 3: subsection unnumberedsubsec appendixsubsec
+    level 4: subsubsection unnumberedsubsubsec appendixsubsubsec
+
+    and TITLE is the list of (possibly-nested) SXML elements or strings.
+    SUB... is an optional list w/ same format as S-TREE, for subsections.
+
+    S-TREE top-level elements have a TYPE from level 1, their children
+    from level 2, and so on.
+
+    ??? Since this is "chapter structuring" (term from texinfo manual),
+    shouldn't the name be something in that vein?  After all, the data
+    is not only "sections" (or even "chapters", for that matter).
+
 *** node data
 
     This is a series of COUNT ‘node’ element forms, each in SXML (text)
@@ -193,6 +216,7 @@ See end for copying conditions.
   - file position after reading COUNTS
   - INDEX-LENGTH
   - TLI-LENGTH...
+  - S-TREE-LENGTH
 
 * invoking a1-nf3-{mixp,guile2}
 
