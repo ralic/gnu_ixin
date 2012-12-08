@@ -292,7 +292,7 @@ See end for copying conditions.
 
 *** generally
 
-    Thes temp-file interaction is quick (to write) and dirty.
+    The temp-file interaction code is quick (to write) and dirty.
     Kids, laugh all you want, but don't do this in your own code!
 
 *** a2ixin
