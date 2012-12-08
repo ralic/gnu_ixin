@@ -227,19 +227,17 @@ See end for copying conditions.
 
   FILENAME should be produced by "makeinfo --xml".
 
-* invoking a2ixin
+* invoking mkixin
 
-  Usage: a2ixin FILENAME...
+  Usage: mkixin FILENAME...
 
-  If FILENAME ends with ".sxml", create STEM.ixin, where STEM is the
-  FILENAME w/o the ".sxml".  If FILENAME ends with ".xml" invoke one of
-  the a1-nf3-* programs to internally convert it to "SXML format" first.
+  For each FILENAME, assumed to be STEM.sxml, create STEM.ixin.
 
 * invoking retrieve
 
   Usage: retrieve IXIN [COMMAND [ARGS...]]
 
-  IXIN is the name of a file created by a2ixin.
+  IXIN is the name of a file created by mkixin.
 
   COMMAND (and args) is one of the following:
 
@@ -306,10 +304,10 @@ See end for copying conditions.
     The temp-file interaction code is quick (to write) and dirty.
     Kids, laugh all you want, but don't do this in your own code!
 
-*** a2ixin
+*** mkixin
 
     The ‘(node ...)’ form is not identical to the input SXML;
-    [[file:c/a2ixin::xnode!][xnode!]] removes the element by side-effect.
+    [[file:c/mkixin::xnode!][xnode!]] removes the element by side-effect.
 
     The upshot is to move name, next, prev and up elements (actually,
     their decoded (and re-encoded, for the links) contents) into the

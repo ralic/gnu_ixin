@@ -1,5 +1,14 @@
 2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Rename a2ixin to mkixin; drop .xml handling.
+
+	* mkixin: Rename from a2ixin;
+	don't import ‘(ice-9 popen)’ procs;
+	don't import SRFI 13 ‘string-suffix?’.
+	(how-to-handle): Assume filename has form "STEM.sxml".
+
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Omit ‘node’ from node data.
 
 	* a2ixin (do-it! grok! stash!): Output ‘(cdr node)’, not ‘node’.

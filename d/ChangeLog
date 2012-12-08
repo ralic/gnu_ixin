@@ -1,5 +1,13 @@
 2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Rename a2ixin to mkixin; drop .xml handling.
+
+	* GNUmakefile (%.ixin : %.xml): Delete pattern rule.
+	(%.ixin : %.sxml): New pattern rule.
+	(try-%): Use ‘$(C)mkixin’.
+
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[dist] Move programs to c/, documents to d/.
 
 	* GNUmakefile: New file.

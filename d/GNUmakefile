@@ -24,8 +24,8 @@ ixin := $(addsuffix .ixin, $(hmm))
 
 all: $(ixin)
 
-%.ixin : %.xml
-	$(C)a2ixin $<
+%.ixin : %.sxml
+	$(C)mkixin $<
 
 %.sxml : %.xml
 	$(C)a1-nf3-mixp $< > $@
@@ -56,7 +56,7 @@ demo-zow: $(ZOW).ixin
 	$(C)retrieve $(ZOW).ixin repl 17 < zow
 
 try-%:
-	$(C)a2ixin $*.sxml
+	$(C)mkixin $*.sxml
 	$(C)retrieve $*.ixin
 
 # GNUmakefile ends here

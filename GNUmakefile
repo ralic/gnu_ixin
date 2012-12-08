@@ -27,7 +27,7 @@ dist-files := \
  COPYING README NEWS \
  d/*.xml d/*.sxml d/*.ixin d/zow \
  d/GNUmakefile d/ChangeLog \
- c/a1-nf3-* c/a2ixin c/retrieve \
+ c/a1-nf3-* c/mkixin c/retrieve \
  c/z-fixed-pp.scm c/zomg \
  c/ChangeLog \
  ChangeLog

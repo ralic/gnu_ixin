@@ -14,10 +14,15 @@ See end for copying conditions.
 
 	Things were getting difficult to see on one dired screen.
 
-  - a2ixin processes all files
+  - mkixin renamed from a2ixin, handles only .sxml
 
-	Instead of ‘for f in F1 F2... ; do ./a2ixin $f ; done’,
-	you can simply do ‘./a2ixin F1 F2...’.
+	Handling both .xml and .sxml was a feature not central to the
+	purpose of IXIN (the project).  Distractions be gone!
+
+  - mkixin processes all files
+
+	Instead of ‘for f in F1 F2... ; do ./mkixin $f ; done’,
+	you can simply do ‘./mkixin F1 F2...’.
 
   - node data now almost-SXML (text)
 

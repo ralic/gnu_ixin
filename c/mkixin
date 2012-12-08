@@ -1,7 +1,7 @@
 #!/bin/sh
-exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
+exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 !#
-;;; a2ixin
+;;; mkixin
 
 ;; Copyright (C) 2012 Thien-Thi Nguyen
 ;;
@@ -26,7 +26,7 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
 
 (load "./z-fixed-pp.scm")
 
-(define-module (a2ixin)
+(define-module (mkixin)
   #:export (main))
 
 (use-modules
@@ -35,12 +35,8 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
                           take drop))
  ((srfi srfi-11) #:select (let-values
                            let*-values))
- ((srfi srfi-13) #:select (string-suffix?
-                           string-drop-right))
+ ((srfi srfi-13) #:select (string-drop-right))
  ((ice-9 pretty-print) #:select (pretty-print))
- ((ice-9 popen) #:select (open-input-pipe
-                          open-output-pipe
-                          close-pipe))
  ((ice-9 rdelim) #:select (read-line write-line)))
 
 (define (ppp port)
@@ -83,27 +79,10 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
   (apply simple-format #f s args))
 
 (define (how-to-handle filename)
-
-  (define (w/o ext)
-    (string-drop-right filename (string-length ext)))
-
-  (if (string-suffix? ".sxml" filename)
-      (values (w/o ".sxml")
-              (lambda ()
-                (call-with-input-file filename
-                  read)))
-      (values (w/o ".xml")
-              (lambda ()
-                (let* ((p (open-input-pipe
-                           (fs "~A/a1-nf3-~A ~S"
-                               (dirname (car (command-line)))
-                               (if #f
-                                   'guile2 ; TODO
-                                   'mixp)
-                               filename)))
-                       (form (read p)))
-                  (close-pipe p)
-                  form)))))
+  (values (string-drop-right filename (string-length ".sxml"))
+          (lambda ()
+            (call-with-input-file filename
+              read))))
 
 (define (rescue meta)                   ; from (S)XML, well, partially
                                         ;   obviously, Someone needs
@@ -454,4 +433,4 @@ exec ${GUILE-guile} -e '(a2ixin)' -s $0 "$@" # -*- scheme -*-
   (exit (FE (cdr (command-line))
             do-it!)))
 
-;;; a2ixin ends here
+;;; mkixin ends here
