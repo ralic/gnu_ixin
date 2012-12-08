@@ -243,7 +243,7 @@ See end for copying conditions.
   COMMAND (and args) is one of the following:
 
   - dump
-  - dump/abbrev COLUMNS
+  - dump/abbrev BYTE-COUNT
   - dump-meta
   - dump-counts
   - dump-index
@@ -256,7 +256,8 @@ See end for copying conditions.
   - repl END-CODE
 
   WHICH can be a name, like "Top", or a number, like "0".
-  If no COMMAND is specified, it is taken as "dump/abbrev 42".
+  If no COMMAND is specified, it is taken as "dump/abbrev 42",
+  which is like ‘dump’, but truncates the node data to 42 bytes.
 
   For ‘dump-tli’, if TYPE is specified, dump that particular tli.
   Otherwise, dump all tli, each preceded by "tli: TYPE".

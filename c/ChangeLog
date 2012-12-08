@@ -1,5 +1,15 @@
 2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Update ‘dump’ / ‘dump/abbrev’ output.
+
+	Omission from 2012-12-05, "Save nodes as SXML".
+
+	* retrieve (out --dump): Use "~A" for node data;
+	if necessary, output fake double-quote and close-parens,
+	preceded by " …"; don't output "[+ N]" in case of full output.
+
+2012-12-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[dist] Move programs to c/, documents to d/.
 
 	* a1-nf3-guile2: Move here from parent dir.

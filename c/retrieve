@@ -181,11 +181,24 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))
-          (let ((len (cadr (by-id i))))
-            (fso "data-~A: ~S" i
-                 (node-data i (or abbrev len)))
-            (and abbrev
-                 (fso " [+ ~A]" (- len abbrev)))
+          (let* ((len (cadr (by-id i)))
+                 (get (if abbrev
+                          (min abbrev len)
+                          len))
+                 (short? (< get len))
+                 (data (node-data i get))
+                 (dq (string-count data #\"))
+                 (op (string-count data #\())
+                 (cl (string-count data #\))))
+            (fso "~A:~%~A~A~A" i data
+                 (if (odd? dq)
+                     " …\""
+                     "")
+                 (if short?
+                     (string-append " …" (make-string (- op cl) #\)))
+                     ""))
+            (and short?
+                 (fso " [+ ~A]" (- len get)))
             (newline))))
 
       (define (dump)
