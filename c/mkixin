@@ -43,6 +43,17 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
   (lambda (x)
     (pretty-print x port)))
 
+;; NF stands for "normal form 3": (ELEMENT (@ (ATTR VALUE)...) CHILD...).
+;; The degenerate case:           (ELEMENT (@))
+
+(define (symbol<-attribute-ref nf name)
+  (string->symbol
+   (car (assq-ref (cdadr nf)
+                  name))))
+
+(define (kids nf)
+  (cddr nf))
+
 (define-macro (FE . args)
   (let ((proc (car (last-pair args))))
     `(for-each ,proc ,@(delq proc args))))
@@ -72,7 +83,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
              ((printindex? node)
               (return (string->symbol (caddr node))))
              (else
-              (FE (cddr node) repeat)
+              (FE (kids node) repeat)
               #f))))))
 
 (define (fs s . args)
@@ -102,9 +113,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (cond ((assq 'setvalue rest)
                => (lambda (sub)
                     (set! rest (delq! sub rest)) ; DWR!
-                    (loop (acons (string->symbol
-                                  (car (assq-ref (cdadr sub) 'name)))
-                                 (cddr sub)
+                    (loop (acons (symbol<-attribute-ref sub 'name)
+                                 (kids sub)
                                  acc))))
               (else
                (reverse! acc)))))
@@ -116,7 +126,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (or (null? rest)
             (let* ((len (length copying))
                    (tp (car rest))      ; titlepage
-                   (body (cddr tp))
+                   (body (kids tp))
                    (blen (length body)))
               (let loop ((left blen)
                          (ls body))
@@ -163,10 +173,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (define (actual x)
           (if (pair? x)
-              (string-concatenate (map actual (cddr x)))
+              (string-concatenate (map actual (kids x)))
               x))
 
-        (let* ((term (cddr elem))
+        (let* ((term (kids elem))
                (ent (list
                      ;; Simplify (STRING) => STRING, maybe.
                      (if (and (string? (car term))
@@ -226,11 +236,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (define (walk x)
           (cond ((not (pair? x)))
-                ((it? x) ((get-mgr (string->symbol
-                                    (car (assq-ref (cdadr x) 'index))))
+                ((it? x) ((get-mgr (symbol<-attribute-ref x 'index))
                           x
                           (node-id node)))
-                (else (FE (cddr x)
+                (else (FE (kids x)
                           walk))))
 
         (walk node))))
@@ -283,11 +292,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                   (lev (level name))
                   (rel (- lev last))
                   (ent (list (cons* ni name
-                                    (let ((first (and (pair? (cddr x))
+                                    (let ((first (and (pair? (kids x))
                                                       (caddr x))))
                                       (and first
                                            (title? first)
-                                           (cddr first)))))))
+                                           (kids first)))))))
              (and (negative? rel)
                   (let loop ((old last))
                     (or (= lev old)
@@ -309,12 +318,12 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (define (walk x)
       (and (pair? x)
            (begin (try x)
-                  (FE (cddr x) walk))))
+                  (FE (kids x) walk))))
 
     (v! 0 (list (list 'the-good-earth)))
     (FE nodes (lambda (node)
                 (set! ni (node-id node))
-                (FE (cddr node) walk)))
+                (FE (kids node) walk)))
     (walk '(the-good-earth over-my-head))
     (cdadr (vr 0))))
 
