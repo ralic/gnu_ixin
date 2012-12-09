@@ -339,7 +339,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
           (define (loop)
             (let* ((line (read-line (current-input-port)))
-                   (sp (string-index line #\space))
+                   (sp (if (eof-object? line)
+                           (quit)
+                           (string-index line #\space)))
                    (cmd (string->symbol (if sp
                                             (string-take line sp)
                                             line)))
