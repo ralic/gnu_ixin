@@ -54,6 +54,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (kids nf)
   (cddr nf))
 
+(define (element? element)
+  (lambda (nf)
+    (eq? element (car nf))))
+
 (define-macro (FE . args)
   (let ((proc (car (last-pair args))))
     `(for-each ,proc ,@(delq proc args))))
@@ -66,10 +70,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                (let ((rv (caddr sub)))
                  (set-cdr! node (delq! sub rest)) ; DWR!
                  rv))))))
-
-(define (element? element)
-  (lambda (form)
-    (eq? element (car form))))
 
 (define (find-printindex node)
   (define printindex? (element? 'printindex))
