@@ -1,5 +1,12 @@
 2012-12-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Add abstraction: walker
+
+	* mkixin (walker): New proc.
+	(find-printindex, collect-indexterm!, section-tree): Use it.
+
+2012-12-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Add abstractions: symbol<-attribute-ref, kids
 
 	* mkixin (symbol<-attribute-ref, kids): New procs.
