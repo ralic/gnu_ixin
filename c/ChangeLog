@@ -1,3 +1,19 @@
+2012-12-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] mkixin: Do node{name,next,prev,up} extraction in one pass.
+
+	* mkixin (xnode!): Delete proc.
+	(identify four): New list of procs.
+	(identify maybe-four!): New proc.
+	(identify id<-name): New proc.
+	(identify): Extract ‘nodename’, ‘nodenext’, ‘nodeprev’,
+	‘nodeup’ in one pass; deref names to id numbers afterwards;
+	return ‘locs’ as last value instead of ‘id<-name’.
+	(do-it! grok!): Take arg ‘loc’ instead of doing
+	‘nodenext’, ‘nodeprev’, ‘nodeup’ extraction.
+	(do-it!): Update binding form for call to ‘identify’;
+	update call to ‘grok!’.
+
 2012-12-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	retrieve: Take EOF to mean "quit" for repl.

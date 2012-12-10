@@ -69,15 +69,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (FE (kids nf) walk))))
   walk)
 
-(define (xnode! element)
-  (lambda (node)
-    (let ((rest (cdr node)))
-      (and=> (assq element rest)
-             (lambda (sub)
-               (let ((rv (caddr sub)))
-                 (set-cdr! node (delq! sub rest)) ; DWR!
-                 rv))))))
-
 (define (find-printindex node)
   (define printindex? (element? 'printindex))
   (call-with-current-continuation
@@ -325,25 +316,51 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (cdadr (vr 0)))))
 
 (define (identify nodes)
+
+  (define four (map element? '(nodename
+                               nodenext
+                               nodeprev
+                               nodeup)))
+
+  (define (maybe-four! node)
+    (let ((tail (cdr node)))
+
+      (define (xnode! interesting?)
+        (let ((nf (cadr tail)))
+          (and (interesting? nf)
+               (let ((string (car (kids nf))))
+                 (delq! nf tail)        ; DWR!
+                 string))))
+
+      (map xnode! four)))
+
   (let* ((count (length nodes))
          (ids (iota count))
-         (names (map (xnode! 'nodename)
-                     nodes)))
+         (full (map maybe-four! nodes))
+         (names (map car full)))
+
+    (define id<-name
+      (let ((alist (map cons names ids)))
+        ;; id<-name
+        (lambda (name)
+          (or (assoc-ref alist name)
+              -1))))
+
     (FE ids nodes
         (lambda (id node)
           (set! (node-id node) id)))
+
     (values count
             names
-            (let ((alist (map cons names ids)))
-              (lambda (name)
-                (or (assoc-ref alist name)
-                    -1))))))
+            (map (lambda (loc)
+                   (map id<-name loc))
+                 (map cdr full)))))
 
 (define (do-it! filename)
   (let*-values (((stem snarf) (how-to-handle filename))
                 ((meta nodes) (break! (element? 'node)
                                       (cdr (snarf))))
-                ((count names id<-name) (identify nodes)))
+                ((count names locs) (identify nodes)))
     (let* ((coding 'utf-8)              ; TODO
            (pnodes (open-output-file "TMP-W-NODES"))
            (pp-nodes (ppp pnodes))
@@ -360,10 +377,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    x)
                   (else acc)))))
 
-      (define (grok! name node)
-
-        (define (deref get)
-          (id<-name (get node)))
+      (define (grok! name loc node)
 
         (define (stash!)
 
@@ -376,12 +390,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             ;; Subtract 1 to ignore the trailing newline.
             (- (sz) bef 1)))
 
-        ;; Do ‘xnode!’ stuff before ‘stash!’; they are destructive!
-        (let* ((loc (map deref (map xnode! '(nodenext
-                                             nodeprev
-                                             nodeup))))
-               (len (stash!))
-               (id (node-id node)))
+        (let ((len (stash!))
+              (id (node-id node)))
           (and (negative? (caddr loc))
                (set! top id))
           (vector-set! index id (cons* name len loc))
@@ -408,7 +418,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (force-output)
             (ftell port))))
 
-      (FE names nodes grok!)
+      (FE names locs nodes grok!)
       (let* ((index-length (write-index!))
              (s-tree-length (write-section-tree!))
              (ixin (string-append stem ".ixin"))
