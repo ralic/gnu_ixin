@@ -75,6 +75,8 @@ See end for copying conditions.
     truncated at the first ‘node’, and reformatted to make client access
     less tedious.  A newline ends the ‘meta’ portion.
 
+    ??? See [[groupings]] for current best guess for XID and SETTINGS.
+
 ***** attrs
 
       The SXML attributes sans ‘(@)’, usually: ‘((xml:lang "en"))’.
@@ -203,6 +205,65 @@ See end for copying conditions.
     by newline.
 
     The order is the same as in the index portion of the file.
+
+* groupings
+
+  This is the "current best guess" distribution of XID, VARS, SETTINGS
+  (for [[meta]] divvying).  Corrections solicited!
+
+*** group A: XID
+
+    |---------------------+-----------------|
+    | setfile             | string/filename |
+    | documentdescription | string/no-LF    |
+    |---------------------+-----------------|
+
+*** group B: SETTINGS that should not change
+
+    |--------------------------------+--------------------------|
+    | novalidate                     | none                     |
+    |--------------------------------+--------------------------|
+    | fonttextsize                   | integer: 10 11           |
+    | footnotestyle                  | sym: end separate        |
+    | pagesizes                      | list of (integer symbol) |
+    | setchapternewpage              | sym: off on odd          |
+    | setcontentsaftertitlepage      | none                     |
+    | setshortcontentsaftertitlepage | none                     |
+    |--------------------------------+--------------------------|
+    | everyheadingmarks              | ???                      |
+    | evenheadingmarks               | ???                      |
+    | oddheadingmarks                | ???                      |
+    |--------------------------------+--------------------------|
+    | everyfootingmarks              | ???                      |
+    | evenfootingmarks               | ???                      |
+    | oddfootingmarks                | ???                      |
+    |--------------------------------+--------------------------|
+
+*** group C: SETTINGS that might change w/ node
+
+    |---------------------------+-------------------------------------------|
+    | documentencoding          | string                                    |
+    |---------------------------+-------------------------------------------|
+    | codequotebacktick         | (from @set/@clear)                        |
+    | codequoteundirected       | (from @set/@clear)                        |
+    | txideftypefnnl            | (from @set/@clear)                        |
+    |---------------------------+-------------------------------------------|
+    | exampleindent             | sym: asis / integer                       |
+    | paragraphindent           | sym: asis / integer                       |
+    | firstparagraphindent      | sym: none insert                          |
+    |---------------------------+-------------------------------------------|
+    | allowcodebreaks           | sym: false true                           |
+    | clickstyle                | ??? string                                |
+    | deftypefnnewli            | sym: on off                               |
+    | documentlanguage          | string                                    |
+    | frenchspacing             | sym: on off                               |
+    | headings                  | sym: on off single{,after} double{,after} |
+    | kbdinputstyle             | sym: code example distinct                |
+    | urefbreakstyle            | sym: after before none                    |
+    | xrefautomaticsectiontitle | sym: on off                               |
+    |---------------------------+-------------------------------------------|
+
+    Hmm, shouldn't ‘documentencoding’ be part of group A?
 
 * possible access patterns
 
