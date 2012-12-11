@@ -55,6 +55,10 @@ See end for copying conditions.
 	considering its semantics, but not entirely unexpected, given
 	its syntax.  Sigh, bugward comp[au]tability issues...  :-/
 
+  - new explorations re producing SXML w/o Guile
+
+	See new header "producing SXML w/o Guile" in README.
+
 
 - 1.2 | 2012-12-03
 

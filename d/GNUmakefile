@@ -30,6 +30,11 @@ all: $(ixin)
 %.sxml : %.xml
 	$(C)a1-nf3-mixp $< > $@
 
+%.sxml-not-quite : %.xml
+	  $(C)a1-nf1 $< 2>/dev/null		\
+	| $(C)a1-nf3-from-nf1			\
+	> $@
+
 clean:
 	rm -f *.ixin
 
@@ -38,6 +43,8 @@ maintainer-clean: clean
 
 sxml := $(addsuffix .sxml, $(hmm))
 sxml: $(sxml)
+
+not-quite: $(addsuffix .sxml-not-quite, $(hmm))
 
 r := @printf '\f\n' ; $(C)retrieve
 hello := $(r) hello.ixin

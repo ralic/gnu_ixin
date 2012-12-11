@@ -1,5 +1,5 @@
-# GNUmakefile
-#
+#!/usr/bin/perl -w
+
 # Copyright (C) 2012 Thien-Thi Nguyen
 #
 # This file is part of IXIN.
@@ -17,27 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = 1.2
+use Data::Stag qw (:all);
 
-all demo demo-% try-%:
-	$(MAKE) $(MAKEFLAGS) -C d $@
+$tree = Data::Stag->parse ($ARGV[0]);
 
-dd := ixin-$(VERSION)
-dist-files := \
- COPYING README NEWS \
- d/*.xml d/*.sxml d/*.ixin d/zow \
- d/GNUmakefile d/ChangeLog \
- c/SxprWriter.pm.patch \
- c/a1-* c/mkixin c/retrieve \
- c/z-fixed-pp.scm c/zomg \
- c/ChangeLog \
- ChangeLog
+open (FIX, "| sed 's/\\\\(/(/g;s/\\\\)/)/g'"); # Blech!
 
-dist:
-	rm -rf $(dd)
-	mkdir $(dd)
-	cp -p --parents $(dist-files) $(dd)
-	tar cf $(dd).tar.xz --auto-compress $(dd)
-	rm -rf $(dd)
+print FIX $tree->sxpr;
 
-# GNUmakefile ends here
+# a1-nf1 ends here

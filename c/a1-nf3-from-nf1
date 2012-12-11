@@ -1,0 +1,61 @@
+#!/bin/sh
+exec ${GUILE-guile} -e main -s $0 "$@" # -*- scheme -*-
+!#
+;;; a1-nf3-from-nf1
+
+;; Copyright (C) 2012 Thien-Thi Nguyen
+;;
+;; This file is part of IXIN.
+;;
+;; IXIN is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; IXIN is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Code:
+
+(load "./z-fixed-pp.scm")
+
+(use-modules
+ (ice-9 pretty-print))
+
+;; Convert (ELEMENT CHILD...) to (ELEMENT (@) CHILD...), maybe.
+;; In any case, cull empty strings from children.
+
+(define (nf3<- x)
+  (if (not (pair? x))
+      x
+      (let* ((tail (cdr x))
+             (first (car tail))
+             (cool? (and (pair? first)
+                         (eq? '@ (car first)))))
+        (cons* (car x)
+               (if cool?
+                   first
+                   '(@))
+               (map nf3<- (delete "" (if cool?
+                                         (cdr tail)
+                                         tail)))))))
+
+;; Handle ‘(quote (texinfo ...))’, from a1-nf1, as well.
+
+(define (relevant tree)
+  (if (eq? 'quote (car tree))
+      (cadr tree)
+      tree))
+
+(define (main args)
+  (pretty-print (nf3<- (relevant (read (if (null? (cdr args))
+                                           (current-input-port)
+                                           (open-input-file (cadr args)))))))
+  (exit #t))
+
+;;; a1-nf3-from-nf1 ends here
