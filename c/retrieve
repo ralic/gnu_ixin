@@ -388,7 +388,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
   (call-with-values (in (cadr args))
     (apply out (if (pair? (cddr args))
                    (cddr args)
-                   (list "dump/abbrev" "42"))))
+                   (list "dump/abbrev" "80"))))
   (exit #t))
 
 ;;; retrieve ends here
