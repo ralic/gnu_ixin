@@ -19,7 +19,7 @@
 
 VERSION = 1.3
 
-all demo demo-% try-%:
+all clean demo demo-% try-%:
 	$(MAKE) $(MAKEFLAGS) -C d $@
 
 dd := ixin-$(VERSION)
