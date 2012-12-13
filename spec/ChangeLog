@@ -1,0 +1,13 @@
+2012-12-13  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add spec document.
+
+	* GNUmakefile: New file.
+	* fdl.texi: New file.
+	* ixin.texi: New file.
+
+
+Copyright (C) 2012 Thien-Thi Nguyen
+
+Copying and distribution of this file, with or without modification,
+are permitted provided the copyright notice and this notice are preserved.

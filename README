@@ -25,7 +25,7 @@ See end for copying conditions.
 
   It defines a documentation file format and provides two simple
   tools to write and read, respectively, files in that format.
-  The [[file format definition]] is described below.
+  The file format definition is described in a document under [[file:spec/][spec/]].
 
 * What does it NOT do?
 
@@ -44,172 +44,10 @@ See end for copying conditions.
   (Guile 1.8), or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course,
   you need to have one of those Guile versions installed, too.
 
-* file format definition
-
-  In the following description, ‘(???)’ indicates points that are
-  not very firm in the author's mind.
-
-  Overall, the format is text (???), using UTF-8.  With the exception
-  of the ‘meta’ portion, all SXML trees are third-normal form, w/
-  abutting character-data sequences coalesced, attributes explicit
-  in the tree's CADR, and in the "default" namespace defined in the
-  Texinfo DTD, version 1.13, 2008/01/31.
-
-*** magic: "ixin "
-
-    The beginning of the file is five bytes (hex) 69, 78, 69, 6E, 20.
-
-*** version
-
-    The version number as a character string.  For now: "1".
-
-*** coding (???)
-
-    The coding system used for this file in the format:
-    "; -*- coding: CODING -*-" followed by newline.
-
-*** meta
-
-    The list (ATTRS XID VARS SETTINGS COPYING TITLEPAGE ELEMENT...),
-    that comprise the immediate children of the (input) ‘texinfo’ tree,
-    truncated at the first ‘node’, and reformatted to make client access
-    less tedious.  A newline ends the ‘meta’ portion.
-
-    ??? See [[groupings]] for current best guess for XID and SETTINGS.
-
-***** attrs
-
-      The SXML attributes sans ‘(@)’, usually: ‘((xml:lang "en"))’.
-
-***** xid
-
-      The list (FILENAME TITLE DIRCATEGORY), all elements strings.
-      These are from the ‘setfilename’, ‘settitle’ and ‘dircategory’
-      elements, respectively.  "XID" stands for "external identifiers".
-
-***** vars
-
-      The list ((NAME VALUE)...), from ‘setvalue’ elements.  NAME is a
-      symbol, and VALUE is a string.
-
-***** settings
-
-      The list ((NAME VALUE)...), reserved for ‘@paragraphindent’ et al.
-      NAME is a symbol, VALUE type depends on NAME.
-
-      This element is "reserved" because at time of writing, makeinfo
-      does not actually write any such information to the XML file.
-
-***** copying
-
-      The SXML '(copying (@) (para ...)...)', which contains the Texinfo
-      ‘@copying’ block.
-
-***** titlepage
-
-      The SXML-ish (???) element ‘titlepage’.  If the original Texinfo
-      contains ‘@insertcopying’, this has the form:
-
-      (titlepage (@ (copying "copying"))
-        ...
-        "@insertcopying"
-        ...)
-
-      Otherwise, it has the form:
-
-      (titlepage (@)
-        ...)
-
-      That is, there is no ‘copying’ attribute, and no "@insertcopying".
-      The "-ish" is because we're not sure how valid a naked string is.
-
-***** element...
-
-      These are the rest of the elements after ‘titlepage’ but before
-      the first ‘node’.  Usually: ‘((contents (@)))’.
-
-*** counts
-
-    The list (INDEX-LENGTH COUNT TOP TLI S-TREE-LENGTH).
-
-    INDEX-LENGTH is the byte-length of the index (described below).
-
-    COUNT is the total number of nodes.
-
-    TOP is the 0-based index of the ‘Top’ node, or -1 if there is no
-    such node..
-
-    TLI is a list of entries (TYPE TLI-LENGTH TLI-COUNT [NI...]).
-    TYPE is the symbolic name of these "two-letter"-named indices,
-    (as called by the Texinfo docs), such as ‘cp’ or ‘fn’.
-    TLI-LENGTH is the byte-length of this tli.  TLI-COUNT is the
-    number of entries in this tli.  NI... are zero or more node
-    indexes that contain the ‘printindex’ element for TYPE.
-    TLI-LENGTH and TLI-COUNT may both be zero (always concurrently).
-    In this case there must be at least one NI.  This is the case
-    when there is a ‘printindex’ but no entries for it.
-
-    S-TREE-LENGTH is the byte-length of the section tree.
-
-    A newline ends the ‘counts’ portion.
-
-*** index
-
-    A series of COUNT lists of the form (NAME LENGTH NEXT PREV UP),
-    each followed by newline.
-
-    NAME is a string, e.g., "Top".  This is the only "direct string"
-    in the file format and the reason that we need to specify coding.
-
-    LENGTH is an integer, the number of bytes required to read the
-    raw "node data" (described below).
-
-    NEXT, PREV, and UP are integers, pointing to other members of the
-    index.  A value of -1 indicates a missing component (e.g., UP and
-    PREV for "Top" is typically -1).
-
-*** tli (zero or more)
-
-    A series of TLI-COUNT lists of the form (TERM NI...), where TERM
-    is either a string or a list of (possibly-nested) SXML elements
-    and strings, and NI... are one or more node indices in which
-    TERM appears.
-
-    A newline ends the tli portion.
-
-*** s-tree
-
-    The list of sections, each w/ the form (SECTION-ENTRY [SUB...]).
-    SECTION-ENTRY has the form (NI TYPE TITLE...), where NI is the node
-    index containing that section, TYPE is one of:
-
-    level 1: top chapter unnumbered appendix
-    level 2: section unnumberedsec appendixsec
-    level 3: subsection unnumberedsubsec appendixsubsec
-    level 4: subsubsection unnumberedsubsubsec appendixsubsubsec
-
-    and TITLE is the list of (possibly-nested) SXML elements or strings.
-    SUB... is an optional list w/ same format as S-TREE, for subsections.
-
-    S-TREE top-level elements have a TYPE from level 1, their children
-    from level 2, and so on.
-
-    ??? Since this is "chapter structuring" (term from texinfo manual),
-    shouldn't the name be something in that vein?  After all, the data
-    is not only "sections" (or even "chapters", for that matter).
-
-*** node data
-
-    This is a series of COUNT forms, each w/ form (ATTRS ELEMENT...),
-    i.e., a ‘node’ element sans the initial symbol ‘node’, and followed
-    by newline.
-
-    The order is the same as in the index portion of the file.
-
 * groupings
 
   This is the "current best guess" distribution of XID, VARS, SETTINGS
-  (for [[meta]] divvying).  Corrections solicited!
+  (for META divvying).  Corrections solicited!
 
 *** group A: XID
 

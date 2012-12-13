@@ -17,28 +17,25 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = 1.3
+all: ixin.info ../d/ixin.xml
 
-all clean demo demo-% try-%:
-	$(MAKE) $(MAKEFLAGS) -C d $@
+input := ixin.texi release.texi fdl.texi
 
-dd := ixin-$(VERSION)
-dist-files := \
- COPYING README NEWS \
- spec/* \
- d/*.xml d/*.sxml d/*.ixin d/zow \
- d/GNUmakefile d/ChangeLog \
- c/SxprWriter.pm.patch \
- c/a1-* c/mkixin c/retrieve \
- c/z-fixed-pp.scm c/zomg \
- c/ChangeLog \
- ChangeLog
+ixin.info: $(input)
+	makeinfo -o $@ $<
 
-dist:
-	rm -rf $(dd)
-	mkdir $(dd)
-	cp -p --parents $(dist-files) $(dd)
-	tar cf $(dd).tar.xz --auto-compress $(dd)
-	rm -rf $(dd)
+release.texi: ../GNUmakefile
+	{ sed '/^VERSION =/!d;s/.*=/@set VERSION/' $< ; \
+	  date -r $< +'@set UPDATED %Y-%m-%d' ; \
+	} > $@
+
+../d/ixin.xml: $(input)
+	makeinfo -o $@ --xml --no-split $<
+
+check: all
+	$(MAKE) -C ../d ixin.sxml try-ixin
+
+ixin.pdf: $(input)
+	texi2pdf -o $@ $< --clean --batch
 
 # GNUmakefile ends here
