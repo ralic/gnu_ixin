@@ -4,6 +4,8 @@
 @documentencoding UTF-8
 @include release.texi
 @settitle IXIN Specification @value{VERSION}
+@defindex jargon
+@synindex jargon cp
 @c %**end of header
 
 @copying
@@ -45,7 +47,7 @@ Texts.  A copy of the license is included in the appendix entitled
 @end ifnottex
 
 @menu
-* Introduction::            Design criteria, methods.
+* Introduction::            Design criteria, methods, jargon.
 * Specification::           How it's gonna be!
 
 * GNU FDL::                 Copying and sharing this documentation.
@@ -74,6 +76,7 @@ Out of these frustrated ramblings, IXIN was born.
 @menu
 * Design::        What makes a good file format?
 * Technique::     How do we go about defining it?
+* Terminology::   You can't spell dictionary w/o ``diction''.
 @end menu
 
 
@@ -118,6 +121,195 @@ serves as a test for the tools.  As a part of the IXIN tarball, its
 changes track the file format as it evolves.  Once finalized, perhaps
 the specifcation documented herein can be merged upstream into Texinfo.
 
+@c ---------------------------------------------------------------------------
+@node    Terminology
+@section Terminology
+
+This section first introduces the fundamental data structure around
+which IXIN revolves conceptually, and then defines terms used in the
+specification to describe the file format's concrete representations.
+
+@menu
+* associative array::       In mind, in memory.
+* representations::         In a file, on disk.
+@end menu
+
+@macro ji{x}
+@jargonindex \x\ (generally)
+@end macro
+
+@macro more{x}
+@ji \x\
+@item \x\
+@end macro
+
+
+@c ---------------------------------------------------------------------------
+@node       associative array
+@subsection associative array
+
+@strong{NB}: Unlike the other definitions (@pxref{representations} which
+describe concrete representations, those in this subsection describe a
+conceptual data structure and its related algorithms.
+
+@table @asis
+@more associative array
+@ji array, associative
+A (possibly ordered) set of pairs of objects.
+The first in the pair is the @dfn{key}, and the second the @dfn{value}.
+A key may appear only once in an array; it is unique.  A value may
+appear any number of times.
+
+@ji alist
+@ji dictionary
+@ji ordered-map
+@ji hash table
+Other names for associative array are: alist, dictionary, ordered-map,
+hash table.
+
+@more look up
+@cindex boolean value
+You @dfn{look up} information from an associative array, specifying the
+key and obtaining as a result the associated value, or the boolean value
+@code{false} if there is no such key.  (@strong{NB}: The file format
+never makes use of boolean values, so there is no risk of confusion.)
+@end table
+
+
+@c ---------------------------------------------------------------------------
+@node       representations
+@subsection representations
+
+@table @asis
+@more integer
+A whole number, possibly negative.  Some examples: -1, 0, 42.
+A @dfn{hex integer} is an integer represented using the hexadecimal
+digits @samp{0} through @samp{9} and @samp{A} through @samp{F}.
+
+@more character
+A Unicode character.  In this document, @code{U+@var{n}}, where @var{n}
+is a hex integer, denotes the character with code point @var{n}.
+In this document, @var{n} will always have an even number of digits.
+@uref{http://www.unicode.org/}.
+
+@more whitespace
+Any non-empty sequence of characters that do not cause ink to be used
+when printing.  This includes space (U+20), tab (U+09), newline (U+0A,
+also known as ``linefeed''), and some others.
+
+@more string
+A sequence of characters, surrounded by @samp{"} (quotation mark, U+22).
+In this sequence, a quotation mark character is @dfn{escaped} by
+preceding it with @samp{\} (backslash, U+5C).  A backslash is likewise
+escaped by doubling.  All other characters appear as themselves.
+
+@more symbol
+Similar to ``string'', above, but with some important omissions:
+@enumerate
+@item no surrounding double-quote
+@item no whitespace characters
+@item no double-quote or backslash
+@item does not ``look like'' an integer
+@end enumerate
+
+@more encoding
+@cindex encoding
+The on-disk representation of a character, possibly multibyte.
+A common encoding is UTF-8: @uref{http://www.utf8everywhere.org/}.
+
+@item @var{x}@dots{}
+One or more @var{x}.
+
+@item [@var{x}]
+Zero or one @var{x}.
+
+@more list
+A sequence of zero or more elements, each of which may be a string,
+symbol, integer, or sub-list.  A list starts with @samp{(} (open
+parenthesis, U+28) followed by its elements, followed by @samp{)} (close
+paren, U+29).  In other words:
+
+@example
+([x@dots{}])
+@end example
+
+If two consecutive elements are not lists, they must be
+separated by whitespace.
+
+@more SXML
+A list of the form:
+
+@example
+(NAME (@@ [ATTRIBUTE@dots{}]) [CHILD@dots{}])
+@end example
+
+@noindent
+where @var{attribute} is a list of the form:
+
+@example
+(ATTR-NAME ATTR-VALUE)
+@end example
+
+@noindent
+and each @var{child} is either a non-empty string or an SXML.
+@var{name} and @var{attr-name} are symbols, and @var{attr-value} is a
+string.  For example, here is the humble hyperlink as SXML:
+
+@example
+(a (@@ (href "http://www.gnu.org"))
+   "GNU")
+@end example
+
+When there are no attributes, the form has only @code{(@@)} in the
+second position.  For example:
+
+@example
+@group
+(para (@@ (role "continues"))
+      (acronym (@@) "IXIN")
+      " is a"
+      " " (strong (@@)
+                 "totally"
+                 (emph (@@) " cool"))
+      " file format!")
+@end group
+@end example
+
+@noindent
+Here, three SXMLs (@code{acronym}, @code{strong}, @code{emph}) have
+attributes, and two (@code{para}, @code{strong}) have SXML children.
+
+@more A-SXML
+Stands for ``anonymous'' (or if you prefer ``almost'') SXML, which is
+like SXML, but sans @var{name}:
+
+@example
+((@@ [ATTRIBUTE@dots{}]) [CHILD@dots{}])
+@end example
+@end table
+
+
+The next two definitions distinguish between the different types of
+associative arrays (@pxref{associative array}).
+
+@table @asis
+@more index
+A list that represents an associative array.
+
+@more dts
+Acronym that stands for ``document-term set'', i.e., what Texinfo users
+call an ``index''.  For example, in this document, instead of ``Concept
+Index'' (formed from @code{@@cindex} entries), we say ``Concept DTS''.
+@end table
+
+We choose ``dts'' to be purposefully very different from ``index'' to
+avoid horrible confusion, and to allow ``dts index'' to have meaning.
+
+@table @asis
+@more block
+Text that ends with newline (U+0A).
+The text may have internal newlines as well.
+@end table
 
 @c ---------------------------------------------------------------------------
 @node    Specification

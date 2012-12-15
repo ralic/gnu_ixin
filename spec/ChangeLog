@@ -1,5 +1,14 @@
 2012-12-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[doc] Add section: Terminology
+
+	* ixin.texi <header>: Define index ‘jargon’; merge it into ‘cp’.
+	(Top): Update blurb for "Introduction" menu item.
+	(Introduction): Add "Terminology" to menu.
+	(Terminology): New node/section.
+
+2012-12-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[doc] Expand a bit on docfood and post-finalization hopes.
 
 	* ixin.texi (Technique): ...here.  Also, add two ‘@cindex’ entries.
