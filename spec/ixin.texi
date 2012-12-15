@@ -153,7 +153,7 @@ ixin VERSION; -*- coding: CODING -*-
 @table @var
 @item version
 The format version number as a character string.
-For now: @code{1} (ASCII 49, 0x31).
+For now: @samp{1} (U+31).
 
 @item coding
 The coding system used for this file.

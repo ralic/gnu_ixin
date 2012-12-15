@@ -1,3 +1,9 @@
+2012-12-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[doc] Prefer ‘U+N’ over ‘ASCII N’.
+
+	* ixin.texi (first line): Say ‘U+31’ instead of ‘ASCII 49, 0x31’.
+
 2012-12-13  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Add spec document.
