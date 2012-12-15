@@ -95,6 +95,7 @@ in the file.  Indexed information: IXIN.  The summaries are themselves
 data, of course, and some of them can be accessed incrementally as well,
 by summarizing their size (on disk, in bytes).
 
+
 @c ---------------------------------------------------------------------------
 @node    Technique
 @section Technique
@@ -112,6 +113,7 @@ collectively known as ``IXIN tarballs'' are published on its homepage:
 
 Lastly, this document (which lives in project IXIN) serves as a test for
 the tools.
+
 
 @c ---------------------------------------------------------------------------
 @node    Specification
@@ -136,6 +138,7 @@ version 1.13, 2008/01/31.
 * section tree::         Chapters, appendices, etc.
 * node data::            (Almost) SXML.
 @end menu
+
 
 @c ---------------------------------------------------------------------------
 @node    first line
@@ -162,6 +165,7 @@ The GNU Emacs Reference Manual}.
 The rest of the line is exactly as above, with only one space between
 tokens, and a @samp{:} (colon) as part of the third token.  The line
 ends with newline.
+
 
 @c ---------------------------------------------------------------------------
 @node    meta
