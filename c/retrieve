@@ -45,7 +45,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define index-index (make-object-property))
 
-(define (tli-list counts)
+(define (dts-list counts)
   (cadddr counts))
 
 (define (in filename)
@@ -54,7 +54,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (meta #f)
         (counts #f)
         (index #f)
-        (tli #f)
+        (dtsi #f)
         (s-tree #f)
         (base #f))
     (or (eq? 'ixin (read p))
@@ -70,26 +70,26 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
          (let ((ent (read p)))
            (set! (index-index ent) i)
            (vector-set! index i ent)))
-       (set! tli (let loop ((acc '()) (ls (tli-list counts)))
-                   (if (pair? ls)
-                       (let ((tli (car ls)))
+       (let loop ((acc '()) (ls (dts-list counts)))
+         (if (pair? ls)
+             (let ((dts (car ls)))
 
-                         (define (go type size n . nodes)
+               (define (go type size n . nodes)
 
-                           (define (entries)
-                             (let more ((acc '()) (n n))
-                               (if (zero? n)
-                                   (reverse! acc)
-                                   (more (cons (read p) acc)
-                                         (1- n)))))
+                 (define (entries)
+                   (let more ((acc '()) (n n))
+                     (if (zero? n)
+                         (reverse! acc)
+                         (more (cons (read p) acc)
+                               (1- n)))))
 
-                           (loop (if (positive? size)
-                                     (acons type (entries) acc)
-                                     acc)
-                                 (cdr ls)))
+                 (loop (if (positive? size)
+                           (acons type (entries) acc)
+                           acc)
+                       (cdr ls)))
 
-                         (apply go tli))
-                       (reverse! acc))))
+               (apply go dts))
+             (set! dtsi (reverse! acc))))
        (set! s-tree (read p))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
@@ -102,7 +102,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               meta
               counts
               index
-              tli
+              dtsi
               s-tree
               base
               p))))
@@ -139,7 +139,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index tli s-tree base port)
+  (lambda (vers meta counts index dtsi s-tree base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -173,10 +173,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             ((= total i))
           (fso "~Y" (by-id i)))
         (newline)
-        (FE (map car tli)
-            (map cdr tli)
-            (lambda (type tli)
-              (fso "tli: ~A~%~{~Y~}~%" type tli)))
+        (FE (map car dtsi)
+            (map cdr dtsi)
+            (lambda (type dts)
+              (fso "dts: ~A~%~{~Y~}~%" type dts)))
         (fso "s-tree:~%~Y~%" s-tree)
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
@@ -219,10 +219,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (lambda (i ent)
               (fso "~6,D  ~Y" i ent))))
 
-      (define (list-tli)
-        (fso "~{~Y~}" (tli-list counts)))
+      (define (list-dts)
+        (fso "~{~Y~}" (dts-list counts)))
 
-      (define (dump-tli . name)
+      (define (dump-dts . name)
 
         (define (one ls)
           (FE (iota (length ls))
@@ -232,11 +232,11 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
         (if (pair? name)
             (let* ((name (car name))
-                   (ls (or (assq-ref tli (string->symbol name))
-                           (error "no such tli:" name))))
+                   (ls (or (assq-ref dts (string->symbol name))
+                           (error "no such dts:" name))))
               (one ls))
-            (FE (map car tli)
-                (map cdr tli)
+            (FE (map car dts)
+                (map cdr dts)
                 (lambda (name ls)
                   (fso "~A: ~A~%" name (length ls))
                   (one ls)))))
@@ -359,8 +359,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              raw
                              dump-meta
                              dump-index
-                             list-tli
-                             dump-tli
+                             list-dts
+                             dump-dts
                              dump-s-tree))
                      cmd args)
               (display done)
@@ -374,8 +374,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-meta
                      dump-counts
                      dump-index
-                     list-tli
-                     dump-tli
+                     list-dts
+                     dump-dts
                      dump-s-tree
                      dump-node
                      show-node

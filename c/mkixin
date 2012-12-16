@@ -156,7 +156,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
 (define node-id (make-object-property))
 
-(define (two-letter-indices nodes)
+(define (document-term-sets nodes)
 
   (define (manager type)
     (let ((key (make-object-property))
@@ -247,7 +247,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (FE nodes (collect-indexterm! get-mgr))
     (if (null? all)
         all
-        (let* ((port (open-output-file "TMP-W-TLI"))
+        (let* ((port (open-output-file "TMP-W-DTS"))
                (counts (map (lambda (mgr)
                               (mgr #f port))
                             (map cdr all))))
@@ -366,11 +366,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (pp-nodes (ppp pnodes))
            (index (make-vector count #f))
            (top -1)
-           (tli (two-letter-indices nodes)))
+           (dts (document-term-sets nodes)))
 
-      (define lonely-tli
+      (define lonely-dts
         (let ((acc '()))
-          ;; lonely-tli
+          ;; lonely-dts
           (lambda x
             (cond ((pair? x)
                    (set! acc (cons x acc))
@@ -397,8 +397,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (vector-set! index id (cons* name len loc))
           (and=> (find-printindex node)
                  (lambda (type)
-                   (let ((lp (last-pair (or (assq type tli)
-                                            (lonely-tli type 0 0)))))
+                   (let ((lp (last-pair (or (assq type dts)
+                                            (lonely-dts type 0 0)))))
                      (set-cdr! lp (cons id (cdr lp))))))))
 
       (define (write-index!)
@@ -431,12 +431,12 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count top
-                          (append tli (lonely-tli))
+                          (append dts (lonely-dts))
                           s-tree-length))
         (close-port port)
         (let ((tail (fs "TMP-W-INDEX ~A TMP-W-S-TREE TMP-W-NODES"
-                        (if (pair? tli)
-                            "TMP-W-TLI"
+                        (if (pair? dts)
+                            "TMP-W-DTS"
                             ""))))
 
           (define (fsys s . args)

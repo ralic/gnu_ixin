@@ -1,3 +1,14 @@
+2012-12-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Replace term "tli" with "dts".
+
+	* ixin.texi (Specifications): Rename "term indices"
+	to "document-term sets" in menu.
+	(counts): Rename ‘TLI’ to ‘DTS-INDEX’, ‘TLI-LENGTH’
+	to ‘DTS-LENGTH’, and ‘TLI-COUNT’ to ‘DTS-COUNT’.
+	(index): Update.
+	(document-term sets): Rename node from "term indices"; update.
+
 2012-12-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[doc] Add section: Terminology

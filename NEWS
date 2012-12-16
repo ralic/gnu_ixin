@@ -11,6 +11,13 @@ See end for copying conditions.
 
 	Probably, over time, more of README will follow.
 
+  - out w/ "two-letter indices", in w/ "document-term sets"
+
+	This de-emphasizes the two-letter nature, and bumps out the word
+	"index" (already very heavily used), to reduce confusion.  As a
+	bonus, the string length of both old and new terms and their
+	acronyms remain the same (18 and 3, respectively) -- woo hoo!
+
 
 - 1.3 | 2012-12-11
 

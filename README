@@ -110,12 +110,12 @@ See end for copying conditions.
   information to dig out node data on demand.
 
   Another, more incremental, approach is to read up through COUNTS,
-  and then subsequently access index, tli and node data on demand.
+  and then subsequently access index, dts and node data on demand.
   This is supported by design; the file position for the start of
   the node data is the sum of (always including trailing newline):
   - file position after reading COUNTS
   - INDEX-LENGTH
-  - TLI-LENGTH...
+  - DTS-LENGTH...
   - S-TREE-LENGTH
 
 * invoking a1-nf3-{mixp,guile2}
@@ -145,8 +145,8 @@ See end for copying conditions.
   - dump-meta
   - dump-counts
   - dump-index
-  - list-tli
-  - dump-tli [TYPE]
+  - list-dts
+  - dump-dts [TYPE]
   - dump-s-tree
   - dump-node
   - show-node WHICH
@@ -157,8 +157,8 @@ See end for copying conditions.
   If no COMMAND is specified, it is taken as "dump/abbrev 42",
   which is like ‘dump’, but truncates the node data to 42 bytes.
 
-  For ‘dump-tli’, if TYPE is specified, dump that particular tli.
-  Otherwise, dump all tli, each preceded by "tli: TYPE".
+  For ‘dump-dts’, if TYPE is specified, dump that particular dts.
+  Otherwise, dump all dts, each preceded by "dts: TYPE".
 
   For ‘repl’, END-CODE is a decimal number that specifies the first
   character in the two character sequence used to terminate a response.
@@ -179,8 +179,8 @@ See end for copying conditions.
   - raw [WHICH]  -- do ‘dump-node’ for WHICH or current node
   - dump-meta    -- as from command-line (above)
   - dump-index   -- likewise
-  - list-tli     -- likewise
-  - dump-tli [TYPE] -- likewise
+  - list-dts     -- likewise
+  - dump-dts [TYPE] -- likewise
   - dump-s-tree  -- likewise
   - quit         -- exit immediately
 

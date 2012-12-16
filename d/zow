@@ -1,7 +1,7 @@
 dump-meta
 dump-index
-list-tli
-dump-tli cp
+list-dts
+dump-dts cp
 where
 nav
 next
