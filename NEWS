@@ -4,6 +4,13 @@ See end for copying conditions.
 
 - 1.4 | NOT YET RELEASED
 
+  - specification moved from README into its own document
+
+	Sometimes it's impossible to resist the urge to bloviate...
+	Relatedly, you can "make check" there, too.  See subdir spec/.
+
+	Probably, over time, more of README will follow.
+
 
 - 1.3 | 2012-12-11
 
