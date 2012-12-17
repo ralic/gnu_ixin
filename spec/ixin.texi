@@ -131,7 +131,7 @@ specification to describe the file format's concrete representations.
 
 @menu
 * associative array::       In mind, in memory.
-* representations::         In a file, on disk.
+* representations::         On view, on disk.
 @end menu
 
 @macro ji{x}
