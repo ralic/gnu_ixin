@@ -74,9 +74,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
          (if (pair? ls)
              (let ((dts (car ls)))
 
-               (define (go type size n . nodes)
+               (define (go type size . nodes)
 
-                 (define (entries)
+                 (define (entries n)
                    (let more ((acc '()) (n n))
                      (if (zero? n)
                          (reverse! acc)
@@ -84,7 +84,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                                (1- n)))))
 
                  (loop (if (positive? size)
-                           (acons type (entries) acc)
+                           (let ((desc (read p)))
+                             (acons (cons type (cdr desc))
+                                    (entries (car desc))
+                                    acc))
                            acc)
                        (cdr ls)))
 
@@ -232,13 +235,17 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
         (if (pair? name)
             (let* ((name (car name))
-                   (ls (or (assq-ref dts (string->symbol name))
+                   (ls (or (assq-ref (map cons
+                                          (map caar dtsi)
+                                          (map cdr dtsi))
+                                     (string->symbol name))
                            (error "no such dts:" name))))
               (one ls))
-            (FE (map car dts)
-                (map cdr dts)
-                (lambda (name ls)
-                  (fso "~A: ~A~%" name (length ls))
+            (FE (map car dtsi)
+                (map cdr dtsi)
+                (lambda (details ls)
+                  (fso "~A: ~A~%" (car details) (cons (length ls)
+                                                      (cdr details)))
                   (one ls)))))
 
       (define (dump-s-tree)

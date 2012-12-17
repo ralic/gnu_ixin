@@ -522,7 +522,7 @@ or -1 if there is no such node.
 A list of entries, each of the form:
 
 @example
-(TYPE DTS-LENGTH DTS-COUNT [NI...])
+(TYPE DTS-LENGTH [NI...])
 @end example
 
 @table @var
@@ -533,16 +533,13 @@ The symbolic name of these "two-letter"-named indices
 @item dts-length
 The byte-length of this DTS.
 
-@item dts-count
-The number of entries in this DTS.
-
 @item NI
 Zero or more node indexes that contain the @code{printindex}
 element for @var{type}.
 @end table
 
-Both @var{dts-length} and @var{dts-count} may be zero (concurrently).
-In this case there must be at least one @var{ni}.  This is the case when
+If @var{dts-length} is zero, then there must be at least
+one @var{nid}.  This is the case when
 there is a @code{printindex} but no entries for it.
 
 @item s-tree-length
@@ -587,14 +584,28 @@ A value of -1 indicates a missing component (e.g.,
 @node    document-term sets
 @section document-term sets
 
-Zero or more series of @var{dts-count} lists, each element of which has
-the form:
+For each element in @var{dts-index} with non-zero @var{dts-length},
+a list:
 
 @example
-(TERM NI...)
+(COUNT FONT)
+@end example
+
+followed by @var{count} entries, each of the form:
+
+@example
+([-] TERM NI...)
 @end example
 
 @table @var
+@item count
+A positive integer.
+
+@item font
+A symbol, one of @code{r} or @code{code}, specifying the default font
+for this DTS.  An entry whose first element is the symbol @code{-}
+(hyphen, U+2D) has the ``inverse'' default font.
+
 @item term
 Either a string or a list of (possibly-nested) SXML elements and strings.
 

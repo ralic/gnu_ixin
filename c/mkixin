@@ -69,6 +69,16 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (FE (kids nf) walk))))
   walk)
 
+(define (walker/cozy proc kons)
+  (define (walk up nf)
+    (cond ((pair? nf)
+           (proc up nf)
+           (FE (kids nf)
+               (let ((new-up (kons (car nf) up)))
+                 (lambda (kid)
+                   (walk new-up kid)))))))
+  walk)
+
 (define (find-printindex node)
   (define printindex? (element? 'printindex))
   (call-with-current-continuation
@@ -158,8 +168,17 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
 (define (document-term-sets nodes)
 
+  (define font (make-object-property))
+
   (define (manager type)
     (let ((key (make-object-property))
+          (default-font (case type
+                          ;; builtin (info "(texinfo) Predefined Indices")
+                          ((cp) 'r)
+                          ((fn ky pg tp vr) 'code)
+                          ;; NB: Input SXML from makeinfo 4.13 does not
+                          ;; include ‘def{code}index’ info; we must guess.
+                          (else 'r)))
           (ls '()))
 
       (define (keyed/simplify! elem id)
@@ -177,6 +196,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                          (car term)
                          term)
                      id)))
+          (set! (font ent) (or (font elem) default-font))
           (set! (key ent) (actual elem))
           ent))
 
@@ -189,8 +209,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                              (cur (cadr ls)))
                          (define term: car)
                          (define ids:  cdr)
-                         (cond ((equal? (term: cur)
-                                        (term: was))
+                         (cond ((and (equal? (term: cur)
+                                             (term: was))
+                                     (eq? (font cur)
+                                          (font was)))
                                 (set-cdr! was (sort (append! (ids: cur)
                                                              (ids: was))
                                                     <))
@@ -205,15 +227,22 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (define (cur)
           (ftell port))
 
+        (define pp (ppp port))
+
         (let-values (((count ls) (merge-duplicate-terms!
                                   (sort ls (lambda (a b)
                                              (string-ci< (key a)
                                                          (key b)))))))
           (let ((before (cur)))
-            (FE ls (ppp port))
+            (pp (list count default-font))
+            (FE (map (lambda (ent)
+                       (if (eq? default-font (font ent))
+                           ent
+                           (cons '- ent)))
+                     ls)
+                pp)
             (list type
-                  (- (cur) before)
-                  count))))
+                  (- (cur) before)))))
 
       ;; rv
       (lambda (one two)
@@ -226,14 +255,18 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (define (pluck node)
       (let ((it? (element? 'indexterm)))
-        (lambda (nf)
-          (and (it? nf)
-               ((get-mgr (symbol<-attribute-ref nf 'index))
-                nf
-                (node-id node))))))
+        (lambda (parent nf)
+          (cond ((it? nf)
+                 (and (eq? 'definitionterm parent)
+                      (set! (font nf) 'code))
+                 ((get-mgr (symbol<-attribute-ref nf 'index))
+                  nf
+                  (node-id node)))))))
 
     (lambda (node)
-      ((walker (pluck node))
+      ((walker/cozy (pluck node) (lambda (parent ignored)
+                                   parent))
+       #f
        node)))
 
   (let ((all '()))
@@ -398,7 +431,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (and=> (find-printindex node)
                  (lambda (type)
                    (let ((lp (last-pair (or (assq type dts)
-                                            (lonely-dts type 0 0)))))
+                                            (lonely-dts type 0)))))
                      (set-cdr! lp (cons id (cdr lp))))))))
 
       (define (write-index!)

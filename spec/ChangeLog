@@ -1,5 +1,15 @@
 2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add DTS "default font" and "inverse default font".
+
+	* ixin.texi (counts): Drop ‘DTS-COUNT’ from form,
+	and ‘dts-count’ from table.
+	(document-term sets): Specify appearance only for non-zero
+	DTS-LENGTH; document initial form; add ‘-’ to entry form;
+	add ‘count’ and ‘font’ to table.
+
+2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[doc int] Fix bug: Move @ji after @item.
 
 	* ixin.texi (Terminology) [more]: ...here, in this macro.

@@ -18,6 +18,16 @@ See end for copying conditions.
 	bonus, the string length of both old and new terms and their
 	acronyms remain the same (18 and 3, respectively) -- woo hoo!
 
+  - DTS "default font" and "inverse default font" specifiable
+
+	Each (non-empty) DTS now has an initial form that includes
+	"default font" (a symbol, ‘r’ or ‘code’).  An entry now may
+	specify "inverse default font" with the symbol ‘-’ (hyphen)
+	in its first position.
+
+	Concurrently, DTS-INDEX now omits DTS-COUNT, as that has moved
+	into the DTS initial form.
+
 
 - 1.3 | 2012-12-11
 
