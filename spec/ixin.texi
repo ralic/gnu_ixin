@@ -139,8 +139,8 @@ specification to describe the file format's concrete representations.
 @end macro
 
 @macro more{x}
-@ji \x\
 @item \x\
+@ji \x\
 @end macro
 
 
