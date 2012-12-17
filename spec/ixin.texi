@@ -186,6 +186,9 @@ A whole number, possibly negative.  Some examples: -1, 0, 42.
 A @dfn{hex integer} is an integer represented using the hexadecimal
 digits @samp{0} through @samp{9} and @samp{A} through @samp{F}.
 
+@more node identifier
+An integer.  A negative number means ``no such node''.
+
 @more character
 A Unicode character.  In this document, @code{U+@var{n}}, where @var{n}
 is a hex integer, denotes the character with code point @var{n}.
@@ -515,14 +518,13 @@ The byte-length of the index (described below).
 The total number of nodes.
 
 @item top
-The 0-based index of the @code{Top} node,
-or -1 if there is no such node.
+The node identifier of the @code{Top} node.
 
 @item dts-index
 A list of entries, each of the form:
 
 @example
-(TYPE DTS-LENGTH [NI...])
+(TYPE DTS-LENGTH [NID...])
 @end example
 
 @table @var
@@ -533,8 +535,8 @@ The symbolic name of these "two-letter"-named indices
 @item dts-length
 The byte-length of this DTS.
 
-@item NI
-Zero or more node indexes that contain the @code{printindex}
+@item nid
+A node identifier for each node that contains a @code{printindex}
 element for @var{type}.
 @end table
 
@@ -594,7 +596,7 @@ a list:
 followed by @var{count} entries, each of the form:
 
 @example
-([-] TERM NI...)
+([-] TERM NID...)
 @end example
 
 @table @var
@@ -609,8 +611,8 @@ for this DTS.  An entry whose first element is the symbol @code{-}
 @item term
 Either a string or a list of (possibly-nested) SXML elements and strings.
 
-@item ni
-One or more node indices in which @var{term} appears.
+@item nid
+A node identifer for each node in which @var{term} appears.
 @end table
 
 The entries in each DTS is sorted alphabetically, case insensitively.
@@ -632,11 +634,12 @@ The single tree of ``sections'', each ``node'' having the form:
 The form:
 
 @example
-(NI TYPE TITLE...)
+(NID TYPE TITLE...)
 @end example
 
 @noindent
-where @var{ni} is the node index containing that section,
+where @var{nid} is the node identifier for the
+node ``containing'' that section,
 @var{type} is one of:
 
 @example

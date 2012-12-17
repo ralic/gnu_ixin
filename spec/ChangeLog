@@ -1,5 +1,15 @@
 2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add jargon: node identifier
+
+	* ixin.texi (representations): Add "node identifier" to table.
+	(counts): Say "NID" instead of "NI" in form, table;
+	say "node identifier" for ‘top’ in table.
+	(document-term sets): Likewise.
+	(section tree): Likewise.
+
+2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Add DTS "default font" and "inverse default font".
 
 	* ixin.texi (counts): Drop ‘DTS-COUNT’ from form,
