@@ -1,5 +1,11 @@
 2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify SXML ‘insertcopying’ instead of string.
+
+	* mkixin (rescue grab/dedup-copying!): Use ‘(insertcopying (@))’.
+
+2012-12-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Call the DTS name ‘name’ instead of ‘type’.
 
 	* mkixin (document-term-sets manager): ...here, in param name.

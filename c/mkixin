@@ -138,7 +138,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                             (equal? copying (take ls len)))
                        (let* ((tp-rest (drop ls len))
                               (new-tp (append (take body (- blen left))
-                                              (list "@insertcopying")
+                                              (list '(insertcopying (@)))
                                               tp-rest))
                               (attr (cadr tp))
                               (new-attr `(@ (copying "copying")

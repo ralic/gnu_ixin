@@ -28,6 +28,11 @@ See end for copying conditions.
 	Concurrently, DTS-INDEX now omits DTS-COUNT, as that has moved
 	into the DTS initial form.
 
+  - META ‘titlepage’ now uses SXML ‘insertcopying’
+
+	Previously, the "link" was the string "@insertcopying".
+	Now, it is the SXML ‘(insertcopying (@))’.
+
 
 - 1.3 | 2012-12-11
 

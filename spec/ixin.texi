@@ -465,13 +465,13 @@ This is the Texinfo @code{@@copying} block.
 @node       titlepage
 @subsection titlepage
 
-The SXML-ish (???) element @code{titlepage}.  If the original Texinfo
+The SXML with name @code{titlepage}.  If the original Texinfo
 contains @code{@@insertcopying}, this has the form:
 
 @example
 (titlepage (@@ (copying "copying"))
   ...
-  "@@insertcopying"
+  (insertcopying (@@))
   ...)
 @end example
 
@@ -484,8 +484,8 @@ Otherwise, it has the form:
 @end example
 
 @noindent
-That is, there is no @code{copying} attribute, and no @code{@@insertcopying}.
-The ``-ish'' is because we're not sure how valid a naked string is.
+That is, there is no @code{copying} attribute,
+and no @code{insertcopying} child SXML.
 
 
 @c ---------------------------------------------------------------------------
