@@ -524,20 +524,19 @@ The node identifier of the @code{Top} node.
 A list of entries, each of the form:
 
 @example
-(TYPE DTS-LENGTH [NID...])
+(NAME DTS-LENGTH [NID...])
 @end example
 
 @table @var
-@item type
-The symbolic name of these "two-letter"-named indices
-(as called by the Texinfo docs), such as @code{cp} or @code{fn}.
+@item name
+A symbol, such as @code{cp} or @code{fn}.
 
 @item dts-length
 The byte-length of this DTS.
 
 @item nid
 A node identifier for each node that contains a @code{printindex}
-element for @var{type}.
+element for @var{name}.
 @end table
 
 If @var{dts-length} is zero, then there must be at least

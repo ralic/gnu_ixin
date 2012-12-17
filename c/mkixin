@@ -170,9 +170,9 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
   (define font (make-object-property))
 
-  (define (manager type)
+  (define (manager name)
     (let ((key (make-object-property))
-          (default-font (case type
+          (default-font (case name
                           ;; builtin (info "(texinfo) Predefined Indices")
                           ((cp) 'r)
                           ((fn ky pg tp vr) 'code)
@@ -241,7 +241,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            (cons '- ent)))
                      ls)
                 pp)
-            (list type
+            (list name
                   (- (cur) before)))))
 
       ;; rv
