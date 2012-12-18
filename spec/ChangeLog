@@ -1,5 +1,13 @@
 2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Move S-TREE immediately after NODE-INDEX.
+
+	* ixin.texi (Specification): Move "section tree" after "node index".
+	(counts): Move ‘s-tree-length’ after ‘top’.
+	(section tree): Move node after "node index".
+
+2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[doc int] Add some floats and ‘@listoffloats’.
 
 	* ixin.texi (Top): Add "List of Floats" to menu.

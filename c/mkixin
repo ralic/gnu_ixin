@@ -502,10 +502,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count top
-                          (append dts (lonely-dts))
-                          s-tree-length))
+                          s-tree-length
+                          (append dts (lonely-dts))))
         (close-port port)
-        (let ((tail (fs "TMP-W-INDEX ~A TMP-W-S-TREE TMP-W-NODES"
+        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A TMP-W-NODES"
                         (if (pair? dts)
                             "TMP-W-DTS"
                             ""))))

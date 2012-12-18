@@ -52,6 +52,13 @@ See end for copying conditions.
 
 	For example, see d/serveez.ixin META.
 
+  - S-TREE moved forward, immediately after NODE-INDEX
+
+	We want to move the optional portions (DTS) later, such that
+	future addition of new portions can be more uniform (via "tail
+	stretching").  This is a design-aesthetic, upward-compatability,
+	hand-wavy, out-of-our-gourd reason, admittedly...
+
 
 - 1.3 | 2012-12-11
 

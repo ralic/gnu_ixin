@@ -1,5 +1,16 @@
 2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Move S-TREE immediately after NODE-INDEX.
+
+	* mkixin (do-it!): Output section tree length after ‘Top’
+	node identifier; output section tree after node-index.
+	* retrieve (dts-list): Update.
+	(in): Read section tree after reading node index;
+	in rv, move ‘s-tree’ after ‘index’.
+	(out): Update param order; display ‘s-tree’ after ‘index’.
+
+2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Say "node-index" for retrieve dump output.
 
 	* retrieve (out --dump): ...here.

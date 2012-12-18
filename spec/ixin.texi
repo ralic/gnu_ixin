@@ -367,8 +367,8 @@ version 1.13, 2008/01/31.
 * meta::                 Indispensible front matter.
 * counts::               Summarize the indices.
 * node index::           For the nodes.
-* document-term sets::   Zero or more.
 * section tree::         Chapters, appendices, etc.
+* document-term sets::   Zero or more.
 * node data::            (Almost) SXML.
 @end menu
 
@@ -566,7 +566,7 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LENGTH COUNT TOP DTS-INDEX S-TREE-LENGTH)
+(INDEX-LENGTH COUNT TOP S-TREE-LENGTH DTS-INDEX)
 @end example
 
 @table @var
@@ -578,6 +578,9 @@ The total number of nodes.
 
 @item top
 The node identifier of the @code{Top} node.
+
+@item s-tree-length
+The byte-length of the section tree.
 
 @item dts-index
 A list of entries, each of the form:
@@ -601,9 +604,6 @@ element for @var{name}.
 If @var{dts-length} is zero, then there must be at least
 one @var{nid}.  This is the case when
 there is a @code{printindex} but no entries for it.
-
-@item s-tree-length
-The byte-length of the section tree.
 @end table
 
 @noindent
@@ -638,43 +638,6 @@ Integers, pointing to other members of the index.
 A value of -1 indicates a missing component (e.g.,
 @var{up} and @var{prev} for @code{Top} is typically -1).
 @end table
-
-
-@c ---------------------------------------------------------------------------
-@node    document-term sets
-@section document-term sets
-
-For each element in @var{dts-index} with non-zero @var{dts-length},
-a list:
-
-@example
-(COUNT FONT)
-@end example
-
-followed by @var{count} entries, each of the form:
-
-@example
-([-] TERM NID...)
-@end example
-
-@table @var
-@item count
-A positive integer.
-
-@item font
-A symbol, one of @code{r} or @code{code}, specifying the default font
-for this DTS.  An entry whose first element is the symbol @code{-}
-(hyphen, U+2D) has the ``inverse'' default font.
-
-@item term
-Either a string or a list of (possibly-nested) SXML elements and strings.
-
-@item nid
-A node identifer for each node in which @var{term} appears.
-@end table
-
-The entries in each DTS is sorted alphabetically, case insensitively.
-A newline ends the @code{dts} portion.
 
 
 @c ---------------------------------------------------------------------------
@@ -718,6 +681,43 @@ for subsections.
 
 Section tree top-level elements have a @var{type} from level 1, their
 children from level 2, and so on.
+
+
+@c ---------------------------------------------------------------------------
+@node    document-term sets
+@section document-term sets
+
+For each element in @var{dts-index} with non-zero @var{dts-length},
+a list:
+
+@example
+(COUNT FONT)
+@end example
+
+followed by @var{count} entries, each of the form:
+
+@example
+([-] TERM NID...)
+@end example
+
+@table @var
+@item count
+A positive integer.
+
+@item font
+A symbol, one of @code{r} or @code{code}, specifying the default font
+for this DTS.  An entry whose first element is the symbol @code{-}
+(hyphen, U+2D) has the ``inverse'' default font.
+
+@item term
+Either a string or a list of (possibly-nested) SXML elements and strings.
+
+@item nid
+A node identifer for each node in which @var{term} appears.
+@end table
+
+The entries in each DTS is sorted alphabetically, case insensitively.
+A newline ends the @code{dts} portion.
 
 
 @c ---------------------------------------------------------------------------

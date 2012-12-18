@@ -46,7 +46,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 (define index-index (make-object-property))
 
 (define (dts-list counts)
-  (cadddr counts))
+  (list-ref counts 4))
 
 (define (in filename)
   (let ((p (open-input-file filename))
@@ -70,6 +70,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
          (let ((ent (read p)))
            (set! (index-index ent) i)
            (vector-set! index i ent)))
+       (set! s-tree (read p))
        (let loop ((acc '()) (ls (dts-list counts)))
          (if (pair? ls)
              (let ((dts (car ls)))
@@ -93,7 +94,6 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
                (apply go dts))
              (set! dtsi (reverse! acc))))
-       (set! s-tree (read p))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
       (else
@@ -105,8 +105,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               meta
               counts
               index
-              dtsi
               s-tree
+              dtsi
               base
               p))))
 
@@ -142,7 +142,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index dtsi s-tree base port)
+  (lambda (vers meta counts index s-tree dtsi base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -176,11 +176,11 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             ((= total i))
           (fso "~Y" (by-id i)))
         (newline)
+        (fso "s-tree:~%~Y~%" s-tree)
         (FE (map car dtsi)
             (map cdr dtsi)
             (lambda (details dts)
               (fso "dts: ~A~%~{~Y~}~%" details dts)))
-        (fso "s-tree:~%~Y~%" s-tree)
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))

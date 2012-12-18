@@ -115,8 +115,8 @@ See end for copying conditions.
   the node data is the sum of (always including trailing newline):
   - file position after reading COUNTS
   - INDEX-LENGTH
-  - DTS-LENGTH...
   - S-TREE-LENGTH
+  - DTS-LENGTH...
 
 * invoking a1-nf3-{mixp,guile2}
 
