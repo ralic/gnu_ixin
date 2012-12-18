@@ -53,6 +53,7 @@ Texts.  A copy of the license is included in the appendix entitled
 * Specification::           How it's gonna be!
 
 * GNU FDL::                 Copying and sharing this documentation.
+* List of Floats::
 * Program Index::
 * Index::
 @end menu
@@ -159,8 +160,35 @@ conceptual data structure and its related algorithms.
 @ji array, associative
 A (possibly ordered) set of pairs of objects.
 The first in the pair is the @dfn{key}, and the second the @dfn{value}.
+
+@c Unicode line drawing chars lose for PDF output, at present.  :-(
+@c  ┌─────┬───────┐
+@c  │ KEY │ VALUE │
+@c  └─────┴───────┘
+@c Maybe someday...
+@float Figure, Key/Value Association
+@verbatim
+KEY => VALUE
+@end verbatim
+@caption{The association between a @var{key} and a @var{value}.}
+@shortcaption{Key/Value Association}
+@end float
+
 A key may appear only once in an array; it is unique.  A value may
-appear any number of times.
+appear any number of times.  For example:
+
+@float Figure, Example Associative Array
+@verbatim
+A => 5
+B => 4
+C => 4
+D => 2
+@end verbatim
+@caption{An example associative array, with four associations,
+showing unique keys (@code{A}, @code{B}, @code{C}, @code{D})
+and non-unique values (@code{5}, @code{4}, @code{2}).}
+@shortcaption{Example Associative Array}
+@end float
 
 @ji alist
 @ji dictionary
@@ -714,6 +742,13 @@ The order is the same as in the index portion of the file.
 @appendix GNU Free Documentation License
 
 @include fdl.texi
+
+
+@c ---------------------------------------------------------------------------
+@node       List of Floats
+@unnumbered List of Floats
+
+@listoffloats Figure
 
 
 @c ---------------------------------------------------------------------------
