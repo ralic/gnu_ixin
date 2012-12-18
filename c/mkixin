@@ -85,7 +85,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
    (lambda (return)
      ((walker (lambda (nf)
                 (and (printindex? nf)
-                     (return (string->symbol (caddr nf))))))
+                     (return (string->symbol (car (kids nf)))))))
       node)
      #f)))
 
