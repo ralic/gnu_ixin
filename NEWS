@@ -33,6 +33,12 @@ See end for copying conditions.
 	Previously, the "link" was the string "@insertcopying".
 	Now, it is the SXML ‘(insertcopying (@))’.
 
+  - META last element now TOC
+
+	This used to be the "remaining SXML after ‘titlepage’".  Now it
+	is a list of symbols in the set: ‘contents’, ‘shortcontents’,
+	‘summarycontents’.
+
 
 - 1.3 | 2012-12-11
 

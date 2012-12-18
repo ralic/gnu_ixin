@@ -373,7 +373,7 @@ ends with newline.
 The list:
 
 @example
-(ATTRS XID VARS SETTINGS COPYING TITLEPAGE ELEMENT...)
+(ATTRS XID VARS SETTINGS COPYING TITLEPAGE TOC)
 @end example
 
 @noindent
@@ -388,7 +388,7 @@ access less tedious.  A newline ends the @code{meta} portion.
 * settings::
 * copying::
 * titlepage::
-* meta elements::
+* toc::
 @end menu
 
 
@@ -489,15 +489,11 @@ and no @code{insertcopying} child SXML.
 
 
 @c ---------------------------------------------------------------------------
-@node       meta elements
-@subsection meta elements
+@node       toc
+@subsection toc
 
-These are the rest of the elements after @code{titlepage} but before
-the first @code{node}.  Usually:
-
-@example
-((contents (@@)))
-@end example
+A list of zero or more symbols of the set: @code{contents},
+@code{shortcontents}, @code{summarycontents}.
 
 
 @c ---------------------------------------------------------------------------

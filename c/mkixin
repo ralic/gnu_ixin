@@ -149,6 +149,18 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                              (cdr ls)))))))
         `(copying (@) ,@copying)))
 
+    (define (extract-toc x)
+      (let ((toc '())
+            (yes (map element? '(contents
+                                 shortcontents
+                                 summarycontents))))
+        (FE x (walker (lambda (nf)
+                        (FE yes (lambda (interesting?)
+                                  (and (interesting? nf)
+                                       (set! toc (cons (car nf)
+                                                       toc))))))))
+        (reverse! toc)))
+
     (let* ((xid (map grab-xid! '(setfilename
                                  settitle
                                  dircategory)))
@@ -162,7 +174,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         ,variables
         ,settings
         ,copying
-        ,@rest))))
+        ,(car rest)                     ; titlepage
+        ,(extract-toc (cdr rest))))))
 
 (define node-id (make-object-property))
 
