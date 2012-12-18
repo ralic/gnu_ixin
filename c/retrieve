@@ -171,7 +171,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (list vers meta counts)
             (lambda (name thing)
               (fso "~A:~%~Y~%" name thing)))
-        (fso "index:~%")
+        (fso "node-index:~%")
         (do ((i 0 (1+ i)))
             ((= total i))
           (fso "~Y" (by-id i)))
