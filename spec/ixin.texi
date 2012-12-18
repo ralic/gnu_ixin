@@ -431,8 +431,15 @@ The list:
 ((NAME VALUE)...)
 @end example
 
-These derive from @code{setvalue} elements.  @var{name} is a
-symbol, and @var{value} is a string.
+@table @var
+@item name
+A symbol.
+
+@item value
+A string.
+@end table
+
+These derive from @code{setvalue} elements.
 
 TODO: Mention ``@@set txiFOO'' automagic conversion (verify first!).
 
@@ -447,7 +454,13 @@ The list:
 ((NAME VALUE)...)
 @end example
 
-@var{name} is a symbol, @var{value} type depends on @var{name}.
+@table @var
+@item name
+A symbol.
+
+@item value
+The type depends on @var{name}.
+@end table
 
 
 @c ---------------------------------------------------------------------------
