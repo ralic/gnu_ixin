@@ -50,6 +50,7 @@ r := @printf '\f\n' ; $(C)retrieve
 hello := $(r) hello.ixin
 alive := $(r) alive.ixin
 rcs   := $(r) rcs.ixin
+serveez := $(r) serveez.ixin
 
 demo-%: all
 	@printf '\n======================================== %s\n' $*
