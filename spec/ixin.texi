@@ -439,9 +439,25 @@ A symbol.
 A string.
 @end table
 
-These derive from @code{setvalue} elements.
+These derive from @code{setvalue} elements.  Such variables are for the
+most part opaque to makeinfo, used solely for textual substitution.  The
+exceptions, which influence makeinfo processing, all have names that
+begin with @samp{txi}.  They are magically converted to the
+corresponding setting (@pxref{settings}) according to this table:
 
-TODO: Mention ``@@set txiFOO'' automagic conversion (verify first!).
+@example
+txicodequoteundirected     codequoteundirected
+txicodequotebacktick       codequotebacktick
+txideftypefnnl             deftypefnnewline
+@end example
+
+@noindent
+The conversion is for both @code{@@set} and @code{@@clear}:
+
+@example
+@@set VAR       @@SETTING on
+@@clear VAR     @@SETTING off
+@end example
 
 
 @c ---------------------------------------------------------------------------

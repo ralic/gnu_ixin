@@ -98,6 +98,26 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (call-with-input-file filename
               read))))
 
+(define (txi-vars-as-settings variables settings)
+  (let ((fix '((txicodequoteundirected . codequoteundirected)
+               (txicodequotebacktick   . codequotebacktick)
+               (txideftypefnnl         . deftypefnnewline))))
+    (let loop ((acc '()) (ls variables))
+      (if (pair? ls)
+          (loop (let ((pair (car ls)))
+                  (cond ((assq-ref fix (car pair))
+                         => (lambda (setting)
+                              (set! settings
+                                    (cons (list setting 'on)
+                                          settings))
+                              acc))
+                        (else
+                         (cons pair acc))))
+                (cdr ls))
+          (values                       ; 2 rv
+           (reverse! acc)
+           settings)))))
+
 (define (rescue meta)                   ; from (S)XML, well, partially
                                         ;   obviously, Someone needs
                                         ;     to learn (S)XLST  :-/
@@ -167,6 +187,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (variables (grab-variables!))
            (settings '())               ; TODO
            (copying (grab/dedup-copying!)))
+
+      ;; Magic!
+      (let-values (((new-v new-s) (txi-vars-as-settings variables settings)))
+        (set! variables new-v)
+        (set! settings new-s))
 
       ;; rv
       `(,(cdr attributes)               ; omit ‘(@)’

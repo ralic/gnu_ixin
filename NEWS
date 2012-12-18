@@ -39,6 +39,16 @@ See end for copying conditions.
 	is a list of symbols in the set: ‘contents’, ‘shortcontents’,
 	‘summarycontents’.
 
+  - automagic processing specified for three old-style txi* vars
+
+	These ‘@set/@clear VAR’ are converted to ‘@SETTING on/off’:
+
+	txicodequoteundirected     codequoteundirected
+	txicodequotebacktick       codequotebacktick
+	txideftypefnnl             deftypefnnewline
+
+	For example, see d/serveez.ixin META.
+
 
 - 1.3 | 2012-12-11
 

@@ -1,5 +1,12 @@
 2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify automagic conversion for old-style txi* vars.
+
+	* mkixin (txi-vars-as-settings): New proc.
+	(rescue): Use it to adjust ‘variables’, ‘settings’.
+
+2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Change META last element to TOC.
 
 	* mkixin (rescue extract-toc): New proc.
