@@ -53,7 +53,7 @@ Texts.  A copy of the license is included in the appendix entitled
 * Specification::           How it's gonna be!
 
 * GNU FDL::                 Copying and sharing this documentation.
-* List of Floats::
+* List of Figures::
 * Program Index::
 * Index::
 @end menu
@@ -166,12 +166,12 @@ The first in the pair is the @dfn{key}, and the second the @dfn{value}.
 @c  │ KEY │ VALUE │
 @c  └─────┴───────┘
 @c Maybe someday...
-@float Figure, Key/Value Association
+@float Figure, A Key/Value Association
 @verbatim
 KEY => VALUE
 @end verbatim
 @caption{The association between a @var{key} and a @var{value}.}
-@shortcaption{Key/Value Association}
+@shortcaption{A @var{key}/@var{value} Association}
 @end float
 
 A key may appear only once in an array; it is unique.  A value may
@@ -369,6 +369,7 @@ version 1.13, 2008/01/31.
 * node index::           For the nodes.
 * section tree::         Chapters, appendices, etc.
 * document-term sets::   Zero or more.
+* float sets::           Zero or more.
 * node data::            (Almost) SXML.
 @end menu
 
@@ -566,7 +567,7 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LENGTH COUNT TOP S-TREE-LENGTH DTS-INDEX)
+(INDEX-LENGTH COUNT TOP S-TREE-LENGTH DTS-INDEX FLOSETS-INDEX)
 @end example
 
 @table @var
@@ -604,6 +605,29 @@ element for @var{name}.
 If @var{dts-length} is zero, then there must be at least
 one @var{nid}.  This is the case when
 there is a @code{printindex} but no entries for it.
+
+@item flosets-index
+A list of entries, each of the form:
+
+@example
+(TYPE FLOSET-LENGTH [NID...])
+@end example
+
+@table @var
+@item type
+A symbol, such as @code{Figure}, or @code{-} to indicate ``untyped''.
+
+@item floset-length
+The byte-length of this set of floats.
+
+@item nid
+A node identifer for each node that contains a @code{listoffloats}
+element for @var{type}.
+@end table
+
+If @var{floset-length} is zero, then there must be at least one
+@var{nid}.  This is the case when there is a @code{listoffloats} but no
+entries for it.
 @end table
 
 @noindent
@@ -721,6 +745,44 @@ A newline ends the @code{dts} portion.
 
 
 @c ---------------------------------------------------------------------------
+@node    float sets
+@section float sets
+
+For each element in @var{flosets-index} with non-zero @var{floset-length},
+a list:
+
+@example
+(COUNT)
+@end example
+
+@noindent
+followed by @var{count} entries, each of the form:
+
+@example
+(NAME POSITION SHORT-CAPTION NID)
+@end example
+
+@table @var
+@item count
+A positive integer.
+
+@item name
+A string.
+
+@item position
+The symbol @code{-} (hyphen).  This is a placeholder for some future
+file format where position information can be specified in some way.
+
+@item short-caption
+Either a string, or a list of (possibly-nested) SXML elements and
+strings, or the symbol @code{-} (hyphen) to indicate no short caption.
+
+@item nid
+The identifier for the node where this float is found.
+@end table
+
+
+@c ---------------------------------------------------------------------------
 @node    node data
 @section node data
 
@@ -745,8 +807,8 @@ The order is the same as in the index portion of the file.
 
 
 @c ---------------------------------------------------------------------------
-@node       List of Floats
-@unnumbered List of Floats
+@node       List of Figures
+@unnumbered List of Figures
 
 @listoffloats Figure
 

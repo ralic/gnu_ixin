@@ -117,6 +117,7 @@ See end for copying conditions.
   - INDEX-LENGTH
   - S-TREE-LENGTH
   - DTS-LENGTH...
+  - FLOSET-LENGTH...
 
 * invoking a1-nf3-{mixp,guile2}
 

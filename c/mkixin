@@ -97,6 +97,12 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       '-
       (string->symbol s)))
 
+(define (find-listoffloats node)
+  (at-first 'listoffloats node
+            (lambda (nf)
+              (symbol/hyphen<-string
+               (attribute-ref nf 'type)))))
+
 (define (find-printindex node)
   (at-first 'printindex node
             (lambda (nf)
@@ -223,6 +229,73 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (null? (cdr ls)))
       (car ls)
       ls))
+
+(define (floating-environments nodes)
+  (let ((all '()))
+
+    (define (plucker id)
+
+      (lambda (nf)
+
+        (define (w/ element proc)
+          (at-first element nf proc))
+
+        (let* ((type (at-first 'floattype nf
+                               (lambda (nf)
+                                 (let ((ls (kids nf)))
+                                   (if (pair? ls)
+                                       (symbol/hyphen<-string (car ls))
+                                       '-)))))
+               (slot (or (assq type all)
+                         (let ((s (list type)))
+                           (set! all (cons s all))
+                           s))))
+          (set-cdr! slot
+                    (cons (list
+                           ;; name
+                           (attribute-ref nf 'name)
+                           ;; position
+                           (w/ 'floatpos
+                               (lambda (nf)
+                                 (if (null? (kids nf))
+                                     '-
+                                     (error "non-null floatpos"))))
+                           ;; short-caption
+                           (or (w/ 'shortcaption
+                                   (lambda (nf)
+                                     (simplified (kids nf))))
+                               '-)
+                           id)
+                          (cdr slot))))))
+
+    (define (write! pp cur)
+      (lambda (type ents)
+        (let ((count (length ents))
+              (bef (cur)))
+          (pp (list count))
+          (FE (reverse! ents) pp)
+          (force-output)
+          (list type
+                (- (cur) bef)))))
+
+    (let ((float? (element? 'float)))
+      (FE nodes (lambda (node)
+                  (let ((pluck! (plucker (node-id node))))
+                    ((walker (lambda (nf)
+                               (and (float? nf)
+                                    (pluck! nf))))
+                     node)))))
+
+    (if (null? all)
+        all
+        (let* ((port (open-output-file "TMP-W-FLOSETS"))
+               (pp (ppp port))
+               (counts (map (write! pp (lambda ()
+                                         (ftell port)))
+                            (map car all)
+                            (map cdr all))))
+          (close-port port)
+          counts))))
 
 (define (document-term-sets nodes)
 
@@ -460,6 +533,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (pp-nodes (ppp pnodes))
            (index (make-vector count #f))
            (top -1)
+           (flosets (floating-environments nodes))
+           (lonely-flosets (two-phase-accumulator))
            (dts (document-term-sets nodes))
            (lonely-dts (two-phase-accumulator)))
 
@@ -489,6 +564,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (and (negative? (caddr loc))
                (set! top id))
           (vector-set! index id (cons* name len loc))
+          (note-summary! find-listoffloats flosets lonely-flosets)
           (note-summary! find-printindex dts lonely-dts)))
 
       (define (write-index!)
@@ -522,11 +598,15 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count top
                           s-tree-length
-                          (append dts (lonely-dts))))
+                          (append dts (lonely-dts))
+                          (append flosets (lonely-flosets))))
         (close-port port)
-        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A TMP-W-NODES"
+        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A ~A TMP-W-NODES"
                         (if (pair? dts)
                             "TMP-W-DTS"
+                            "")
+                        (if (pair? flosets)
+                            "TMP-W-FLOSETS"
                             ""))))
 
           (define (fsys s . args)

@@ -1,3 +1,14 @@
+2012-12-19  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify and handle "float sets".
+
+	* ixin.texi (Top): Rename "List of Floats" to "List of Figures" in menu.
+	(associative array): Use @var in @shortcaption for first Figure.
+	(Specification): Add "float sets" to menu.
+	(counts): Add FLOSETS-INDEX to form, table.
+	(float sets): New node/section.
+	(List of Figures): Rename from "List of Floats".
+
 2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Move S-TREE immediately after NODE-INDEX.

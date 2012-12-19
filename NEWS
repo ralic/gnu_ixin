@@ -64,6 +64,11 @@ See end for copying conditions.
 	Hmmm, is it valid XML to use combining chars when there are
 	alternatives?  (See comment in doc.)
 
+  - new specification / support for "float sets"
+
+	The new "floset" (‘float’ and ‘listoffloat’) handling is
+	analogous to that of "dts" (‘indexterm’ and ‘printindex’).
+
 
 - 1.3 | 2012-12-11
 

@@ -1,5 +1,18 @@
 2012-12-19  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify and handle "float sets".
+
+	* mkixin (find-listoffloats, floating-environments): New procs.
+	(do-it!): Keep track of float sets, lonely ones, too.
+	(do-it! grok!): Note any floats.
+	(do-it!): If there are any, output them, as well.
+	* retrieve (flosets-list): New proc.
+	(in): Read flosets; return them.
+	(out): Take flosets.
+	(out --dump): Display flosets, if any.
+
+2012-12-19  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Break out subroutines useful for both DTS and floats.
 
 	* mkixin (attribute-ref): New proc.

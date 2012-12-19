@@ -48,12 +48,16 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 (define (dts-list counts)
   (list-ref counts 4))
 
+(define (flosets-list counts)
+  (list-ref counts 5))
+
 (define (in filename)
   (let ((p (open-input-file filename))
         (vers #f)
         (meta #f)
         (counts #f)
         (index #f)
+        (flosets #f)
         (dtsi #f)
         (s-tree #f)
         (base #f))
@@ -94,6 +98,29 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
                (apply go dts))
              (set! dtsi (reverse! acc))))
+       (let loop ((acc '()) (ls (flosets-list counts)))
+         (if (pair? ls)
+             (let ((fl (car ls)))
+
+               (define (go type size . nodes)
+
+                 (define (entries n)
+                   (let more ((acc '()) (n n))
+                     (if (zero? n)
+                         (reverse! acc)
+                         (more (cons (read p) acc)
+                               (1- n)))))
+
+                 (loop (if (positive? size)
+                           (let ((desc (read p)))
+                             (acons (cons type (cdr desc))
+                                    (entries (car desc))
+                                    acc))
+                           acc)
+                       (cdr ls)))
+
+               (apply go fl))
+             (set! flosets (reverse! acc))))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
       (else
@@ -107,6 +134,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               index
               s-tree
               dtsi
+              flosets
               base
               p))))
 
@@ -142,7 +170,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index s-tree dtsi base port)
+  (lambda (vers meta counts index s-tree dtsi flosets base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -181,6 +209,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (map cdr dtsi)
             (lambda (details dts)
               (fso "dts: ~A~%~{~Y~}~%" details dts)))
+        (FE (map car flosets)
+            (map cdr flosets)
+            (lambda (details ents)
+              (fso "floset: ~A~%~{~Y~}~%" details ents)))
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))
