@@ -82,9 +82,9 @@ See end for copying conditions.
     |---------------------------+-------------------------------------------|
     | documentencoding          | string                                    |
     |---------------------------+-------------------------------------------|
-    | codequotebacktick         | (from @set/@clear)                        |
-    | codequoteundirected       | (from @set/@clear)                        |
-    | txideftypefnnl            | (from @set/@clear)                        |
+    | codequoteundirected       | sym: on off (also from @set/@clear)       |
+    | codequotebacktick         | sym: on off (also from @set/@clear)       |
+    | deftypefnnewline          | sym: on off (also from @set/@clear)       |
     |---------------------------+-------------------------------------------|
     | exampleindent             | sym: asis / integer                       |
     | paragraphindent           | sym: asis / integer                       |
