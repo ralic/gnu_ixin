@@ -46,10 +46,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 ;; NF stands for "normal form 3": (ELEMENT (@ (ATTR VALUE)...) CHILD...).
 ;; The degenerate case:           (ELEMENT (@))
 
+(define (attribute-ref nf name)
+  (car (assq-ref (cdadr nf)
+                 name)))
+
 (define (symbol<-attribute-ref nf name)
   (string->symbol
-   (car (assq-ref (cdadr nf)
-                  name))))
+   (attribute-ref nf name)))
 
 (define (kids nf)
   (cddr nf))
@@ -79,15 +82,25 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    (walk new-up kid)))))))
   walk)
 
+(define (at-first interesting nf proc)
+  (let ((interesting? (element? interesting)))
+    (call-with-current-continuation
+     (lambda (return)
+       ((walker (lambda (nf)
+                  (and (interesting? nf)
+                       (return (proc nf)))))
+        nf)
+       #f))))
+
+(define (symbol/hyphen<-string s)
+  (if (string-null? s)
+      '-
+      (string->symbol s)))
+
 (define (find-printindex node)
-  (define printindex? (element? 'printindex))
-  (call-with-current-continuation
-   (lambda (return)
-     ((walker (lambda (nf)
-                (and (printindex? nf)
-                     (return (string->symbol (car (kids nf)))))))
-      node)
-     #f)))
+  (at-first 'printindex node
+            (lambda (nf)
+              (string->symbol (car (kids nf))))))
 
 (define (fs s . args)
   (apply simple-format #f s args))
@@ -204,6 +217,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
 (define node-id (make-object-property))
 
+(define (simplified ls)
+  ;; Simplify (STRING) => STRING, maybe.
+  (if (and (string? (car ls))
+           (null? (cdr ls)))
+      (car ls)
+      ls))
+
 (define (document-term-sets nodes)
 
   (define font (make-object-property))
@@ -226,14 +246,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
               (string-concatenate (map actual (kids x)))
               x))
 
-        (let* ((term (kids elem))
-               (ent (list
-                     ;; Simplify (STRING) => STRING, maybe.
-                     (if (and (string? (car term))
-                              (null? (cdr term)))
-                         (car term)
-                         term)
-                     id)))
+        (let ((ent (list (simplified (kids elem))
+                         id)))
           (set! (font ent) (or (font elem) default-font))
           (set! (key ent) (actual elem))
           ent))
@@ -427,6 +441,15 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    (map id<-name loc))
                  (map cdr full)))))
 
+(define (two-phase-accumulator)
+  (let ((acc '()))
+    ;; rv
+    (lambda x
+      (cond ((pair? x)
+             (set! acc (cons x acc))
+             x)
+            (else acc)))))
+
 (define (do-it! filename)
   (let*-values (((stem snarf) (how-to-handle filename))
                 ((meta nodes) (break! (element? 'node)
@@ -437,16 +460,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (pp-nodes (ppp pnodes))
            (index (make-vector count #f))
            (top -1)
-           (dts (document-term-sets nodes)))
-
-      (define lonely-dts
-        (let ((acc '()))
-          ;; lonely-dts
-          (lambda x
-            (cond ((pair? x)
-                   (set! acc (cons x acc))
-                   x)
-                  (else acc)))))
+           (dts (document-term-sets nodes))
+           (lonely-dts (two-phase-accumulator)))
 
       (define (grok! name loc node)
 
@@ -463,14 +478,18 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (let ((len (stash!))
               (id (node-id node)))
+
+          (define (note-summary! look known lonely)
+            (and=> (look node)
+                   (lambda (key)
+                     (let ((lp (last-pair (or (assq key known)
+                                              (lonely key 0)))))
+                       (set-cdr! lp (cons id (cdr lp)))))))
+
           (and (negative? (caddr loc))
                (set! top id))
           (vector-set! index id (cons* name len loc))
-          (and=> (find-printindex node)
-                 (lambda (type)
-                   (let ((lp (last-pair (or (assq type dts)
-                                            (lonely-dts type 0)))))
-                     (set-cdr! lp (cons id (cdr lp))))))))
+          (note-summary! find-printindex dts lonely-dts)))
 
       (define (write-index!)
         (call-with-output-file "TMP-W-INDEX"
