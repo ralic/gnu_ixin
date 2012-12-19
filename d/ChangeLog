@@ -1,3 +1,9 @@
+2012-12-19  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add combining chars and cyrillic to prob.xml.
+
+	* prob.xml: Do ‘s/προβ/một Чёрт μ!/g’.
+
 2012-12-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Support "make demo-serveez".

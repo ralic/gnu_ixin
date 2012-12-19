@@ -3,15 +3,17 @@
 <texinfo xml:lang="en">
   <setfilename>prob.xml</setfilename>
   <setvalue name="☯">☯</setvalue>
-  <settitle>προβ</settitle>
+  <!-- NB: Although U+1ED9 (ộ) is available, we use U+F4 (ô) plus U+0323 ( ̣)
+       to exercise the tools a bit. -->
+  <settitle>một Чёрт μ!</settitle>
   <para>This manual is moot.</para>
   <para>Copyright &copyright; 2012 Thien-Thi Nguyen</para>
   <quotation>
     <para>Permission is granted to bend, spindle and/or mutilate this document.</para>
   </quotation>
-  <dircategory>προβ</dircategory>
+  <dircategory>một Чёрт μ!</dircategory>
   <titlepage>
-    <booktitle>προβ</booktitle>
+    <booktitle>một Чёрт μ!</booktitle>
     <booksubtitle>zow!</booksubtitle>
     <author>Thien-Thi Nguyen</author>
     <para>This manual is moot.</para>
@@ -23,18 +25,18 @@
   <contents></contents>
   <node>
     <nodename>Top</nodename>
-    <nodenext>προβ</nodenext>
+    <nodenext>một Чёрт μ!</nodenext>
     <nodeup>(dir)</nodeup>
     <unnumbered>
       <title>ZOW</title>
     </unnumbered>
   </node>
   <node>
-    <nodename>προβ</nodename>
+    <nodename>một Чёрт μ!</nodename>
     <nodeprev>Top</nodeprev>
     <nodeup>Top</nodeup>
     <chapter>
-      <title>προβ</title>
+      <title>một Чёрт μ!</title>
       <printindex>cp</printindex>
     </chapter>
   </node>
