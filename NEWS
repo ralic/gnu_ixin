@@ -59,6 +59,8 @@ See end for copying conditions.
 	stretching").  This is a design-aesthetic, upward-compatability,
 	hand-wavy, out-of-our-gourd reason, admittedly...
 
+	Also, this block is now called the "sectioning tree".
+
   - doc d/prob.xml includes combining chars and cyrillic
 
 	Hmmm, is it valid XML to use combining chars when there are

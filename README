@@ -106,7 +106,7 @@ See end for copying conditions.
 * possible access patterns
 
   The retrieve program illustrates one access pattern: read up
-  and through the section tree, and then use COUNTS and INDEX
+  and through the sectioning tree, and then use COUNTS and INDEX
   information to dig out node data on demand.
 
   Another, more incremental, approach is to read up through COUNTS,

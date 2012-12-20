@@ -372,7 +372,7 @@ version 1.13, 2008/01/31.
 * meta::                 Indispensible front matter.
 * counts::               Summarize the indices.
 * node index::           For the nodes.
-* section tree::         Chapters, appendices, etc.
+* sectioning tree::      Chapters, appendices, etc.
 * document-term sets::   Zero or more.
 * float sets::           Zero or more.
 * node data::            (Almost) SXML.
@@ -592,7 +592,7 @@ The node identifier of the @code{Top} node.
 @*@code{???} If this is always zero, we can omit it.
 
 @item s-tree-length
-The byte-length of the section tree.
+The byte-length of the sectioning tree.
 
 @item dts-index
 A list of entries, each of the form:
@@ -676,8 +676,8 @@ A value of -1 indicates a missing component (e.g.,
 
 
 @c ---------------------------------------------------------------------------
-@node    section tree
-@section section tree
+@node    sectioning tree
+@section sectioning tree
 
 The single tree of ``sections'', each ``node'' having the form:
 
@@ -710,11 +710,11 @@ and @var{title} is the list of (possibly-nested) SXML elements or
 strings.
 
 @item sub
-An optional (zero or more) list with same format as the section tree,
+An optional (zero or more) list with same format as the sectioning tree,
 for subsections.
 @end table
 
-Section tree top-level elements have a @var{type} from level 1, their
+Sectioning tree top-level elements have a @var{type} from level 1, their
 children from level 2, and so on.
 
 

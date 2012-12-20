@@ -1,5 +1,15 @@
 2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Say "sectioning tree" instead of "section tree".
+
+	Suggested by Karl Berry.
+
+	* ixin.texi (Specification): Use "sectioning tree" in menu.
+	(count): Likewise, for table.
+	(sectioning tree): Rename node from "section tree"; update.
+
+2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify and handle "image inlining".
 
 	* GNUmakefile (../d/logo.png): New target.
