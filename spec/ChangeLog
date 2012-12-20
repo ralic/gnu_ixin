@@ -1,5 +1,13 @@
 2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add logo image to spec doc.
+
+	* logo.svg: New file.
+	* logo.png: New file.
+	* ixin.texi (Introduction): Add @image.
+
+2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Redistribute epsf.tex from Texinfo 4.13.92.
 
 	* epsf.tex: New file.

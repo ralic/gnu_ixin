@@ -82,6 +82,8 @@ Out of these frustrated ramblings, IXIN was born.
 * Terminology::   You can't spell dictionary w/o ``diction''.
 @end menu
 
+@center @image{logo}
+
 
 @c ---------------------------------------------------------------------------
 @node    Design
