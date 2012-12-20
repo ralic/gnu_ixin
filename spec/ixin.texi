@@ -584,6 +584,7 @@ The total number of nodes.
 
 @item top
 The node identifier of the @code{Top} node.
+@*@code{???} If this is always zero, we can omit it.
 
 @item s-tree-length
 The byte-length of the section tree.
