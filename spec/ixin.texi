@@ -63,6 +63,7 @@ Texts.  A copy of the license is included in the appendix entitled
 @node    Introduction
 @chapter Introduction
 
+@cindex origin, idea
 It's 2012.  People use the info format, but find it increasingly
 difficult to express certain desired rendering, such as background
 color.  There is talk on some GNU mailing list about designing a
@@ -89,7 +90,8 @@ Out of these frustrated ramblings, IXIN was born.
 @node    Design
 @section Design
 
-@cindex design
+@cindex access, incremental
+@cindex control, rendering
 Aside from being able to ``set the background color''
 (@pxref{Introduction}), we would like a file format that supports
 incremental access and runtime (end-user) control of certain display
@@ -97,6 +99,7 @@ parameters.  Basically, late-binding for documentation.  This must be
 done in cooperation with the @dfn{rendering program}, also known as the
 @dfn{processor} or the @dfn{renderer}.
 
+@cindex origin, file-format name
 The overall approach, and the inspiration for the format name, is to
 serialize early on in the file data structures that summarize data later
 in the file.  Indexed information: IXIN.  The summaries are themselves
