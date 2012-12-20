@@ -32,7 +32,10 @@ release.texi: ../GNUmakefile
 ../d/ixin.xml: $(input)
 	makeinfo -o $@ --xml --no-split $<
 
-check: all
+../d/logo.png:
+	cd ../d && ln -s ../spec/logo.png
+
+check: all ../d/logo.png
 	$(MAKE) -C ../d ixin.sxml try-ixin
 
 ixin.pdf: $(input)

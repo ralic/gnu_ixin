@@ -69,6 +69,14 @@ See end for copying conditions.
 	The new "floset" (‘float’ and ‘listoffloat’) handling is
 	analogous to that of "dts" (‘indexterm’ and ‘printindex’).
 
+  - new specification / support for "image inlining"
+
+	The specification allows for any detectable image type, using
+	MIME ‘image/TYPE’.  The tools support, however, is limited to
+	mkixin guessing ‘image/png’ or ‘image/jpeg’, based on file
+	extension.  Since the data is inlined into node data, retrieve
+	does nothing special w/ it.
+
 
 - 1.3 | 2012-12-11
 

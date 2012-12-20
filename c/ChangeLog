@@ -1,3 +1,12 @@
+2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify and handle "image inlining".
+
+	* mkixin: Import SRFI 13 ‘string-suffix-ci?’,
+	‘(ice-9 popen)’ procs, ‘(ice-9 rdelim) read-delimited’.
+	(string<-shell-command, hang!, inline-images!): New procs.
+	(do-it!): Inline images before writing nodes.
+
 2012-12-19  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Specify and handle "float sets".

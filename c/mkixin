@@ -35,9 +35,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                           take drop))
  ((srfi srfi-11) #:select (let-values
                            let*-values))
- ((srfi srfi-13) #:select (string-drop-right))
+ ((srfi srfi-13) #:select (string-drop-right
+                           string-suffix-ci?))
  ((ice-9 pretty-print) #:select (pretty-print))
- ((ice-9 rdelim) #:select (read-line write-line)))
+ ((ice-9 popen) #:select (open-input-pipe close-pipe))
+ ((ice-9 rdelim) #:select (read-line write-line read-delimited)))
 
 (define (ppp port)
   (lambda (x)
@@ -514,6 +516,53 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    (map id<-name loc))
                  (map cdr full)))))
 
+(define (string<-shell-command s . args)
+  (read-delimited "" (open-input-pipe (apply fs s args))))
+
+(define (hang! ls . args)
+  (append! ls args))
+
+(define (inline-images! dir)
+
+  (define (expand filename ext)
+
+    (define (try ext)
+      (let ((full (fs "~A~A" (in-vicinity dir filename) ext)))
+        (and (file-exists? full)
+             full)))
+
+    ;; Mimic Info processor: (info "(texinfo) Image Syntax")
+    (or (try ext)
+        (try (fs ".~A" ext))
+        (try ".png")
+        (try ".jpg")))
+
+  (define (guess-mime-type filename)
+    (fs "image/~A"
+        (cond ((string-suffix-ci? ".png" filename) 'png)
+              ((string-suffix-ci? ".jpg" filename) jpeg)
+              ((string-suffix-ci? ".jpeg" filename) 'jpeg)
+              (else 'unknown))))
+
+  (define (inline! nf)
+    (and=> (expand (attribute-ref nf 'name)
+                   (attribute-ref nf 'extension))
+           (lambda (filename)
+             (hang! (cadr nf)           ; DWR! attributes
+                    `(type ,(guess-mime-type filename))
+                    '(encoding "base64"))
+             (hang! (kids nf)           ; DWR! children
+                    (string-drop-right
+                     (string<-shell-command "base64 ~A" filename)
+                     ;; omit final newline
+                     1)))))
+
+  ;; rv
+  (walker (let ((image? (element? 'image)))
+            (lambda (nf)
+              (and (image? nf)
+                   (inline! nf))))))
+
 (define (two-phase-accumulator)
   (let ((acc '()))
     ;; rv
@@ -528,6 +577,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                 ((meta nodes) (break! (element? 'node)
                                       (cdr (snarf))))
                 ((count names locs) (identify nodes)))
+    (FE nodes (inline-images! (dirname filename)))
     (let* ((coding 'utf-8)              ; TODO
            (pnodes (open-output-file "TMP-W-NODES"))
            (pp-nodes (ppp pnodes))

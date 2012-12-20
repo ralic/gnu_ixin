@@ -809,6 +809,50 @@ In other words, a @code{node} element sans the initial symbol
 
 The order is the same as in the index portion of the file.
 
+@c TODO: With arrival of ``references'', move this into its own node.
+@subsection image inlining
+
+@cindex inlining, image
+Each @code{image} SXML should inline its image data, base64-encoded as a
+single string, if possible.  The attributes should include:
+
+@table @code
+@item type
+A MIME-style string of the form @var{major}/@var{minor} (TODO: REF),
+where @var{major} is always @samp{image}.  If the actual type is
+unknown, the minor is @code{unknown}.
+
+@item encoding
+At present, the string @samp{base64}.
+@end table
+
+@noindent
+If the image data cannot inlined (@code{???} maybe better to require
+inlining unconditionally?), these attributes may be omitted.  For
+example:
+
+@example
+@group
+(image (@@ (width "")
+          (height "")
+          (name "logo")
+          (extension "")
+          (type "image/png")
+          (encoding "base64"))
+       (alttext (@@))
+       "iVBORw0KGgoAAAAN@dots{}
+@dots{}
+@dots{}OAAAAAElFTkSuQmCC")
+@end group
+@end example
+
+@code{???} Another idea is to gather all image (and maybe in the future,
+audio) data into its own top-level @code{blobs} (with corresponding
+@code{blobs-index} in @code{counts}).  We can even keep @code{blobs}
+purely binary if we append it after the node data, but that might give
+some renderers indigestion.  In any case, the advantage of this lifting
+over inlining would be symbolic @code{type} and @code{encoding}.
+
 
 @c ---------------------------------------------------------------------------
 @node     GNU FDL
