@@ -458,7 +458,12 @@ stands for ``external identifiers''.
 @node       vars
 @subsection vars
 
-The list:
+The list@footnote{@code{???} Maybe we should omit vars altogether,
+as they are for purely textual substitution, and the corresponding
+@code{@@value} commands are not captured, anyway.  Down w/ bloat!
+
+We would have to move the blurbs re automagically-converted @code{txi*}
+vars to settings (@pxref{settings}), of course.}:
 
 @example
 ((NAME VALUE)...)
