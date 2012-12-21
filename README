@@ -68,19 +68,20 @@ See end for copying conditions.
     | setcontentsaftertitlepage      | none                     |
     | setshortcontentsaftertitlepage | none                     |
     |--------------------------------+--------------------------|
-    | everyheadingmarks              | ???                      |
-    | evenheadingmarks               | ???                      |
-    | oddheadingmarks                | ???                      |
+    | everyheadingmarks              | sym: top bottom          |
+    | evenheadingmarks               | sym: top bottom          |
+    | oddheadingmarks                | sym: top bottom          |
     |--------------------------------+--------------------------|
-    | everyfootingmarks              | ???                      |
-    | evenfootingmarks               | ???                      |
-    | oddfootingmarks                | ???                      |
+    | everyfootingmarks              | sym: top bottom          |
+    | evenfootingmarks               | sym: top bottom          |
+    | oddfootingmarks                | sym: top bottom          |
     |--------------------------------+--------------------------|
 
 *** group C: SETTINGS that might change w/ node
 
     |---------------------------+-------------------------------------------|
-    | documentencoding          | string                                    |
+    | documentencoding          | sym: US-ASCII UTF-8 koi8-r koi8-u         |
+    |                           | ---: ISO-8859-1 ISO-8859-15 ISO-8859-2    |
     |---------------------------+-------------------------------------------|
     | codequoteundirected       | sym: on off (also from @set/@clear)       |
     | codequotebacktick         | sym: on off (also from @set/@clear)       |
@@ -91,17 +92,15 @@ See end for copying conditions.
     | firstparagraphindent      | sym: none insert                          |
     |---------------------------+-------------------------------------------|
     | allowcodebreaks           | sym: false true                           |
-    | clickstyle                | ??? string                                |
+    | clickstyle                | ??? renderable sequence                   |
     | deftypefnnewli            | sym: on off                               |
-    | documentlanguage          | string                                    |
+    | documentlanguage          | symbol                                    |
     | frenchspacing             | sym: on off                               |
     | headings                  | sym: on off single{,after} double{,after} |
     | kbdinputstyle             | sym: code example distinct                |
     | urefbreakstyle            | sym: after before none                    |
     | xrefautomaticsectiontitle | sym: on off                               |
     |---------------------------+-------------------------------------------|
-
-    Hmm, shouldn't ‘documentencoding’ be part of group A?
 
 * possible access patterns
 
