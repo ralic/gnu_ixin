@@ -340,6 +340,14 @@ second position.  For example:
 @noindent
 Here, three SXMLs (@code{acronym}, @code{strong}, @code{emph}) have
 attributes, and two (@code{para}, @code{strong}) have SXML children.
+
+@more renderable sequence
+A list where each element is either a string or a (possibly nested)
+SXML.  Apart from @code{result}, @code{click}, and so on (all of which
+``produce'' output), all SXML must have at least one child, and the
+innermost children must be strings.  All strings, whether at top-level
+or part of an SXML, must be non-empty and must not include newline (or
+carriage return, @dots{}) characters.
 @end table
 
 The next two definitions distinguish between the different types of
@@ -710,8 +718,7 @@ level 4: subsubsection unnumberedsubsubsec appendixsubsubsec
 @end example
 
 @noindent
-and @var{title} is the list of (possibly-nested) SXML elements or
-strings.
+and @var{title} is a renderable sequence.
 
 @item sub
 An optional (zero or more) list with same format as the sectioning tree,
@@ -750,7 +757,7 @@ for this DTS.  An entry whose first element is the symbol @code{-}
 (hyphen, U+2D) has the ``inverse'' default font.
 
 @item term
-Either a string or a list of (possibly-nested) SXML elements and strings.
+Either a string or a renderable sequence.
 
 @item nid
 A node identifer for each node in which @var{term} appears.
@@ -789,8 +796,8 @@ The symbol @code{-} (hyphen).  This is a placeholder for some future
 file format where position information can be specified in some way.
 
 @item short-caption
-Either a string, or a list of (possibly-nested) SXML elements and
-strings, or the symbol @code{-} (hyphen) to indicate no short caption.
+Either a string, or a renderable sequence, or the symbol
+@code{-} (hyphen) to indicate no short caption.
 
 @item nid
 The identifier for the node where this float is found.

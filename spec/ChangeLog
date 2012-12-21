@@ -1,5 +1,13 @@
 2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Add jargon: renderable sequence
+
+	* ixin.texi (representations): Add "renderable sequence" to table.
+	(sectioning tree, document-term sets, float sets):
+	Use "renderable sequence".
+
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Use two-arg @uref.
 
 	* ixin.texi (Technique): ...here, for IXIN homepage.
