@@ -1,3 +1,13 @@
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Make retrieve process coding cookie.
+
+	* retrieve: Import SRFI 2 ‘and-let*’, ‘(ice-9 regex)’ procs.
+	(determine-coding): New proc.
+	(in): Use ‘determine-coding’; return coding.
+	(out): Accept ‘coding’.
+	(out --dump): Display ‘coding’.
+
 2012-12-13  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Add spec document.

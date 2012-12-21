@@ -4,6 +4,11 @@ See end for copying conditions.
 
 - 1.4 | NOT YET RELEASED
 
+  - retrieve reads ‘coding’, as well
+
+	Previously, this was ignored.  Now it is read, and displayed
+	(but otherwise still ignored, thereafter :-D).
+
   - specification moved from README into its own document
 
 	Sometimes it's impossible to resist the urge to bloviate...

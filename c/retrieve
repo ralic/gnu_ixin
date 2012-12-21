@@ -31,11 +31,14 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (use-modules
  ((srfi srfi-1) #:select (fold))
+ ((srfi srfi-2) #:select (and-let*))
  ((srfi srfi-11) #:select (let-values))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 format) #:select (format))
  ((ice-9 rw) #:select (read-string!/partial))
  ((ice-9 rdelim) #:select (read-line))
+ ((ice-9 regex) #:select (string-match
+                          match:substring))
  ((ice-9 popen) #:select (open-input-pipe
                           close-pipe)))
 
@@ -44,6 +47,13 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
     `(for-each ,proc ,@(delq proc args))))
 
 (define index-index (make-object-property))
+
+(define (determine-coding port)
+  (and-let* ((line (read-line port))
+             ((not (eof-object? line)))
+             (m (string-match "^; -[*]- coding: (.+) -[*]-$" line)))
+    (string->symbol
+     (match:substring m 1))))
 
 (define (dts-list counts)
   (list-ref counts 4))
@@ -54,6 +64,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 (define (in filename)
   (let ((p (open-input-file filename))
         (vers #f)
+        (coding #f)
         (meta #f)
         (counts #f)
         (index #f)
@@ -64,6 +75,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
     (or (eq? 'ixin (read p))
         (error "bad magic:" filename))
     (set! vers (read p))
+    (set! coding (determine-coding p))
     (case vers
       ((1)
        (set! meta (read p))
@@ -129,6 +141,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
     ;; rv
     (lambda ()
       (values vers
+              coding
               meta
               counts
               index
@@ -170,7 +183,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers meta counts index s-tree dtsi flosets base port)
+  (lambda (vers coding meta counts index s-tree dtsi flosets base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -195,8 +208,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
           s))
 
       (define (--dump abbrev)
-        (FE '(vers meta counts)
-            (list vers meta counts)
+        (FE '(vers coding meta counts)
+            (list vers coding meta counts)
             (lambda (name thing)
               (fso "~A:~%~Y~%" name thing)))
         (fso "node-index:~%")
