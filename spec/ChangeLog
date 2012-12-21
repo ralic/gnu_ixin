@@ -1,5 +1,12 @@
 2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] De-emphasize "input SXML"; suggest dropping META ATTRS.
+
+	* ixin.texi (meta): Rewrite blurb.
+	(attrs): Likewise; add @qqq doubt.
+
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Decruft: Drop unused definition ‘A-SXML’.
 
 	* ixin.texi (representations): ...here, from the table.

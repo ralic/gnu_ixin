@@ -417,9 +417,7 @@ The list:
 @end example
 
 @noindent
-that comprise the immediate children of the (input) @code{texinfo} tree,
-truncated at the first @code{node}, and reformatted to make client
-access less tedious.
+that comprises all the information prior to the first @code{@@node}.
 
 @menu
 * attrs::
@@ -436,12 +434,17 @@ access less tedious.
 @node       attrs
 @subsection attrs
 
-The SXML attributes of the original @code{texinfo} SXML sans
-@code{(@@)}, usually:
+The attributes of the original SXML sans @code{(@@)}, usually:
 
 @example
 ((xml:lang "en"))
 @end example
+
+@noindent
+@qqq{} We can probably omit ATTRS, as makeinfo will be generating IXIN
+directly, w/o an intermediate full-document SXML step (or at least, such
+a step would be an internal implementation detail).  Anyway, the usual
+value (above) is not useful.
 
 
 @c ---------------------------------------------------------------------------
