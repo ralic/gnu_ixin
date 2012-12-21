@@ -123,8 +123,8 @@ mailing list.
 @pindex mkixin
 @pindex retrieve
 Every so often, a set of exploratory utils (programs) and example files,
-collectively known as ``IXIN tarballs'' are published on its homepage:
-@uref{http://www.gnuvola.org/software/ixin/}.
+collectively known as ``IXIN tarballs'' are published on its
+@uref{http://www.gnuvola.org/software/ixin/, homepage}.
 Ideally, each feature of the file format would be demonstrated by the
 utils and example files.  The reality is different, unfortunately
 (primarily due to design and implementation limitations in the util
