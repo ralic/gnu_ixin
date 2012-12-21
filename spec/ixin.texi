@@ -335,14 +335,6 @@ second position.  For example:
 @noindent
 Here, three SXMLs (@code{acronym}, @code{strong}, @code{emph}) have
 attributes, and two (@code{para}, @code{strong}) have SXML children.
-
-@more A-SXML
-Stands for ``anonymous'' (or if you prefer ``almost'') SXML, which is
-like SXML, but sans @var{name}:
-
-@example
-((@@ [ATTRIBUTE@dots{}]) [CHILD@dots{}])
-@end example
 @end table
 
 The next two definitions distinguish between the different types of
