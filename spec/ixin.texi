@@ -39,6 +39,10 @@ Texts.  A copy of the license is included in the appendix entitled
 
 @contents
 
+@macro qqq
+@strong{@t{???}}
+@end macro
+
 
 @c ---------------------------------------------------------------------------
 @ifnottex
@@ -127,7 +131,7 @@ excerpted from the tarball README:
 @include todo.texi
 
 @noindent
-@xref{Specification}, for ``‘???’ doubts''.
+@xref{Specification}, for ``‘@qqq{}’ doubts''.
 
 @cindex docfood, eating one's
 @cindex artifact, mergeable
@@ -364,7 +368,7 @@ The text may have internal newlines as well.
 @node    Specification
 @chapter Specification
 
-In the following description, @code{???} indicates points that are
+In the following description, @qqq{} indicates points that are
 not very firm in the author's mind.
 
 @cindex text overall
@@ -470,7 +474,7 @@ stands for ``external identifiers''.
 @node       vars
 @subsection vars
 
-The list@footnote{@code{???} Maybe we should omit vars altogether,
+The list@footnote{@qqq{} Maybe we should omit vars altogether,
 as they are for purely textual substitution, and the corresponding
 @code{@@value} commands are not captured, anyway.  Down w/ bloat!
 
@@ -596,7 +600,7 @@ The total number of nodes.
 
 @item top
 The node identifier of the @code{Top} node.
-@*@code{???} If this is always zero, we can omit it.
+@*@qqq{} If this is always zero, we can omit it.
 
 @item s-tree-length
 The byte-length of the sectioning tree.
@@ -834,7 +838,7 @@ At present, the string @samp{base64}.
 @end table
 
 @noindent
-If the image data cannot inlined (@code{???} maybe better to require
+If the image data cannot inlined (@qqq{} maybe better to require
 inlining unconditionally?), these attributes may be omitted.  For
 example:
 
@@ -853,7 +857,7 @@ example:
 @end group
 @end example
 
-@code{???} Another idea is to gather all image (and maybe in the future,
+@qqq{} Another idea is to gather all image (and maybe in the future,
 audio) data into its own top-level @code{blobs} (with corresponding
 @code{blobs-index} in @code{counts}).  We can even keep @code{blobs}
 purely binary if we append it after the node data, but that might give

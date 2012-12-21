@@ -1,5 +1,12 @@
 2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec int] Add abstraction: qqq
+
+	* ixin.texi (qqq): New macro.
+	(Technique, Specification, vars, counts, node data): Use ‘qqq’.
+
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Include "activity list" from README in spec doc.
 
 	* GNUmakefile (input): Add todo.texi.
