@@ -19,7 +19,7 @@
 
 all: ixin.info ../d/ixin.xml
 
-input := ixin.texi release.texi fdl.texi
+input := ixin.texi release.texi todo.texi fdl.texi
 
 ixin.info: $(input)
 	makeinfo -o $@ $<
@@ -28,6 +28,13 @@ release.texi: ../GNUmakefile
 	{ sed '/^VERSION =/!d;s/.*=/@set VERSION/' $< ; \
 	  date -r $< +'@set UPDATED %Y-%m-%d' ; \
 	} > $@
+
+todo.texi: ../README
+	< $<					\
+	  sed -e '/Texinfo..hackers/,/^..-/!d'	\
+	| sed -e '1s/.*/@verbatim/'		\
+	      -e '$$s/.*/@end verbatim/'	\
+	> $@
 
 ../d/ixin.xml: $(input)
 	makeinfo -o $@ --xml --no-split $<

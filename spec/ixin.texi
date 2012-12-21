@@ -121,6 +121,13 @@ mailing list.
 Every so often, a set of explortory tools and example files,
 collectively known as ``IXIN tarballs'' are published on its homepage:
 @uref{http://www.gnuvola.org/software/ixin/}.
+Here's a snapshot of the current ``activity'' (to do or decide) list
+excerpted from the tarball README:
+
+@include todo.texi
+
+@noindent
+@xref{Specification}, for ``‘???’ doubts''.
 
 @cindex docfood, eating one's
 @cindex artifact, mergeable
