@@ -592,7 +592,7 @@ The list:
 
 @table @var
 @item index-length
-The byte-length of the index (described below).
+The byte-length of the node index (described below).
 
 @item count
 The total number of nodes.
@@ -673,7 +673,7 @@ raw ``node data'' (described below).
 @item next
 @itemx prev
 @itemx up
-Integers, pointing to other members of the index.
+Integers, pointing to other members of the node index.
 A value of -1 indicates a missing component (e.g.,
 @var{up} and @var{prev} for @code{Top} is typically -1).
 @end table
