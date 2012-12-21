@@ -465,6 +465,7 @@ The list:
 (FILENAME TITLE DIRCATEGORY)
 @end example
 
+@noindent
 All elements are strings.  These are from the @code{setfilename},
 @code{settitle} and @code{dircategory} elements, respectively.  ``XID''
 stands for ``external identifiers''.
@@ -543,6 +544,7 @@ The SXML:
 (copying (@@) (para ...)...)
 @end example
 
+@noindent
 This is the Texinfo @code{@@copying} block.
 
 
@@ -740,6 +742,7 @@ a list:
 (COUNT FONT)
 @end example
 
+@noindent
 followed by @var{count} entries, each of the form:
 
 @example
