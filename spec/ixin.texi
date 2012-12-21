@@ -592,7 +592,7 @@ The list:
 
 @table @var
 @item index-length
-The byte-length of the node index (described below).
+The byte-length of the node index (@pxref{node index}).
 
 @item count
 The total number of nodes.
@@ -668,7 +668,7 @@ A string, e.g., @code{"Top"}.
 
 @item length
 The (integer) number of bytes required to read the
-raw ``node data'' (described below).
+raw ``node data'' (@pxref{node data}).
 
 @item next
 @itemx prev
