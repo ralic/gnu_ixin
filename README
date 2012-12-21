@@ -187,13 +187,24 @@ See end for copying conditions.
 
 * What needs to be done, still?
 
-  - write ixin.el that uses retrieve repl
   - w/ upstream (Texinfo) hackers:
-    - obtain "torture.xml"
-    - discuss what is missing
-      - macros (maybe i'm missing something?)
-      - images, floats, etc
-    - work towards finalizing v1
+    - still missing
+      - settings
+        - detection
+        - tracking
+      - references
+        - external
+	  - for HTML anchors and such
+	  - via "normalized label"
+        - internal
+	  - from nodes to indices
+	  - via "ix coordinate"
+    - image snarfing (* is current choice)
+      - how? -- binary, *base64
+      - when? -- never, optional, *always
+      - where? -- blobs + blobs-index, *inline
+    - resolve ‘???’ doubts
+  - write ixin.el that uses retrieve repl
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 
