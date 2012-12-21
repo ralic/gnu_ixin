@@ -1,5 +1,15 @@
 2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Move ‘block’ to head of jargon; use it more.
+
+	* ixin.texi (representations): Move ‘block’ first.
+	(Specification, first line, meta, counts, node index)
+	(document-term sets, node data): Avoid "portion";
+	don't mention "ends w/ newline" or "followed by newline";
+	instead, use "block" or "series of blocks".
+
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Add abstraction: qqq
 
 	* ixin.texi (qqq): New macro.

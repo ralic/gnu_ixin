@@ -227,6 +227,10 @@ never makes use of boolean values, so there is no risk of confusion.)
 @subsection representations
 
 @table @asis
+@more block
+Text that ends with newline (U+0A).
+The text may have internal newlines as well.
+
 @more integer
 A whole number, possibly negative.  Some examples: -1, 0, 42.
 A @dfn{hex integer} is an integer represented using the hexadecimal
@@ -341,7 +345,6 @@ like SXML, but sans @var{name}:
 @end example
 @end table
 
-
 The next two definitions distinguish between the different types of
 associative arrays (@pxref{associative array}).
 
@@ -358,11 +361,6 @@ Index'' (formed from @code{@@cindex} entries), we say ``Concept DTS''.
 We choose ``dts'' to be purposefully very different from ``index'' to
 avoid horrible confusion, and to allow ``dts index'' to have meaning.
 
-@table @asis
-@more block
-Text that ends with newline (U+0A).
-The text may have internal newlines as well.
-@end table
 
 @c ---------------------------------------------------------------------------
 @node    Specification
@@ -372,8 +370,8 @@ In the following description, @qqq{} indicates points that are
 not very firm in the author's mind.
 
 @cindex text overall
-Overall, the format is plain UTF-8 text.  With the exception of
-the @code{meta} portion, all SXML trees are third-normal form, with
+Overall, the format is a series of text blocks.  With the exception of
+the @code{meta} block, all SXML trees are third-normal form, with
 abutting character-data sequences coalesced, attributes explicit in the
 tree's CADR, and in the "default" namespace defined in the Texinfo DTD,
 version 1.13, 2008/01/31.
@@ -413,8 +411,7 @@ The GNU Emacs Reference Manual}.
 @end table
 
 The rest of the line is exactly as above, with only one space between
-tokens, and a @samp{:} (colon) as part of the third token.  The line
-ends with newline.
+tokens, and a @samp{:} (colon) as part of the third token.
 
 
 @c ---------------------------------------------------------------------------
@@ -430,7 +427,7 @@ The list:
 @noindent
 that comprise the immediate children of the (input) @code{texinfo} tree,
 truncated at the first @code{node}, and reformatted to make client
-access less tedious.  A newline ends the @code{meta} portion.
+access less tedious.
 
 @menu
 * attrs::
@@ -654,22 +651,16 @@ If @var{floset-length} is zero, then there must be at least one
 entries for it.
 @end table
 
-@noindent
-A newline ends the @code{counts} portion.
-
 
 @c ---------------------------------------------------------------------------
 @node    node index
 @section node index
 
-A series of @var{count} lists (@pxref{counts}), each of the form:
+A series of @var{count} blocks (@pxref{counts}), each of the form:
 
 @example
 (NAME LENGTH NEXT PREV UP)
 @end example
-
-@noindent
-and each followed by newline.
 
 @table @var
 @item name
@@ -766,7 +757,6 @@ A node identifer for each node in which @var{term} appears.
 @end table
 
 The entries in each DTS is sorted alphabetically, case insensitively.
-A newline ends the @code{dts} portion.
 
 
 @c ---------------------------------------------------------------------------
@@ -811,7 +801,7 @@ The identifier for the node where this float is found.
 @node    node data
 @section node data
 
-A series of @var{count} forms (@pxref{counts}), each with form:
+A series of @var{count} blocks (@pxref{counts}), each with form:
 
 @example
 (ATTRS ELEMENT...)
@@ -819,9 +809,7 @@ A series of @var{count} forms (@pxref{counts}), each with form:
 
 @noindent
 In other words, a @code{node} element sans the initial symbol
-@code{node}, and followed by newline.
-
-The order is the same as in the index portion of the file.
+@code{node}.  The order is the same as in the node index.
 
 @c TODO: With arrival of ``references'', move this into its own node.
 @subsection image inlining
