@@ -1,5 +1,12 @@
 2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Explain "vetting gaps"; add one for ‘image/*’.
+
+	* ixin.texi (Technique): Explain "vetting gaps".
+	(node data): Add footnote for ‘image/*’ vetting gap.
+
+2012-12-21  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] De-emphasize "input SXML"; suggest dropping META ATTRS.
 
 	* ixin.texi (meta): Rewrite blurb.

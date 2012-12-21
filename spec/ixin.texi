@@ -122,9 +122,14 @@ mailing list.
 
 @pindex mkixin
 @pindex retrieve
-Every so often, a set of explortory tools and example files,
+Every so often, a set of exploratory utils (programs) and example files,
 collectively known as ``IXIN tarballs'' are published on its homepage:
 @uref{http://www.gnuvola.org/software/ixin/}.
+Ideally, each feature of the file format would be demonstrated by the
+utils and example files.  The reality is different, unfortunately
+(primarily due to design and implementation limitations in the util
+@samp{mkixin}).  To save you the trouble of looking for something that
+can never be found, we explain all such ``vetting gaps'' in footnotes.
 Here's a snapshot of the current ``activity'' (to do or decide) list
 excerpted from the tarball README:
 
@@ -136,7 +141,7 @@ excerpted from the tarball README:
 @cindex docfood, eating one's
 @cindex artifact, mergeable
 Lastly, by exercising various Texinfo features, this document itself
-serves as a test for the tools.  As a part of the IXIN tarball, its
+serves as a test for the utils.  As a part of the IXIN tarball, its
 changes track the file format as it evolves.  Once finalized, perhaps
 the specifcation documented herein can be merged upstream into Texinfo.
 
@@ -817,7 +822,16 @@ single string, if possible.  The attributes should include:
 @item type
 A MIME-style string of the form @var{major}/@var{minor} (TODO: REF),
 where @var{major} is always @samp{image}.  If the actual type is
-unknown, the minor is @code{unknown}.
+unknown, the minor is @code{unknown}@footnote{@samp{mkixin} produces
+only:
+
+@example
+image/png
+image/jpeg
+image/unknown
+@end example
+
+based on examining the filename extension.}.
 
 @item encoding
 At present, the string @samp{base64}.
