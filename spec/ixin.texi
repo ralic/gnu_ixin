@@ -2,6 +2,7 @@
 @c %**start of header
 @setfilename ixin.info
 @documentencoding UTF-8
+@documentlanguage en
 @include release.texi
 @settitle IXIN Specification @value{VERSION}
 @defindex jargon
@@ -467,14 +468,26 @@ value (above) is not useful.
 The list:
 
 @example
-(FILENAME TITLE DIRCATEGORY)
+(FILENAME LANG TITLE DIRCATEGORY)
 @end example
 
 @noindent
-All elements are strings.  These are from the @code{@@setfilename},
-@code{@@settitle} and @code{@@dircategory} commands, respectively.
+These are from the @code{@@setfilename}, @code{@@documentlanguage},
+@code{@@settitle} and @code{@@dircategory}
+commands, respectively.
 ``XID'' stands for ``external identifiers''.
 @* @qqq{} What about @code{@@direntry}?
+
+@table @var
+@item filename
+@itemx title
+@itemx dircategory
+A string, or the symbol @code{none}.
+
+@item lang
+A symbol or a list of two symbols.
+If @code{@@documentlanguage} is unspecified, defaults to @code{(en US)}.
+@end table
 
 
 @c ---------------------------------------------------------------------------
@@ -529,6 +542,7 @@ vars to settings (@pxref{settings}), of course.
 The list@footnote{@samp{mkixin} detects:
 
 @example
+documentlanguage
 codequoteundirected
 codequotebacktick
 deftypefnnewline
@@ -632,7 +646,7 @@ on @var{name}.  In the following table, the first column is the
 
 @item A
 @tab @t{documentlanguage}
-@tab @qqq{} symbol
+@tab @qqq{} symbol / list of two symbols
 
 @item A
 @tab @t{frenchspacing}

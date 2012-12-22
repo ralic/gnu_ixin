@@ -145,6 +145,24 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
   (let-values (((attributes rest) (car+cdr meta)))
 
+    (define (grab-lang! nf)
+      (set! rest (delq! nf rest))       ; DWR!
+      (let ((s (if (pair? (kids nf))
+                   (car (kids nf))
+                   (attribute-ref nf 'xml:lang))))
+
+        (define (subsym beg end)
+          (string->symbol (substring s beg end)))
+
+        ;; Obligingly unfubar makeinfo 4.13 output.
+        (case (string-length s)
+          ((8) (list (subsym 3 5)
+                     (subsym 6 8)))
+          ((5) (list (subsym 0 2)
+                     (subsym 3 5)))
+          ((2) (subsym 0 2))
+          (else (error "unhandled lang:" s)))))
+
     (define (grab-xid! element)         ; external identifiers
       (or (and=> (assq-ref rest element)
                  (lambda (x)
@@ -202,17 +220,23 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                                        toc))))))))
         (reverse! toc)))
 
-    (let* ((xid (map grab-xid! '(setfilename
+    (let* ((lang (and=> (assq 'documentlanguage rest)
+                        grab-lang!))
+           (xid (map grab-xid! '(setfilename
+                                 NO-SUCH
                                  settitle
                                  dircategory)))
            (variables (grab-variables!))
-           (settings '())               ; TODO
+           (settings (cond (lang `((documentlanguage ,lang)))
+                           (else '()))) ; TODO
            (copying (grab/dedup-copying!)))
 
       ;; Magic!
       (let-values (((new-v new-s) (txi-vars-as-settings variables settings)))
         (set! variables new-v)
         (set! settings new-s))
+
+      (set-car! (cdr xid) (or lang '(en US)))
 
       ;; rv
       `(,(cdr attributes)               ; omit ‘(@)’

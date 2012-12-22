@@ -1,3 +1,10 @@
+2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify and handle LANG in META XID.
+
+	* mkixin (rescue grab-lang!): New proc.
+	(rescue): Include LANG in XID; if specified, also add to SETTINGS.
+
 2012-12-20  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Specify and handle "image inlining".

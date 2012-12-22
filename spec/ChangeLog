@@ -1,5 +1,15 @@
 2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify and handle LANG in META XID.
+
+	* ixin.texi: Add ‘@documentlanguage en’.
+	(xid): Add ‘LANG’ to form; rewrite simple
+	paragraph as table; add ‘lang’ to table.
+	(settings) <footnote>: Add ‘documentlanguage’.
+	<table documentlanguage>: Update ‘type’ column.
+
+2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify TWEAKS in NODE-INDEX elements.
 
 	* ixin.texi (node index): ...here, w/ vetting gap footnote.
