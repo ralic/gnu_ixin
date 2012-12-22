@@ -471,9 +471,9 @@ The list:
 @end example
 
 @noindent
-All elements are strings.  These are from the @code{setfilename},
-@code{settitle} and @code{dircategory} elements, respectively.  ``XID''
-stands for ``external identifiers''.
+All elements are strings.  These are from the @code{@@setfilename},
+@code{@@settitle} and @code{@@dircategory} commands, respectively.
+``XID'' stands for ``external identifiers''.
 
 
 @c ---------------------------------------------------------------------------
@@ -499,7 +499,7 @@ A symbol.
 A string.
 @end table
 
-These derive from @code{setvalue} elements.  Such variables are for the
+These derive from @code{@@set} commands.  Such variables are for the
 most part opaque to makeinfo, used solely for textual substitution.  The
 exceptions, which influence makeinfo processing, all have names that
 begin with @samp{txi}.  They are magically converted to the
@@ -738,8 +738,8 @@ A symbol, such as @code{cp} or @code{fn}.
 The byte-length of this DTS.
 
 @item nid
-A node identifier for each node that contains a @code{printindex}
-element for @var{name}.
+A node identifier for each node that contains a @code{@@printindex}
+command for @var{name}.
 @end table
 
 If @var{dts-length} is zero, then there must be at least
@@ -761,8 +761,8 @@ A symbol, such as @code{Figure}, or @code{-} to indicate ``untyped''.
 The byte-length of this set of floats.
 
 @item nid
-A node identifer for each node that contains a @code{listoffloats}
-element for @var{type}.
+A node identifer for each node that contains a @code{@@listoffloats}
+command for @var{type}.
 @end table
 
 If @var{floset-length} is zero, then there must be at least one
@@ -926,7 +926,7 @@ A series of @var{count} blocks (@pxref{counts}), each with form:
 @end example
 
 @noindent
-In other words, a @code{node} element sans the initial symbol
+In other words, a @code{node} SXML sans the initial symbol
 @code{node}.  The order is the same as in the node index.
 
 @c TODO: With arrival of ``references'', move this into its own node.

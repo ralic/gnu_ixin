@@ -1,5 +1,14 @@
 2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Replace "element" w/ "command" or "SXML".
+
+	* ixin.texi (xid): Use "commands"; add ‘@’ to @code contents.
+	(vars): Use "commands"; say "@@set".
+	(counts): Likewise, w/ "@@printindex" and "@@listoffloats".
+	(data): Use "SXML".
+
+2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Move README "groupings" into spec doc.
 
 	* ixin.texi (settings): Add vetting gap footnote;
