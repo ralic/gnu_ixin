@@ -474,6 +474,7 @@ The list:
 All elements are strings.  These are from the @code{@@setfilename},
 @code{@@settitle} and @code{@@dircategory} commands, respectively.
 ``XID'' stands for ``external identifiers''.
+@* @qqq{} What about @code{@@direntry}?
 
 
 @c ---------------------------------------------------------------------------

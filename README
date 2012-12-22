@@ -130,6 +130,7 @@ See end for copying conditions.
 
   - w/ upstream (Texinfo) hackers:
     - still missing
+      - direntry
       - settings support in mkixin
         - detection
         - tracking

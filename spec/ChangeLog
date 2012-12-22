@@ -1,5 +1,11 @@
 2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Ponder: What about ‘@direntry’?
+
+	* ixin.texi (xid): ...here, as a @qqq doubt.
+
+2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Replace "element" w/ "command" or "SXML".
 
 	* ixin.texi (xid): Use "commands"; add ‘@’ to @code contents.
