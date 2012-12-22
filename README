@@ -44,64 +44,6 @@ See end for copying conditions.
   (Guile 1.8), or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course,
   you need to have one of those Guile versions installed, too.
 
-* groupings
-
-  This is the "current best guess" distribution of XID, VARS, SETTINGS
-  (for META divvying).  Corrections solicited!
-
-*** group A: XID
-
-    |---------------------+-----------------|
-    | setfile             | string/filename |
-    | documentdescription | string/no-LF    |
-    |---------------------+-----------------|
-
-*** group B: SETTINGS that should not change
-
-    |--------------------------------+--------------------------|
-    | novalidate                     | none                     |
-    |--------------------------------+--------------------------|
-    | fonttextsize                   | integer: 10 11           |
-    | footnotestyle                  | sym: end separate        |
-    | pagesizes                      | list of (integer symbol) |
-    | setchapternewpage              | sym: off on odd          |
-    | setcontentsaftertitlepage      | none                     |
-    | setshortcontentsaftertitlepage | none                     |
-    |--------------------------------+--------------------------|
-    | everyheadingmarks              | sym: top bottom          |
-    | evenheadingmarks               | sym: top bottom          |
-    | oddheadingmarks                | sym: top bottom          |
-    |--------------------------------+--------------------------|
-    | everyfootingmarks              | sym: top bottom          |
-    | evenfootingmarks               | sym: top bottom          |
-    | oddfootingmarks                | sym: top bottom          |
-    |--------------------------------+--------------------------|
-
-*** group C: SETTINGS that might change w/ node
-
-    |---------------------------+-------------------------------------------|
-    | documentencoding          | sym: US-ASCII UTF-8 koi8-r koi8-u         |
-    |                           | ---: ISO-8859-1 ISO-8859-15 ISO-8859-2    |
-    |---------------------------+-------------------------------------------|
-    | codequoteundirected       | sym: on off (also from @set/@clear)       |
-    | codequotebacktick         | sym: on off (also from @set/@clear)       |
-    | deftypefnnewline          | sym: on off (also from @set/@clear)       |
-    |---------------------------+-------------------------------------------|
-    | exampleindent             | sym: asis / integer                       |
-    | paragraphindent           | sym: asis / integer                       |
-    | firstparagraphindent      | sym: none insert                          |
-    |---------------------------+-------------------------------------------|
-    | allowcodebreaks           | sym: false true                           |
-    | clickstyle                | ??? renderable sequence                   |
-    | deftypefnnewli            | sym: on off                               |
-    | documentlanguage          | symbol                                    |
-    | frenchspacing             | sym: on off                               |
-    | headings                  | sym: on off single{,after} double{,after} |
-    | kbdinputstyle             | sym: code example distinct                |
-    | urefbreakstyle            | sym: after before none                    |
-    | xrefautomaticsectiontitle | sym: on off                               |
-    |---------------------------+-------------------------------------------|
-
 * possible access patterns
 
   The retrieve program illustrates one access pattern: read up
@@ -188,7 +130,7 @@ See end for copying conditions.
 
   - w/ upstream (Texinfo) hackers:
     - still missing
-      - settings
+      - settings support in mkixin
         - detection
         - tracking
       - references

@@ -524,19 +524,130 @@ The conversion is for both @code{@@set} and @code{@@clear}:
 @node       settings
 @subsection settings
 
-The list:
+The list@footnote{@samp{mkixin} detects:
+
+@example
+codequoteundirected
+codequotebacktick
+deftypefnnewline
+@end example
+
+via @code{@@set} commands, only, and only in the pre-node area.}:
 
 @example
 ((NAME VALUE)...)
 @end example
 
-@table @var
-@item name
-A symbol.
+@noindent
+where @var{name} is a symbol and the type of @var{value} depends
+on @var{name}.  In the following table, the first column is the
+@dfn{context} of the setting: @samp{O} means ``once only'' (set in
+@code{meta}, prior to the first node), and @samp{A} means ``arbitrary''
+(can be set multiple times, also inside a node).
 
-@item value
-The type depends on @var{name}.
-@end table
+@multitable {c} {@t{setshortcontentsaftertitlepage}} {sym: @t{US-ASCII UTF-8 koi8-r koi8-u}}
+@headitem c @tab setting @tab type
+@item O
+@tab @t{novalidate}
+@tab none --- @qqq{} can we omit this?
+@item O
+@tab @t{fonttextsize}
+@tab integer: @t{10 11}
+@item O
+@tab @t{footnotestyle}
+@tab sym: @t{end separate}
+@item O
+@tab @t{pagesizes}
+@tab @qqq{} list of @t{(}integer symbol@t{)}
+
+@item O
+@tab @t{setchapternewpage}
+@tab sym: @t{off on odd}
+@item O
+@tab @t{setcontentsaftertitlepage}
+@tab none
+@item O
+@tab @t{setshortcontentsaftertitlepage}
+@tab none
+
+@item O
+@tab @t{everyheadingmarks}
+@tab sym: @t{top bottom}
+@item O
+@tab @t{evenheadingmarks}
+@tab sym: @t{top bottom}
+@item O
+@tab @t{oddheadingmarks}
+@tab sym: @t{top bottom}
+
+@item O
+@tab @t{everyfootingmarks}
+@tab sym: @t{top bottom}
+@item O
+@tab @t{evenfootingmarks}
+@tab sym: @t{top bottom}
+@item O
+@tab @t{oddfootingmarks}
+@tab sym: @t{top bottom}
+
+@item A
+@tab @t{documentencoding}
+@tab sym: @t{US-ASCII UTF-8 koi8-r koi8-u}
+@*        @t{ISO-8859-1 ISO-8859-15 ISO-8859-2}
+
+@item A
+@tab @t{codequoteundirected}
+@tab sym: @t{on off}
+@item A
+@tab @t{codequotebacktick}
+@tab sym: @t{on off}
+@item A
+@tab @t{deftypefnnewline}
+@tab sym: @t{on off}
+
+@item A
+@tab @t{exampleindent}
+@tab sym: @t{asis} / integer
+@item A
+@tab @t{paragraphindent}
+@tab sym: @t{asis} / integer
+@item A
+@tab @t{firstparagraphindent}
+@tab sym: @t{none insert}
+
+@item A
+@tab @t{allowcodebreaks}
+@tab sym: @t{false true}
+@item A
+@tab @t{clickstyle}
+@tab @qqq{} renderable sequence
+
+@item A
+@tab @t{documentlanguage}
+@tab @qqq{} symbol
+
+@item A
+@tab @t{frenchspacing}
+@tab sym: @t{on off}
+@item A
+@tab @t{headings}
+@tab sym: @t{on off single@ double}
+@*        @t{singleafter doubleafter}
+
+@item A
+@tab @t{kbdinputstyle}
+@tab sym: @t{code example distinct}
+@item A
+@tab @t{urefbreakstyle}
+@tab sym: @t{after before none}
+@item A
+@tab @t{xrefautomaticsectiontitle}
+@tab sym: @t{on off}
+
+@item ?
+@tab @qqq{} (others)
+@tab ?
+@end multitable
 
 
 @c ---------------------------------------------------------------------------
