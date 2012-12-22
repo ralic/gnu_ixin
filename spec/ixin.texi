@@ -786,7 +786,7 @@ entries for it.
 A series of @var{count} blocks (@pxref{counts}), each of the form:
 
 @example
-(NAME LENGTH NEXT PREV UP)
+(NAME LENGTH NEXT PREV UP [TWEAKS])
 @end example
 
 @table @var
@@ -803,6 +803,18 @@ raw ``node data'' (@pxref{node data}).
 Integers, pointing to other members of the node index.
 A value of -1 indicates a missing component (e.g.,
 @var{up} and @var{prev} for @code{Top} is typically -1).
+
+@item tweaks
+The optional@footnote{At present, @samp{mkixin} never produces this.}
+list of settings, each having the form:
+
+@example
+(NAME VALUE)
+@end example
+
+@noindent
+Only those settings with ``arbitrary'' context can appear here
+(@pxref{settings}).
 @end table
 
 
