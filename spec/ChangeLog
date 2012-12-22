@@ -1,5 +1,11 @@
 2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Add settings: everyheading, everyfooting
+
+	* ixin.texi (settings): ...here, in table.
+
+2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Move suggestion to drop VARS from footnote to text.
 
 	* ixin.texi (vars): ...here.

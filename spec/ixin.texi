@@ -573,6 +573,9 @@ on @var{name}.  In the following table, the first column is the
 @tab none
 
 @item O
+@tab @t{everyheading}
+@tab @qqq{} list of 3 renderable sequences
+@item O
 @tab @t{everyheadingmarks}
 @tab sym: @t{top bottom}
 @item O
@@ -582,6 +585,9 @@ on @var{name}.  In the following table, the first column is the
 @tab @t{oddheadingmarks}
 @tab sym: @t{top bottom}
 
+@item O
+@tab @t{everyfooting}
+@tab @qqq{} list of 3 renderable sequences
 @item O
 @tab @t{everyfootingmarks}
 @tab sym: @t{top bottom}
