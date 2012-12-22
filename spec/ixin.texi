@@ -481,12 +481,7 @@ All elements are strings.  These are from the @code{@@setfilename},
 @node       vars
 @subsection vars
 
-The list@footnote{@qqq{} Maybe we should omit vars altogether,
-as they are for purely textual substitution, and the corresponding
-@code{@@value} commands are not captured, anyway.  Down w/ bloat!
-
-We would have to move the blurbs re automagically-converted @code{txi*}
-vars to settings (@pxref{settings}), of course.}:
+The list:
 
 @example
 ((NAME VALUE)...)
@@ -519,6 +514,12 @@ The conversion is for both @code{@@set} and @code{@@clear}:
 @@set VAR       @@SETTING on
 @@clear VAR     @@SETTING off
 @end example
+
+@qqq{} Maybe we should omit vars altogether,
+as they are for purely textual substitution, and the corresponding
+@code{@@value} commands are not captured, anyway.  Down w/ bloat!
+We would have to move the blurbs re automagically-converted @code{txi*}
+vars to settings (@pxref{settings}), of course.
 
 
 @c ---------------------------------------------------------------------------
