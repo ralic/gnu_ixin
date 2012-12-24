@@ -1,5 +1,13 @@
 2012-12-24  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] a1-nf3-mixp: Make ‘expand-file-name’ handle relative names.
+
+	* a1-nf3-mixp (expand-file-name): ...here, by
+	prefixing w/ the directory where the program is found.
+	(parser): Use ‘expand-file-name’ for mapping file.
+
+2012-12-24  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Look up DTD using PUBLIC-ID, not SYSTEM-ID.
 
 	* a1-nf3-mixp (parser external-entity-ref): Use ‘public-id’.

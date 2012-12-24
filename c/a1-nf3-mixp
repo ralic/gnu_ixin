@@ -56,9 +56,13 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
 (define HOME (getenv "HOME"))
 
 (define (expand-file-name filename)
-  (if (string-prefix? "~" filename)
-      (in-vicinity HOME (substring/shared filename 1))
-      filename))
+  (cond ((string-prefix? "~" filename)
+         (in-vicinity HOME (substring/shared filename 1)))
+        ((string-prefix? "/" filename)
+         filename)
+        (else
+         (in-vicinity (dirname (car (command-line)))
+                      filename))))
 
 (define (forms<-port port)
   (let loop ((acc '()))
@@ -73,8 +77,7 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
          (open-input-file filename))))
 
 (define (parser)
-  (let ((eemap (in-vicinity (dirname (car (command-line)))
-                            "zomg"))
+  (let ((eemap (expand-file-name "zomg"))
         (p (parser-create)))
 
     (define (external-entity-ref context base system-id public-id)
