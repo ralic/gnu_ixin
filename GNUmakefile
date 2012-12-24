@@ -25,6 +25,7 @@ all clean demo demo-% try-%:
 dd := ixin-$(VERSION)
 dist-files := \
  COPYING README NEWS \
+ dtd/* \
  spec/* \
  d/*.xml d/*.sxml d/*.ixin d/zow \
  d/GNUmakefile d/ChangeLog \

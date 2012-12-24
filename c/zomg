@@ -25,6 +25,9 @@
 ;;; Data:
 
 ("-//GNU//DTD TexinfoML V4.13//EN"
- . "/usr/share/texinfo/texinfo.dtd")
+ . "../dtd/4.13.dtd")
+
+("-//GNU//DTD TexinfoML V5.00//EN"
+ . "../dtd/5.00.dtd")
 
 ;;; zomg ends here

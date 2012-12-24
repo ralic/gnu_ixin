@@ -33,9 +33,6 @@ See end for copying conditions.
   new format.  You can do "make demo" to see some of the potential,
   though.
 
-  Even more basic, it does NOT include the Texinfo DTD, which is
-  expected under /usr/share (see [[file:c/zomg]] to manually tweak).
-
 * dependencies
 
   The distribution includes pre-built .sxml and .ixin files, so the
