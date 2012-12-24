@@ -66,8 +66,10 @@ ZOW = alive
 demo-zow: $(ZOW).ixin
 	$(C)retrieve $(ZOW).ixin repl 17 < zow
 
+TRY =
+
 try-%:
 	$(C)mkixin $*.sxml
-	$(C)retrieve $*.ixin
+	$(C)retrieve $*.ixin $(TRY)
 
 # GNUmakefile ends here
