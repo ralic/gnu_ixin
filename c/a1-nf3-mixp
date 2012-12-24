@@ -85,7 +85,7 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
       (cond ((and (not (string-prefix? "http://" system-id))
                   (open-input-file-if-exists system-id)))
             ((and (pair? eemap)
-                  (assoc-ref eemap system-id))
+                  (assoc-ref eemap public-id))
              => open-input-file-if-exists)
             (else
              (fse "~A: cannot open external entity ref~%"

@@ -1,3 +1,10 @@
+2012-12-24  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] Look up DTD using PUBLIC-ID, not SYSTEM-ID.
+
+	* a1-nf3-mixp (parser external-entity-ref): Use ‘public-id’.
+	* zomg: Update.
+
 2012-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.4

@@ -19,12 +19,12 @@
 
 ;;; Commentary:
 
-;; This file contains a series of pairs (ID . FILENAME),
-;; where both ID and FILENAME are strings.
+;; This file contains a series of pairs (PUBLIC-ID . FILENAME),
+;; where both PUBLIC-ID and FILENAME are strings.
 
 ;;; Data:
 
-("http://www.gnu.org/software/texinfo/dtd/4.13/texinfo.dtd"
+("-//GNU//DTD TexinfoML V4.13//EN"
  . "/usr/share/texinfo/texinfo.dtd")
 
 ;;; zomg ends here
