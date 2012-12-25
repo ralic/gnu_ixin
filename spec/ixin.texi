@@ -159,13 +159,9 @@ specification to describe the file format's concrete representations.
 * representations::         On view, on disk.
 @end menu
 
-@macro ji{x}
-@jargonindex \x\ (generally)
-@end macro
-
 @macro more{x}
 @item \x\
-@ji \x\
+@jargonindex \x\
 @end macro
 
 
@@ -179,7 +175,7 @@ conceptual data structure and its related algorithms.
 
 @table @asis
 @more associative array
-@ji array, associative
+@jargonindex array, associative
 A (possibly ordered) set of pairs of objects.
 The first in the pair is the @dfn{key}, and the second the @dfn{value}.
 
@@ -212,10 +208,10 @@ and non-unique values (@code{5}, @code{4}, @code{2}).}
 @shortcaption{Example Associative Array}
 @end float
 
-@ji alist
-@ji dictionary
-@ji ordered-map
-@ji hash table
+@jargonindex alist
+@jargonindex dictionary
+@jargonindex ordered-map
+@jargonindex hash table
 Other names for associative array are: alist, dictionary, ordered-map,
 hash table.
 
