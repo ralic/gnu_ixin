@@ -17,12 +17,15 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
+MAKEINFO = makeinfo
+TEXI2PDF = texi2pdf
+
 all: ixin.info ../d/ixin.xml
 
 input := ixin.texi release.texi todo.texi fdl.texi
 
 ixin.info: $(input)
-	makeinfo -o $@ $<
+	$(MAKEINFO) -o $@ $<
 
 release.texi: ../GNUmakefile
 	{ sed '/^VERSION =/!d;s/.*=/@set VERSION/' $< ; \
@@ -37,7 +40,7 @@ todo.texi: ../README
 	> $@
 
 ../d/ixin.xml: $(input)
-	makeinfo -o $@ --xml --no-split $<
+	$(MAKEINFO) -o $@ --xml --no-split $<
 
 ../d/logo.png:
 	cd ../d && ln -s ../spec/logo.png
@@ -46,6 +49,6 @@ check: all ../d/logo.png
 	$(MAKE) -C ../d ixin.sxml try-ixin
 
 ixin.pdf: $(input)
-	texi2pdf -o $@ $< --clean --batch
+	$(TEXI2PDF) -o $@ $< --clean --batch
 
 # GNUmakefile ends here

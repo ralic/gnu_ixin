@@ -1,3 +1,13 @@
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[maint] Allow for makeinfo(1) and texi2pdf(1) override.
+
+	Some flexability to help play around w/ different versions.
+
+	* GNUmakefile (MAKEINFO, TEXI2PDF): New vars.
+	(ixin.info, ../d/ixin.xml): Use $(MAKEINFO).
+	(ixin.pdf): Use $(TEXI2PDF).
+
 2012-12-25  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Don't bother w/ "(generally)" in jargonindex terms.
