@@ -1,5 +1,11 @@
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Use ‘-’ (hyphen) for unspecified XID element.
+
+	* ixin.texi (xid): Update table.
+
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Allow for makeinfo(1) and texi2pdf(1) override.
 
 	Some flexability to help play around w/ different versions.

@@ -168,7 +168,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                  (lambda (x)
                    (set! rest (assq-remove! rest element)) ; DWR!
                    (cadr x)))
-          'none))
+          '-))
 
     (define (grab-variables!)
       (let loop ((acc '()))

@@ -478,7 +478,7 @@ commands, respectively.
 @item filename
 @itemx title
 @itemx dircategory
-A string, or the symbol @code{none}.
+A string, or the symbol @code{-} (hyphen).
 
 @item lang
 A symbol or a list of two symbols.
