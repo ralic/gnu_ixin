@@ -1,5 +1,12 @@
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Use side-effects less.
+
+	* mkixin (rescue grab-xid!): Take arg LANG; use it for rv.
+	(rescue): Update call to ‘grab-xid!’; don't jam XID directly.
+
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify / handle META XID DIRENTRIES.
 
 	* mkixin: Import SRFI 13 ‘string-trim-both’.

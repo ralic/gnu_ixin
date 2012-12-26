@@ -164,7 +164,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           ((2) (subsym 0 2))
           (else (error "unhandled lang:" s)))))
 
-    (define (grab-xid!)                 ; external identifiers
+    (define (grab-xid! lang)            ; external identifiers
 
       (define (x! element proc)
         (or (and=> (assq-ref rest element)
@@ -196,7 +196,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (map x!ent (cdr x)))
 
       (list (x!string 'setfilename)
-            '-                          ; TODO: get LANG directly.
+            lang
             (x!string 'settitle)
             (x!string 'dircategory)
             (x! 'direntry nice)))
@@ -253,7 +253,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (let* ((lang (and=> (assq 'documentlanguage rest)
                         grab-lang!))
-           (xid (grab-xid!))
+           (xid (grab-xid! (or lang '(en US))))
            (variables (grab-variables!))
            (settings (cond (lang `((documentlanguage ,lang)))
                            (else '()))) ; TODO
@@ -263,8 +263,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (let-values (((new-v new-s) (txi-vars-as-settings variables settings)))
         (set! variables new-v)
         (set! settings new-s))
-
-      (set-car! (cdr xid) (or lang '(en US)))
 
       ;; rv
       `(,(cdr attributes)               ; omit ‘(@)’
