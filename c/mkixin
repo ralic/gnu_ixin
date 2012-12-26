@@ -306,12 +306,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                     (cons (list
                            ;; name
                            (attribute-ref nf 'name)
-                           ;; position
-                           (w/ 'floatpos
-                               (lambda (nf)
-                                 (if (null? (kids nf))
-                                     '-
-                                     (error "non-null floatpos"))))
                            ;; short-caption
                            (or (w/ 'shortcaption
                                    (lambda (nf)

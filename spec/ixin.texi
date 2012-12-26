@@ -934,7 +934,7 @@ a list:
 followed by @var{count} entries, each of the form:
 
 @example
-(NAME POSITION SHORT-CAPTION NID)
+(NAME SHORT-CAPTION NID)
 @end example
 
 @table @var
@@ -943,10 +943,6 @@ A positive integer.
 
 @item name
 A string.
-
-@item position
-The symbol @code{-} (hyphen).  This is a placeholder for some future
-file format where position information can be specified in some way.
 
 @item short-caption
 Either a string, or a renderable sequence, or the symbol
