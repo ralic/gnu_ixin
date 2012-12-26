@@ -692,6 +692,8 @@ The SXML:
 
 @noindent
 This is the Texinfo @code{@@copying} block.
+If there is no such block, @var{copying}
+defaults to the symbol @code{-} (hyphen).
 
 
 @c ---------------------------------------------------------------------------

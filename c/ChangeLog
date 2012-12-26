@@ -1,5 +1,13 @@
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Default META COPYING to ‘-’ (hyphen).
+
+	* mkixin (rescue grab/dedup-copying!):
+	If there are no forms, return ‘#f’.
+	(rescue): If ‘copying’ is false, use ‘-’.
+
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Drop POSITION from ‘float’ entry.
 
 	* mkixin (floating-environments plucker): ...here.

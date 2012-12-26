@@ -237,7 +237,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                       (else
                        (loop (1- left)
                              (cdr ls)))))))
-        `(copying (@) ,@copying)))
+        (and (pair? copying)
+             `(copying (@) ,@copying))))
 
     (define (extract-toc x)
       (let ((toc '())
@@ -269,7 +270,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         ,xid
         ,variables
         ,settings
-        ,copying
+        ,(or copying '-)
         ,(car rest)                     ; titlepage
         ,(extract-toc (cdr rest))))))
 
