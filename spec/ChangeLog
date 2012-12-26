@@ -1,5 +1,12 @@
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle META XID DIRENTRIES.
+
+	* ixin.texi (xid): Add ‘DIRENTRIES’ to form;
+	update blurb; add ‘direntries’ to table; remove @qqq doubt.
+
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Use ‘-’ (hyphen) for unspecified XID element.
 
 	* ixin.texi (xid): Update table.

@@ -1,5 +1,12 @@
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle META XID DIRENTRIES.
+
+	* mkixin: Import SRFI 13 ‘string-trim-both’.
+	(rescue grab-xid!): Rewrite; update caller.
+
+2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Use ‘-’ (hyphen) for unspecified XID element.
 
 	* mkixin (rescue grab-xid!): ...here, instead of ‘none’.

@@ -36,6 +36,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
  ((srfi srfi-11) #:select (let-values
                            let*-values))
  ((srfi srfi-13) #:select (string-drop-right
+                           string-trim-both
                            string-suffix-ci?))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 popen) #:select (open-input-pipe close-pipe))
@@ -163,12 +164,42 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           ((2) (subsym 0 2))
           (else (error "unhandled lang:" s)))))
 
-    (define (grab-xid! element)         ; external identifiers
-      (or (and=> (assq-ref rest element)
-                 (lambda (x)
-                   (set! rest (assq-remove! rest element)) ; DWR!
-                   (cadr x)))
-          '-))
+    (define (grab-xid!)                 ; external identifiers
+
+      (define (x! element proc)
+        (or (and=> (assq-ref rest element)
+                   (lambda (x)
+                     (set! rest (assq-remove! rest element)) ; DWR!
+                     (proc x)))
+            '-))
+
+      (define (x!string element)
+        (x! element cadr))
+
+      (define (nice x)
+
+        (define (x!ent nf)
+
+          (define (first-kid element)
+            (at-first element nf (lambda (nf)
+                                   (car (kids nf)))))
+
+          (cons* (first-kid 'menutitle)
+                 (first-kid 'menunode)
+                 (at-first 'menudescription nf
+                           (lambda (nf)
+                             (at-first 'pre nf
+                                       (lambda (nf)
+                                         (map string-trim-both
+                                              (kids nf))))))))
+
+        (map x!ent (cdr x)))
+
+      (list (x!string 'setfilename)
+            '-                          ; TODO: get LANG directly.
+            (x!string 'settitle)
+            (x!string 'dircategory)
+            (x! 'direntry nice)))
 
     (define (grab-variables!)
       (let loop ((acc '()))
@@ -222,10 +253,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (let* ((lang (and=> (assq 'documentlanguage rest)
                         grab-lang!))
-           (xid (map grab-xid! '(setfilename
-                                 NO-SUCH
-                                 settitle
-                                 dircategory)))
+           (xid (grab-xid!))
            (variables (grab-variables!))
            (settings (cond (lang `((documentlanguage ,lang)))
                            (else '()))) ; TODO

@@ -464,15 +464,14 @@ value (above) is not useful.
 The list:
 
 @example
-(FILENAME LANG TITLE DIRCATEGORY)
+(FILENAME LANG TITLE DIRCATEGORY DIRENTRIES)
 @end example
 
 @noindent
 These are from the @code{@@setfilename}, @code{@@documentlanguage},
-@code{@@settitle} and @code{@@dircategory}
+@code{@@settitle}, @code{@@dircategory} and @code{@@direntry}
 commands, respectively.
 ``XID'' stands for ``external identifiers''.
-@* @qqq{} What about @code{@@direntry}?
 
 @table @var
 @item filename
@@ -483,6 +482,19 @@ A string, or the symbol @code{-} (hyphen).
 @item lang
 A symbol or a list of two symbols.
 If @code{@@documentlanguage} is unspecified, defaults to @code{(en US)}.
+
+@item direntries
+If @code{@@direntry} is unspecified@footnote{Although @samp{mkixin} detects
+@code{direntry} just fine, @samp{makeinfo} 4.13 and earlier do not propagate
+this information to its XML output.}, the symbol @code{-} (hyphen).
+Otherwise, a list of elements, each of which has form:
+
+@example
+(TITLE NODE [DESCRIPTION...])
+@end example
+
+@noindent
+All elements in this form are single-line strings.
 @end table
 
 
