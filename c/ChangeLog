@@ -1,3 +1,12 @@
+2012-12-27  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] Warn if ‘rescue’ leaves any unprocessed forms.
+
+	* mkixin (rescue grab-titlepage!): New proc.
+	(rescue grab-toc!): Rename from ‘extract-toc’; make destructive.
+	(rescue): Use new procs; if any forms remain unprocessed,
+	display a warning and write the forms to the current error port.
+
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Default META COPYING to ‘-’ (hyphen).

@@ -240,16 +240,23 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (and (pair? copying)
              `(copying (@) ,@copying))))
 
-    (define (extract-toc x)
+    (define (grab-titlepage!)
+      (let ((nf (assq 'titlepage rest)))
+        (set! rest (delq! nf rest))
+        nf))
+
+    (define (grab-toc!)
       (let ((toc '())
             (yes (map element? '(contents
                                  shortcontents
                                  summarycontents))))
-        (FE x (walker (lambda (nf)
-                        (FE yes (lambda (interesting?)
-                                  (and (interesting? nf)
-                                       (set! toc (cons (car nf)
-                                                       toc))))))))
+        (FE rest (walker (lambda (nf)
+                           (FE yes (lambda (interesting?)
+                                     (and (interesting? nf)
+                                          (set! toc (cons (car nf)
+                                                          toc))))))))
+        (FE toc (lambda (element)
+                  (set! rest (assq-remove! rest element))))
         (reverse! toc)))
 
     (let* ((lang (and=> (assq 'documentlanguage rest)
@@ -258,7 +265,20 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (variables (grab-variables!))
            (settings (cond (lang `((documentlanguage ,lang)))
                            (else '()))) ; TODO
-           (copying (grab/dedup-copying!)))
+           (copying (grab/dedup-copying!))
+           (titlepage (grab-titlepage!))
+           (toc (grab-toc!)))
+
+      (and (pair? rest)
+           (let ((cep (current-error-port)))
+
+             (define (fse s . args)
+               (apply simple-format cep s args))
+
+             (fse "PEBCAK-WARNING: unhandled pre-‘node’ SXML!~%")
+             (FE (iota (length rest)) rest
+                 (lambda (i x)
+                   (fse "~A:\t~S~%" i x)))))
 
       ;; Magic!
       (let-values (((new-v new-s) (txi-vars-as-settings variables settings)))
@@ -271,8 +291,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         ,variables
         ,settings
         ,(or copying '-)
-        ,(car rest)                     ; titlepage
-        ,(extract-toc (cdr rest))))))
+        ,titlepage
+        ,toc))))
 
 (define node-id (make-object-property))
 
