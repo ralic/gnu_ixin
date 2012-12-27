@@ -1,5 +1,17 @@
 2012-12-27  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle META XID INVITATIONS.
+
+	This replaces 2012-12-26, "Specify / handle META XID DIRENTRIES",
+	which failed to handle multiple or no given categories.
+
+	* mkixin: Import SRFI 1 ‘partition!’.
+	(rescue grab-xid! x!invitations): New proc.
+	(rescue grab-xid!): Process ‘@dircategory’ and ‘@direntry’
+	together; return the combined list of ‘(CATEGORY [ENTRY...])’.
+
+2012-12-27  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Warn if ‘rescue’ leaves any unprocessed forms.
 
 	* mkixin (rescue grab-titlepage!): New proc.

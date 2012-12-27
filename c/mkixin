@@ -32,6 +32,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (use-modules
  ((srfi srfi-1) #:select (break!
                           car+cdr
+                          partition!
                           take drop))
  ((srfi srfi-11) #:select (let-values
                            let*-values))
@@ -195,11 +196,34 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (map x!ent (cdr x)))
 
+      (define (x!invitations)
+        (let-values (((ls new-rest) (partition! (lambda (x)
+                                                  (memq (car x)
+                                                        '(dircategory
+                                                          direntry)))
+                                                rest)))
+          (set! rest new-rest)
+          (and (pair? ls)
+               (let loop ((acc '()) (ls ls))
+                 (if (pair? ls)
+                     (loop (let ((nf (car ls)))
+                             (case (car nf)
+                               ((dircategory)
+                                (cons (list (car (kids nf)))
+                                      acc))
+                               ((direntry)
+                                (let ((ents (nice (cdr nf))))
+                                  (if (null? acc)
+                                      (list (cons '- ents))
+                                      (cons (append! (car acc) ents)
+                                            (cdr acc)))))))
+                           (cdr ls))
+                     (reverse! acc))))))
+
       (list (x!string 'setfilename)
             lang
             (x!string 'settitle)
-            (x!string 'dircategory)
-            (x! 'direntry nice)))
+            (or (x!invitations) '-)))
 
     (define (grab-variables!)
       (let loop ((acc '()))

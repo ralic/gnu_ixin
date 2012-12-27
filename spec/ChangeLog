@@ -1,3 +1,14 @@
+2012-12-27  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify / handle META XID INVITATIONS.
+
+	This replaces 2012-12-26, "Specify / handle META XID DIRENTRIES",
+	which failed to handle multiple or no given categories.
+
+	* ixin.texi (xid): Replace DIRCATEGORY and DIRENTRIES
+	with INVITATIONS in form; update table; add sub-form;
+	clarify which are strings.
+
 2012-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Default META COPYING to ‘-’ (hyphen).
