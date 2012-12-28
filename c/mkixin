@@ -34,11 +34,17 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                           car+cdr
                           partition!
                           take drop))
+ ((srfi srfi-2) #:select (and-let*))
  ((srfi srfi-11) #:select (let-values
                            let*-values))
- ((srfi srfi-13) #:select (string-drop-right
+ ((srfi srfi-13) #:select (string-drop
+                           string-drop-right
                            string-trim-both
+                           string-index
+                           string-skip
+                           string-skip-right
                            string-suffix-ci?))
+ ((srfi srfi-14) #:select (char-set:whitespace))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 popen) #:select (open-input-pipe close-pipe))
  ((ice-9 rdelim) #:select (read-line write-line read-delimited)))
@@ -50,9 +56,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 ;; NF stands for "normal form 3": (ELEMENT (@ (ATTR VALUE)...) CHILD...).
 ;; The degenerate case:           (ELEMENT (@))
 
+(define (attribute-try nf name proc)
+  (and=> (assq-ref (cdadr nf)
+                   name)
+         proc))
+
 (define (attribute-ref nf name)
-  (car (assq-ref (cdadr nf)
-                 name)))
+  (attribute-try nf name car))
 
 (define (symbol<-attribute-ref nf name)
   (string->symbol
@@ -115,11 +125,73 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (fs s . args)
   (apply simple-format #f s args))
 
+(define nice-strings!
+  (walker
+   (lambda (nf)
+
+     (define (initial nf)
+       (let ((loc (kids nf)))
+         (and (pair? loc)
+              (let ((kid (car loc)))
+                (if (string? kid)
+                    loc
+                    (initial kid))))))
+
+     (define (final nf)
+       (let ((ls (kids nf)))
+         (and (pair? ls)
+              (let* ((loc (last-pair ls))
+                     (kid (car loc)))
+                (if (string? kid)
+                    loc
+                    (final kid))))))
+
+     (define (trim-ws nf)
+       ;; beg
+       (and-let* ((loc (initial nf))
+                  (s (car loc))
+                  (bad (string-skip s #\newline))
+                  ((positive? bad)))
+         (set-car! loc (string-drop s bad)))
+       ;; end
+       (and-let* ((loc (final nf))
+                  (s (car loc))
+                  (bad (- (string-length s)
+                          (string-skip-right s char-set:whitespace)
+                          1))
+                  ((positive? bad)))
+         (set-car! loc (string-drop-right s bad))))
+
+     (define s/newline/space/g
+       (walker (lambda (nf)
+                 (or (equal? "preserve" (attribute-ref nf 'xml:space))
+                     (FE (kids nf)
+                         (lambda (kid)
+                           (and (string? kid)
+                                (let loop ((start 0))
+                                  (cond ((string-index kid #\newline start)
+                                         => (lambda (pos)
+                                              (string-set! kid pos #\space)
+                                              (loop (1+ pos)))))))))))))
+
+     (case (car nf)
+       ((para)
+        (trim-ws nf)
+        (s/newline/space/g nf))
+       ((pre example smallexample
+             lisp    smalllisp
+             display smalldisplay
+             format  smallformat
+             verbatim quotation flushleft flushright cartouche)
+        (trim-ws nf))))))
+
 (define (how-to-handle filename)
   (values (string-drop-right filename (string-length ".sxml"))
           (lambda ()
-            (call-with-input-file filename
-              read))))
+            (let ((tree (call-with-input-file filename
+                          read)))
+              (nice-strings! tree)
+              tree))))
 
 (define (txi-vars-as-settings variables settings)
   (let ((fix '((txicodequoteundirected . codequoteundirected)

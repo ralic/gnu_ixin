@@ -1,5 +1,12 @@
 2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle whitespace normalization.
+
+	* ixin.texi (representations): Add "leaf string" to table.
+	(overall): Add whitespace normalization rules: blurb + table.
+
+2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Add section "overall".
 
 	* ixin.texi (Specification): Add "overall" to menu;

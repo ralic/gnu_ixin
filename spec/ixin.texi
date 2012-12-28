@@ -338,6 +338,19 @@ second position.  For example:
 Here, three SXMLs (@code{acronym}, @code{strong}, @code{emph}) have
 attributes, and two (@code{para}, @code{strong}) have SXML children.
 
+@more leaf string
+A string child, possibly recursively-accessed.  For instance, using the
+previous example (above), the leaf strings for element @code{strong} are:
+
+@example
+"totally"  ; @r{direct child}
+" cool"    ; @r{(recursively-accessed) child of} emph
+@end example
+
+@noindent
+Also, @samp{totally} is a leaf string of both
+@code{strong} and @code{para}.
+
 @more renderable sequence
 A list where each element is either a string or a (possibly nested)
 SXML.  Apart from @code{result}, @code{click}, and so on (all of which
@@ -398,6 +411,67 @@ and attributes are defined in the Texinfo DTD with ``public id'':
 @example
 -//GNU//DTD TexinfoML V4.13//EN
 @end example
+
+@noindent
+Additionally, the SXML leaf strings have the following context-sensitive
+properties, all related to ``whitespace normalization''.
+
+@table @asis
+@item trimmed whitespace
+The initial and final leaf strings of the following elements
+@strong{should not} begin with newline and end with whitespace,
+respectively.
+
+@example
+example     smallexample    verbatim
+lisp        smalllisp       quotation
+display     smalldisplay    para
+format      smallformat     pre
+flushleft   flushright      cartouche
+@end example
+
+@noindent
+[@qqq{}  Any others?  Any other way to specify this list?]@*
+Internal newlines, or newlines at the end of other elements are OK.
+
+@item @code{s/newline/space/} in @code{para}
+Leaf strings of the element @code{para}, unless exempted by the
+@code{xml:space} attribute of some interevening parent element having
+value @samp{preserve}, @strong{should} have newline (U+0A) replaced
+with space (U+20).  For example:
+
+@example
+@group
+(para (@@)
+      (b (@@) "foo\n")
+      "bar"
+      (example (@@ (xml:space "preserve"))
+               "zow\n"
+               (r (@@) "oop\n")
+               "ack\n"))
+@end group
+@end example
+
+@noindent
+Here, @samp{\n} represents a newline character.  Only the one after
+@samp{foo} is replaced with space to make the SXML well-formed:
+
+@example
+@group
+(para (@@)
+      (b (@@) "foo ")
+      "bar"
+      (example (@@ (xml:space "preserve"))
+               "zow\n"
+               (r (@@) "oop\n")
+               "ack\n"))
+@end group
+@end example
+
+@noindent
+The others are protected by the @code{xml:space} attribute of element
+@code{example}.
+@end table
 
 
 @c ---------------------------------------------------------------------------
