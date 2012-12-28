@@ -1,5 +1,11 @@
 2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Don't specify / handle ‘copying’ attribute for ‘titlepage’.
+
+	* mkixin (rescue grab/dedup-copying!): ...here.
+
+2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Handle XML from makeinfo 4.13.92 (TexinfoML V5.00).
 
 	* mkixin: Import SRFI 1 ‘remove!’, ‘every’.

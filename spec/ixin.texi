@@ -793,27 +793,15 @@ defaults to the symbol @code{-} (hyphen).
 @node       titlepage
 @subsection titlepage
 
-The SXML with name @code{titlepage}.  If the original Texinfo
-contains @code{@@insertcopying}, this has the form:
+The SXML:
 
 @example
-(titlepage (@@ (copying "copying"))
-  ...
-  (insertcopying (@@))
-  ...)
+(titlepage (@@) (title ...) ...)
 @end example
 
-@noindent
-Otherwise, it has the form:
-
-@example
-(titlepage (@@)
-  ...)
-@end example
-
-@noindent
-That is, there is no @code{copying} attribute,
-and no @code{insertcopying} child SXML.
+This is the Texinfo @code{@@titlepage} block@footnote{For
+@samp{makeinfo} 4.13 and earlier, the first child may be
+@code{booktitle} instead of @code{title}, and so on.}.
 
 
 @c ---------------------------------------------------------------------------

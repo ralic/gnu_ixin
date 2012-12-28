@@ -1,5 +1,11 @@
 2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Don't specify / handle ‘copying’ attribute for ‘titlepage’.
+
+	* ixin.texi (titlepage): ...here; rewrite.
+
+2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Handle XML from makeinfo 4.13.92 (TexinfoML V5.00).
 
 	* ixin.texi (overall): Update list of DTD public ids.
