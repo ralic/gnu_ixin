@@ -406,9 +406,10 @@ Overall, the format is a series of text blocks.  All SXML trees (none of
 which appear at the top-level, by the way) are @dfn{third-normal form}:
 with abutting character-data sequences coalesced and attributes explicit
 in the tree's second position (i.e., @sc{cadr}).  Valid SXML elements
-and attributes are defined in the Texinfo DTD with ``public id'':
+and attributes are defined in the Texinfo DTDs with ``public id'':
 
 @example
+-//GNU//DTD TexinfoML V5.00//EN
 -//GNU//DTD TexinfoML V4.13//EN
 @end example
 

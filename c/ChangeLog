@@ -1,5 +1,30 @@
 2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Handle XML from makeinfo 4.13.92 (TexinfoML V5.00).
+
+	* mkixin: Import SRFI 1 ‘remove!’, ‘every’.
+	(find-printindex): Take ‘cur?’; return proc; update caller.
+	(rescue): Take ‘cur?’; update caller.
+	(rescue grab-variables!): Handle ‘set’ vs ‘setvalue’.
+	(rescue grab-copying!): New proc.
+	(rescue): If ‘cur?’ don't bother w/ dedup.
+	(floating-environments): Take ‘cur?’; update caller.
+	(floating-environments plucker): Handle name in child vs attr.
+	(document-term-sets): Take ‘cur?’, ‘setup’; update caller.
+	(document-term-sets default-font): New proc.
+	(document-term-sets manager): Use ‘default-font’.
+	(document-term-sets collect-indexterm! pluck): Handle ‘incode’
+	attr vs ‘definitionterm’ parent, ‘mergedindex’ vs ‘index’ attr.
+	(section-tree): Take ‘cur?’; handle
+	‘sectiontitle’ vs ‘title’; update caller.
+	(IGNORABLE): New data structure.
+	(tuck): New proc.
+	(inline-images): Take ‘cur?’; update caller.
+	(inline-images inline!): Handle ‘imagefile’ child vs attributes.
+	(do-it!): Use ‘tuck’; obtain also ‘cur?’ and ‘dts-setup’.
+
+2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify / handle whitespace normalization.
 
 	* mkixin: Import SRFI 2 ‘and-let*’; SRFI 13 ‘string-drop’,
