@@ -7,6 +7,8 @@
 @settitle IXIN Specification @value{VERSION}
 @defindex jargon
 @synindex jargon cp
+@defindex doubt
+@syncodeindex pg doubt
 @c %**end of header
 
 @copying
@@ -59,7 +61,7 @@ Texts.  A copy of the license is included in the appendix entitled
 
 * GNU FDL::                 Copying and sharing this documentation.
 * List of Figures::
-* Program Index::
+* Program and Doubt Index::
 * Index::
 @end menu
 
@@ -122,14 +124,15 @@ the @uref{http://mail.gnu.org/archive/html/help-texinfo/,help-texinfo}
 mailing list.
 
 @pindex mkixin
-@pindex retrieve
+@pindex makeinfo
 Every so often, a set of exploratory utils (programs) and example files,
 collectively known as ``IXIN tarballs'' are published on its
 @uref{http://www.gnuvola.org/software/ixin/, homepage}.
 Ideally, each feature of the file format would be demonstrated by the
 utils and example files.  The reality is different, unfortunately
 (primarily due to design and implementation limitations in the util
-@samp{mkixin}).  To save you the trouble of looking for something that
+@samp{mkixin} and in old versions of @samp{makeinfo}).
+To save you the trouble of looking for something that
 can never be found, we explain all such ``vetting gaps'' in footnotes.
 Here's a snapshot of the current ``activity'' (to do or decide) list
 excerpted from the tarball README:
@@ -432,6 +435,7 @@ flushleft   flushright      cartouche
 @end example
 
 @noindent
+@doubtindex trimmed whitespace, other elements?
 [@qqq{}  Any others?  Any other way to specify this list?]@*
 Internal newlines, or newlines at the end of other elements are OK.
 
@@ -536,6 +540,7 @@ The attributes of the original SXML sans @code{(@@)}, usually:
 @end example
 
 @noindent
+@doubtindex @var{meta} @var{attrs}, necessity
 @qqq{} We can probably omit ATTRS, as makeinfo will be generating IXIN
 directly, w/o an intermediate full-document SXML step (or at least, such
 a step would be an internal implementation detail).  Anyway, the usual
@@ -629,6 +634,7 @@ The conversion is for both @code{@@set} and @code{@@clear}:
 @@clear VAR     @@SETTING off
 @end example
 
+@doubtindex @var{meta} @var{vars}, necessity
 @qqq{} Maybe we should omit vars altogether,
 as they are for purely textual substitution, and the corresponding
 @code{@@value} commands are not captured, anyway.  Down w/ bloat!
@@ -665,7 +671,9 @@ on @var{name}.  In the following table, the first column is the
 @multitable {c} {@t{setshortcontentsaftertitlepage}} {sym: @t{US-ASCII UTF-8 koi8-r koi8-u}}
 @headitem c @tab setting @tab type
 @item O
-@tab @t{novalidate}
+@tab
+@doubtindex @samp{novalidate} setting, necessity
+ @t{novalidate}
 @tab none --- @qqq{} can we omit this?
 @item O
 @tab @t{fonttextsize}
@@ -675,7 +683,9 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{end separate}
 @item O
 @tab @t{pagesizes}
-@tab @qqq{} list of @t{(}integer symbol@t{)}
+@tab
+@doubtindex @samp{pagesizes} setting, non-integral quantities?
+@qqq{} list of @t{(}integer symbol@t{)}
 
 @item O
 @tab @t{setchapternewpage}
@@ -689,7 +699,9 @@ on @var{name}.  In the following table, the first column is the
 
 @item O
 @tab @t{everyheading}
-@tab @qqq{} list of 3 renderable sequences
+@tab
+@doubtindex @samp{everyheading} setting, OK?
+@qqq{} list of 3 renderable sequences
 @item O
 @tab @t{everyheadingmarks}
 @tab sym: @t{top bottom}
@@ -702,7 +714,9 @@ on @var{name}.  In the following table, the first column is the
 
 @item O
 @tab @t{everyfooting}
-@tab @qqq{} list of 3 renderable sequences
+@tab
+@doubtindex @samp{everyfooting} setting, OK?
+@qqq{} list of 3 renderable sequences
 @item O
 @tab @t{everyfootingmarks}
 @tab sym: @t{top bottom}
@@ -743,11 +757,15 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{false true}
 @item A
 @tab @t{clickstyle}
-@tab @qqq{} renderable sequence
+@tab
+@doubtindex @samp{clickstyle} setting, macros?
+@qqq{} renderable sequence
 
 @item A
 @tab @t{documentlanguage}
-@tab @qqq{} symbol / list of two symbols
+@tab
+@doubtindex @samp{documentlanguage} setting, ``upward'' compatible?
+@qqq{} symbol / list of two symbols
 
 @item A
 @tab @t{frenchspacing}
@@ -768,7 +786,10 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{on off}
 
 @item ?
-@tab @qqq{} (others)
+@tab
+@doubtindex settings, missing
+@doubtindex missing settings
+@qqq{} (others)
 @tab ?
 @end multitable
 
@@ -831,7 +852,9 @@ The total number of nodes.
 
 @item top
 The node identifier of the @code{Top} node.
-@*@qqq{} If this is always zero, we can omit it.
+@*
+@doubtindex @var{counts} @var{top}, necessity
+@qqq{} If this is always zero, we can omit it.
 
 @item s-tree-length
 The byte-length of the sectioning tree.
@@ -1077,6 +1100,8 @@ At present, the string @samp{base64}.
 @end table
 
 @noindent
+@doubtindex image inlining, when?
+@doubtindex inlining, images, when?
 If the image data cannot inlined (@qqq{} maybe better to require
 inlining unconditionally?), these attributes may be omitted.  For
 example:
@@ -1096,6 +1121,8 @@ example:
 @end group
 @end example
 
+@doubtindex image snarfing, where?
+@doubtindex snarfing, images, where?
 @qqq{} Another idea is to gather all image (and maybe in the future,
 audio) data into its own top-level @code{blobs} (with corresponding
 @code{blobs-index} in @code{counts}).  We can even keep @code{blobs}
@@ -1119,10 +1146,10 @@ over inlining would be symbolic @code{type} and @code{encoding}.
 
 
 @c ---------------------------------------------------------------------------
-@node       Program Index
-@unnumbered Program Index
+@node       Program and Doubt Index
+@unnumbered Program and Doubt Index
 
-@printindex pg
+@printindex doubt
 
 
 @c ---------------------------------------------------------------------------

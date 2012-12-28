@@ -1,5 +1,19 @@
 2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Expand Program Index to include Doubts, as well.
+
+	* ixin.texi (doubt): New ‘defindex’.
+	(pg doubt): New ‘defsyncodeindex’.
+	(Top): Rename "Program Index" to "Program and Doubt Index".
+	(Technique): Change ‘@pindex’ entry from retrieve to makeinfo;
+	mention makeinfo in the "limitations" sentence.
+	(overall, attrs, vars, settings, counts, node)
+	(data): Add ‘@aboutindex’ entries.
+	(Program and Doubt Index): Rename from "Program Index";
+	use ‘@printindex doubt’.
+
+2012-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Don't specify / handle ‘copying’ attribute for ‘titlepage’.
 
 	* ixin.texi (titlepage): ...here; rewrite.
