@@ -371,14 +371,8 @@ avoid horrible confusion, and to allow ``dts index'' to have meaning.
 In the following description, @qqq{} indicates points that are
 not very firm in the author's mind.
 
-@cindex text overall
-Overall, the format is a series of text blocks.  With the exception of
-the @code{meta} block, all SXML trees are third-normal form, with
-abutting character-data sequences coalesced, attributes explicit in the
-tree's CADR, and in the "default" namespace defined in the Texinfo DTD,
-version 1.13, 2008/01/31.
-
 @menu
+* overall::              General characteristics.
 * first line::           Magic, version and coding.
 * meta::                 Indispensible front matter.
 * counts::               Summarize the indices.
@@ -388,6 +382,22 @@ version 1.13, 2008/01/31.
 * float sets::           Zero or more.
 * node data::            (Almost) SXML.
 @end menu
+
+
+@c ---------------------------------------------------------------------------
+@node    overall
+@section overall
+
+@cindex text overall
+Overall, the format is a series of text blocks.  All SXML trees (none of
+which appear at the top-level, by the way) are @dfn{third-normal form}:
+with abutting character-data sequences coalesced and attributes explicit
+in the tree's second position (i.e., @sc{cadr}).  Valid SXML elements
+and attributes are defined in the Texinfo DTD with ``public id'':
+
+@example
+-//GNU//DTD TexinfoML V4.13//EN
+@end example
 
 
 @c ---------------------------------------------------------------------------
