@@ -407,8 +407,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define node-id (make-object-property))
 
 (define (simplified ls)
-  ;; Simplify (STRING) => STRING, maybe.
-  (if (and (string? (car ls))
+  ;; Simplify (ATOM) => ATOM, maybe.
+  (if (and (not (pair? (car ls)))
            (null? (cdr ls)))
       (car ls)
       ls))
