@@ -1073,10 +1073,17 @@ A series of @var{count} blocks (@pxref{counts}), each with form:
 In other words, a @code{node} SXML sans the initial symbol
 @code{node}.  The order is the same as in the node index.
 
-@c TODO: With arrival of ``references'', move this into its own node.
+@menu
+* image inlining::          Embedded image data.
+@end menu
+
+
+@c ---------------------------------------------------------------------------
+@node       image inlining
 @subsection image inlining
 
-@cindex inlining, image
+@cindex image inlining
+@cindex inlining, images
 Each @code{image} SXML should inline its image data, base64-encoded as a
 single string, if possible.  The attributes should include:
 
@@ -1108,10 +1115,7 @@ example:
 
 @example
 @group
-(image (@@ (width "")
-          (height "")
-          (name "logo")
-          (extension "")
+(image (@@ ...
           (type "image/png")
           (encoding "base64"))
        (alttext (@@))
