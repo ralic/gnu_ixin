@@ -1,5 +1,12 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Use "-len" to save space.
+
+	* ixin.texi: Throughout, except for
+	"byte-length", replace foo-length with foo-len.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Drop COUNTS TOP.
 
 	* ixin.texi (counts): ...here, from form and table.

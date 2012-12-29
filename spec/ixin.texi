@@ -842,31 +842,31 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LENGTH COUNT S-TREE-LENGTH DTS-INDEX FLOSETS-INDEX)
+(INDEX-LEN COUNT S-TREE-LEN DTS-INDEX FLOSETS-INDEX)
 @end example
 
 @table @var
-@item index-length
+@item index-len
 The byte-length of the node index (@pxref{node index}).
 
 @item count
 The total number of nodes.
 
-@item s-tree-length
+@item s-tree-len
 The byte-length of the sectioning tree.
 
 @item dts-index
 A list of entries, each of the form:
 
 @example
-(NAME DTS-LENGTH [NID...])
+(NAME DTS-LEN [NID...])
 @end example
 
 @table @var
 @item name
 A symbol, such as @code{cp} or @code{fn}.
 
-@item dts-length
+@item dts-len
 The byte-length of this DTS.
 
 @item nid
@@ -874,7 +874,7 @@ A node identifier for each node that contains a @code{@@printindex}
 command for @var{name}.
 @end table
 
-If @var{dts-length} is zero, then there must be at least
+If @var{dts-len} is zero, then there must be at least
 one @var{nid}.  This is the case when
 there is a @code{printindex} but no entries for it.
 
@@ -882,14 +882,14 @@ there is a @code{printindex} but no entries for it.
 A list of entries, each of the form:
 
 @example
-(TYPE FLOSET-LENGTH [NID...])
+(TYPE FLOSET-LEN [NID...])
 @end example
 
 @table @var
 @item type
 A symbol, such as @code{Figure}, or @code{-} to indicate ``untyped''.
 
-@item floset-length
+@item floset-len
 The byte-length of this set of floats.
 
 @item nid
@@ -897,7 +897,7 @@ A node identifer for each node that contains a @code{@@listoffloats}
 command for @var{type}.
 @end table
 
-If @var{floset-length} is zero, then there must be at least one
+If @var{floset-len} is zero, then there must be at least one
 @var{nid}.  This is the case when there is a @code{listoffloats} but no
 entries for it.
 @end table
@@ -988,7 +988,7 @@ children from level 2, and so on.
 @node    document-term sets
 @section document-term sets
 
-For each element in @var{dts-index} with non-zero @var{dts-length},
+For each element in @var{dts-index} with non-zero @var{dts-len},
 a list:
 
 @example
@@ -1025,7 +1025,7 @@ The entries in each DTS is sorted alphabetically, case insensitively.
 @node    float sets
 @section float sets
 
-For each element in @var{flosets-index} with non-zero @var{floset-length},
+For each element in @var{flosets-index} with non-zero @var{floset-len},
 a list:
 
 @example
