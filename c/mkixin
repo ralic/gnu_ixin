@@ -704,6 +704,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     ;; so these are superfluous.
     synindex syncodeindex
     ;; Add elements here.
+    alias
     include
     bye))
 
