@@ -514,14 +514,13 @@ tokens, and a @samp{:} (colon) as part of the third token.
 The list:
 
 @example
-(ATTRS XID VARS SETTINGS COPYING TITLEPAGE TOC)
+(XID VARS SETTINGS COPYING TITLEPAGE TOC)
 @end example
 
 @noindent
 that comprises all the information prior to the first @code{@@node}.
 
 @menu
-* attrs::
 * xid::
 * vars::
 * settings::
@@ -529,24 +528,6 @@ that comprises all the information prior to the first @code{@@node}.
 * titlepage::
 * toc::
 @end menu
-
-
-@c ---------------------------------------------------------------------------
-@node       attrs
-@subsection attrs
-
-The attributes of the original SXML sans @code{(@@)}, usually:
-
-@example
-((xml:lang "en"))
-@end example
-
-@noindent
-@doubtindex @var{meta} @var{attrs}, necessity
-@qqq{} We can probably omit ATTRS, as makeinfo will be generating IXIN
-directly, w/o an intermediate full-document SXML step (or at least, such
-a step would be an internal implementation detail).  Anyway, the usual
-value (above) is not useful.
 
 
 @c ---------------------------------------------------------------------------

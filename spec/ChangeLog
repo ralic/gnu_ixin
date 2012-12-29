@@ -1,5 +1,12 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Drop META ATTRS.
+
+	* ixin.texi (meta): ...here, from form and table.
+	(attrs): Delete node/subsection.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Use "-len" to save space.
 
 	* ixin.texi: Throughout, except for

@@ -242,7 +242,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                         ;   obviously, Someone needs
                                         ;     to learn (S)XLST  :-/
 
-  (let-values (((attributes rest) (car+cdr meta)))
+  (let ((rest (cdr meta)))
 
     (define (grab-lang! nf)
       (set! rest (delq! nf rest))       ; DWR!
@@ -411,8 +411,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (set! settings new-s))
 
       ;; rv
-      `(,(cdr attributes)               ; omit ‘(@)’
-        ,xid
+      `(,xid
         ,variables
         ,settings
         ,(or copying '-)
