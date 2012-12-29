@@ -41,6 +41,12 @@ See end for copying conditions.
   (Guile 1.8), or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course,
   you need to have one of those Guile versions installed, too.
 
+  You may also need the programs makeinfo and texi2pdf if you
+  plan to rebuild the spec document.  To use alternate versions
+  (for example, from the Texinfo pretest releases) you can set
+  environment variables MAKEINFO and TEXI2PDF and invoke make
+  with the ‘--environment-overrides’ (short form ‘-e’) option.
+
 * possible access patterns
 
   The retrieve program illustrates one access pattern: read up
