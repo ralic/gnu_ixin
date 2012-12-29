@@ -1,5 +1,14 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[d] Regenerate some .xml with makeinfo 4.13.92.
+
+	* alive.xml: Regenerate.
+	* hello.xml: Likewise.
+	* rcs.xml: Likewise.
+	* serveez.xml: Likewise.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Split out some rules into common.mk.
 
 	* common.mk: New file.

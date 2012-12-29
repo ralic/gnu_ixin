@@ -1,425 +1,848 @@
 <?xml version="1.0"?>
-<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V4.13//EN" "http://www.gnu.org/software/texinfo/dtd/4.13/texinfo.dtd">
+<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.00//EN" "http://www.gnu.org/software/texinfo/dtd/5.00/texinfo.dtd">
 <texinfo xml:lang="en">
-  <setfilename>hello.xml</setfilename>
-  <setvalue name="UPDATED">8 April 2010</setvalue>
-  <setvalue name="UPDATED-MONTH">April 2010</setvalue>
-  <setvalue name="EDITION">2.6</setvalue>
-  <setvalue name="VERSION">2.6</setvalue>
-  <settitle>GNU Hello 2.6</settitle>
-<!-- Define a new index for options. -->
-<!-- Combine everything into one index (arbitrarily chosen to be the -->
-<!-- concept index). -->
-<!-- %**end of header -->
-  <para>This manual is for GNU Hello (version 2.6, 8 April 2010), which prints a friendly greeting (and serves as an example GNU package).</para>
-  <para>Copyright &copyright; 1992, 1993, 1996, 2002, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.</para>
-  <quotation>
-    <para>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the license is included in the section entitled &ldquo;GNU Free Documentation License&rdquo;.</para>
-  </quotation>
-<!-- If your manual is published on paper by the FSF, it should include -->
-<!-- the standard FSF Front-Cover and Back-Cover Texts, as given in -->
-<!-- maintain.texi. -->
-  <dircategory>Basics</dircategory>
-  <titlepage>
-    <booktitle>GNU Hello</booktitle>
-    <booksubtitle>for version 2.6, 8 April 2010</booksubtitle>
-    <author>GNU Hello Developers (&lt;email&gt;&lt;emailaddress&gt;bug-hello@gnu.org&lt;/emailaddress&gt;&lt;/email&gt;)</author>
-    <para>This manual is for GNU Hello (version 2.6, 8 April 2010), which prints a friendly greeting (and serves as an example GNU package).</para>
-    <para>Copyright &copyright; 1992, 1993, 1996, 2002, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.</para>
-    <quotation>
-      <para>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the license is included in the section entitled &ldquo;GNU Free Documentation License&rdquo;.</para>
-    </quotation>
-  </titlepage>
-  <contents></contents>
-  <node>
-    <nodename>Top</nodename>
-    <nodenext>Overview</nodenext>
-    <nodeup>(dir)</nodeup>
-    <unnumbered>
-      <title>GNU Hello</title>
-      <para>This manual is for GNU Hello (version 2.6, 8 April 2010), which prints a friendly greeting (and serves as an example GNU package).</para>
-      <para>Copyright &copyright; 1992, 1993, 1996, 2002, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.</para>
-      <quotation>
-        <para>Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, with no Front-Cover Texts, and with no Back-Cover Texts.  A copy of the license is included in the section entitled &ldquo;GNU Free Documentation License&rdquo;.</para>
-      </quotation>
-      <menu>
-        <menuentry>
-          <menunode>Overview</menunode>
-          <menutitle>Overview</menutitle>
-          <menucomment>General purpose and information.</menucomment>
-        </menuentry>
-        <menuentry>
-          <menunode>Sample output</menunode>
-          <menutitle>Sample output</menutitle>
-          <menucomment>Sample output from <command>hello</command>.</menucomment>
-        </menuentry>
-        <menuentry>
-          <menunode>Invoking hello</menunode>
-          <menutitle>Invoking hello</menutitle>
-          <menucomment>How to run <command>hello</command>.</menucomment>
-        </menuentry>
-        <menuentry>
-          <menunode>Reporting bugs</menunode>
-          <menutitle>Reporting bugs</menutitle>
-          <menucomment>Sending bug reports and feature suggestions.</menucomment>
-        </menuentry>
-        <menuentry>
-          <menunode>GNU Free Documentation License</menunode>
-          <menutitle>GNU Free Documentation License</menutitle>
-          <menucomment>Copying and sharing this documentation.</menucomment>
-        </menuentry>
-        <menuentry>
-          <menunode>Concept index</menunode>
-          <menutitle>Concept index</menutitle>
-          <menucomment>Index of concepts.</menucomment>
-        </menuentry>
-      </menu>
-    </unnumbered>
-  </node>
-  <node>
-    <nodename>Overview</nodename>
-    <nodenext>Sample output</nodenext>
-    <nodeprev>Top</nodeprev>
-    <nodeup>Top</nodeup>
-    <chapter>
-      <title>Overview</title>
-      <para><indexterm index="cp">greetings</indexterm><indexterm index="cp">overview</indexterm> The GNU <command>hello</command> program (<uref><urefurl>http://www.gnu.org/software/hello/</urefurl></uref>) produces a familiar, friendly greeting.  It allows nonprogrammers to use a classic computer science tool which would otherwise be unavailable to them.  Because it is protected by the GNU General Public License, users are free (in perpetuity) to share and change it.</para>
-      <para><indexterm index="cp">joke, not</indexterm>Not to spoil the joke, but of course the practical purpose of GNU Hello is to serve as a minimal example of a GNU package.  So, although most manuals don't need to discuss the implementation of the programs they document, that is part of the goal here.</para>
-      <para><indexterm index="cp">GNU coding standards</indexterm><indexterm index="cp">GNU maintainer standards</indexterm><indexterm index="cp">standards, GNU coding</indexterm><indexterm index="cp">standards, GNU maintainer</indexterm>First, GNU Hello follows the GNU coding standards (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>standards</xrefinfofile><xrefprintedname>GNU Coding Standards</xrefprintedname></xref>) and GNU maintainer standards (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>maintain</xrefinfofile><xrefprintedname>Information for GNU Maintainers</xrefprintedname></xref>).  These are the basic documents which all GNU packages should adhere to.</para>
-      <para>The Hello package also implements recommended development practices not embodied in the standards, using other GNU packages and features:</para>
-      <itemize>
-        <itemfunction>&bullet;</itemfunction>
-        <item>
-          <para><indexterm index="cp">Automake</indexterm><indexterm index="cp">Autoconf</indexterm>It uses Automake (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>automake</xrefinfofile><xrefprintedname>GNU Automake</xrefprintedname></xref>) and hence also Autoconf (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>GNU Autoconf</xrefprintedname></xref>) for configuration.</para>
-        </item>
-        <item>
-          <para><indexterm index="cp">Gnulib</indexterm><indexterm index="cp"><command>srclist-update</command> script</indexterm><indexterm index="cp"><file>README-dev</file> source file</indexterm>It uses Gnulib (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Gnulib</xrefprinteddesc><xrefinfofile>gnulib</xrefinfofile><xrefprintedname>GNU Gnulib</xrefprintedname></xref>) to enhance portability and avoid duplication of common sources.  Both <code>gnulib-tool</code> and <code>srclist-update</code> are used, for purposes of example.  See the <file>README-dev</file> file in the distribution.</para>
-        </item>
-        <item>
-          <para><indexterm index="cp">Gettext</indexterm>GNU Gettext (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>gettext</xrefinfofile><xrefprintedname>GNU Gettext</xrefprintedname></xref>) is used for internationalization support.  Hello's greeting has been translated into many languages.</para>
-        </item>
-        <item>
-          <para><indexterm index="cp">&ndash;help</indexterm>Internally, Hello uses the GNU <code>getopt_long</code> function (see <xref><xrefnodename>Getopt Long Options</xrefnodename><xrefinfofile>libc</xrefinfofile><xrefprintedname>GNU C Library</xrefprintedname></xref>) to parse options, thus supporting GNU-style long options such as <option>--help</option>.</para>
-        </item>
-        <item>
-          <para><indexterm index="cp">Help2man</indexterm>The Hello Man page is generated with GNU <code>help2man</code> (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Overview</xrefprinteddesc><xrefinfofile>help2man</xrefinfofile><xrefprintedname>GNU <code>help2man</code></xrefprintedname></xref>) from the <option>--help</option> output.  This relieves the maintainers from the burden of updating separate man documentation, yet provides a reasonable overview for man devotees.</para>
-        </item>
-        <item>
-          <para><indexterm index="cp">Texinfo</indexterm>Finally, Texinfo (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>texinfo</xrefinfofile><xrefprintedname>Texinfo</xrefprintedname></xref>) is the documentation format for this manual.  It supports output in Info, HTML, PDF, DVI, plain text, XML, and other formats.</para>
-        </item>
-      </itemize>
-      <para>GNU Hello is implemented in C.  GNU Gettext contains &ldquo;hello world&rdquo; examples in a variety of other programming languages; see the Gettext home page at <uref><urefurl>http://www.gnu.org/software/gettext/</urefurl></uref>.</para>
-      <para><indexterm index="cp"><file>Makefile.am</file> targets</indexterm>The top-level <file>Makefile.am</file> in Hello also contains a few special targets for other projects to adapt as desired:</para>
-      <table>
-        <tableitem>
-          <tableterm><code>diff</code></tableterm>
-          <item>
-            <para>Make a diff from the previous release, assuming the current tarball is in the current tarball.</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><code>po-check</code></tableterm>
-          <item>
-            <para>Verify that all source files using <code>_()</code> are included for translation in <file>po/POTFILES.in</file>, so translators will have all the messages.</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><code>wwwdoc</code></tableterm>
-          <item>
-            <para>Sample procedure for updating the manual on the GNU web site, in this case <uref><urefurl>http://www.gnu.org/software/hello/manual/</urefurl></uref>.</para>
-          </item>
-        </tableitem>
-      </table>
-      <para><indexterm index="cp">authors</indexterm><indexterm index="cp">Haertel, Mike</indexterm><indexterm index="cp">MacKenzie, David</indexterm><indexterm index="cp">Brittenson, Jan</indexterm><indexterm index="cp">Hannum, Charles</indexterm><indexterm index="cp">McGrath, Roland</indexterm><indexterm index="cp">Friedman, Noah</indexterm><indexterm index="cp">Eichwalder, Karl</indexterm><indexterm index="cp">King, The</indexterm><indexterm index="cp">Berry, Karl</indexterm>GNU Hello was written by Mike Haertel, David MacKenzie, Jan Brittenson, Charles Hannum, Roland McGrath, Noah Friedman, Karl Eichwalder, Karl Berry, and The King<!-- /@w -->.</para>
-    </chapter>
-  </node>
-  <node>
-    <nodename>Sample output</nodename>
-    <nodenext>Invoking hello</nodenext>
-    <nodeprev>Overview</nodeprev>
-    <nodeup>Top</nodeup>
-    <chapter>
-      <title>Sample output</title>
-      <para><indexterm index="cp">sample output</indexterm><indexterm index="cp">examples</indexterm> Here are some realistic examples of running GNU Hello.</para>
-      <para>This is the output of the command <samp>hello</samp>:</para>
-      <example xml:space="preserve">Hello, world!</example>
-      <para>This is the output of the command <samp>hello --traditional</samp>:</para>
-      <example xml:space="preserve">hello, world</example>
-      <para>This is the output of the command <samp>hello --greeting=hi</samp>:</para>
-      <example xml:space="preserve">hi</example>
-    </chapter>
-  </node>
-  <node>
-    <nodename>Invoking hello</nodename>
-    <nodenext>Reporting bugs</nodenext>
-    <nodeprev>Sample output</nodeprev>
-    <nodeup>Top</nodeup>
-    <chapter>
-      <title>Invoking <command>hello</command></title>
-      <para><indexterm index="cp">invoking</indexterm><indexterm index="cp">options</indexterm><indexterm index="cp">usage</indexterm><indexterm index="cp">help</indexterm> The format for running the <command>hello</command> program is:</para>
-      <example xml:space="preserve">hello <var>option</var> &dots;</example>
-      <para>With no options, <command>hello</command> prints the greeting <samp>Hello, world!</samp>.</para>
-      <para><command>hello</command> supports the following options:</para>
-      <table>
-        <tableitem>
-          <tableterm><option>--greeting=<var>text</var></option></tableterm>
-          <tableterm><option>-g <var>text</var></option></tableterm><indexterm index="cp">&ndash;greeting</indexterm><indexterm index="cp">-g</indexterm>
-          <item>
-            <para>Output <var>text</var> instead of the default greeting.</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><option>--help</option></tableterm>
-          <tableterm><option>-h</option></tableterm><indexterm index="cp">&ndash;help</indexterm><indexterm index="cp">-h</indexterm>
-          <item>
-            <para>Print an informative help message on standard output and exit successfully.</para>
-            <para><indexterm index="cp">environment variables, help for</indexterm>For the <option>--help</option> output of GNU programs, it's strongly encouraged to include a brief (one or two sentences) description of what the program does, as well as the synopsis of how to run the program.  Any environment variables which affect execution should also be mentioned (Hello doesn't have any).</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><option>--next-generation</option></tableterm>
-          <tableterm><option>-n</option></tableterm><indexterm index="cp">&ndash;next-generation</indexterm><indexterm index="cp">-n</indexterm>
-          <item>
-            <para>Output <samp>Hello, world!</samp>, but possibly including box-drawing characters or other fancy stuff, especially in translated locales. (If you would like to volunteer to translate messages for GNU packages, please see <uref><urefurl>http://translationproject.org</urefurl></uref>.)</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><option>--traditional</option></tableterm>
-          <tableterm><option>-t</option></tableterm><indexterm index="cp">&ndash;traditional</indexterm><indexterm index="cp">-t</indexterm><indexterm index="cp">traditional</indexterm><indexterm index="cp">modern</indexterm>
-          <item>
-            <para>Output the traditional greeting message <samp>hello, world</samp>.</para>
-          </item>
-        </tableitem>
-        <tableitem>
-          <tableterm><option>--version</option></tableterm>
-          <tableterm><option>-v</option></tableterm><indexterm index="cp">&ndash;version</indexterm><indexterm index="cp">-v</indexterm>
-          <item>
-            <para>Print the version number and licensing information of Hello on standard output and then exit successfully.</para>
-          </item>
-        </tableitem>
-      </table>
-      <para>If more than one of the greeting options (<option>-g</option>, <option>-n</option>, <option>-t</option>, and their long-named equivalents) is specified, whichever comes last takes precedence.</para>
-    </chapter>
-  </node>
-  <node>
-    <nodename>Reporting bugs</nodename>
-    <nodenext>GNU Free Documentation License</nodenext>
-    <nodeprev>Invoking hello</nodeprev>
-    <nodeup>Top</nodeup>
-    <chapter>
-      <title>Reporting bugs</title>
-      <para><indexterm index="cp">bug reporting</indexterm><indexterm index="cp">problems</indexterm><indexterm index="cp">reporting bugs</indexterm> To report bugs or suggest enhancements for GNU Hello, please send electronic mail to <email><emailaddress>bug-hello@gnu.org</emailaddress></email>.</para>
-      <para><indexterm index="cp">checklist for bug reports</indexterm>For bug reports, please include enough information for the maintainers to reproduce the problem.  Generally speaking, that means:</para>
-      <itemize>
-        <itemfunction>&bullet;</itemfunction>
-        <item>
-          <para>The version numbers of Hello (which you can find by running       <samp>hello --version</samp><!-- /@w -->) and any other program(s) or       manual(s) involved.</para>
-        </item>
-        <item>
-          <para>Hardware and operating system names and versions.</para>
-        </item>
-        <item>
-          <para>The contents of any input files necessary to reproduce the bug.</para>
-        </item>
-        <item>
-          <para>The expected behavior and/or output.</para>
-        </item>
-        <item>
-          <para>A description of the problem and samples of any erroneous output.</para>
-        </item>
-        <item>
-          <para>Options you gave to <command>configure</command> other than specifying       installation directories.</para>
-        </item>
-        <item>
-          <para>Anything else that you think would be helpful.</para>
-        </item>
-      </itemize>
-      <para>When in doubt whether something is needed or not, include it.  It's better to include too much than to leave out something important.</para>
-      <para><indexterm index="cp">patches, contributing</indexterm>Patches are welcome; if possible, please make them with <samp>diff -c<!-- /@w --></samp> (see <xref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Overview</xrefprinteddesc><xrefinfofile>diff</xrefinfofile><xrefprintedname>Comparing and Merging Files</xrefprintedname></xref>) and include <file>ChangeLog</file> entries (see <xref><xrefnodename>Change Log</xrefnodename><xrefinfofile>emacs</xrefinfofile><xrefprintedname>The GNU Emacs Manual</xrefprintedname></xref>).  Please follow the existing coding style.</para>
-    </chapter>
-  </node>
-  <node>
-    <nodename>GNU Free Documentation License</nodename>
-    <nodenext>Concept index</nodenext>
-    <nodeprev>Reporting bugs</nodeprev>
-    <nodeup>Top</nodeup>
-    <appendix>
-      <title>GNU Free Documentation License</title>
-<!-- The GNU Free Documentation License. -->
-      <center>
-        <para>Version 1.3, 3 November 2008</para>
-      </center>
-<!-- This file is intended to be included within another document, -->
-<!-- hence no sectioning command or @node. -->
-      <display xml:space="preserve">Copyright &copyright; 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+<filename file="hello.xml"></filename>
+<preamble>\input texinfo @c -*-texinfo-*-
+</preamble><!-- c %**start of header -->
+<setfilename file="hello.info" spaces=" ">hello.info</setfilename>
+<set name="UPDATED" line=" UPDATED 8 April 2010">8 April 2010</set>
+<set name="UPDATED-MONTH" line=" UPDATED-MONTH April 2010">April 2010</set>
+<set name="EDITION" line=" EDITION 2.6">2.6</set>
+<set name="VERSION" line=" VERSION 2.6">2.6</set>
+<settitle spaces=" ">GNU Hello 2.6</settitle>
+
+<!-- c Define a new index for options. -->
+<defcodeindex value="op" line=" op"></defcodeindex>
+<!-- c Combine everything into one index (arbitrarily chosen to be the -->
+<!-- c concept index). -->
+<syncodeindex from="op" to="cp" line=" op cp"></syncodeindex>
+<!-- c %**end of header -->
+
+<copying endspaces=" ">
+<para>This manual is for GNU Hello (version 2.6, 8 April 2010),
+which prints a friendly greeting (and serves as an example GNU package).
+</para>
+<para>Copyright &copyright; 1992, 1993, 1996, 2002, 2005, 2006, 2007, 2008,
+2009, 2010 Free Software Foundation, Inc.
+</para>
+<quotation endspaces=" ">
+<para>Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled
+&textldquo;GNU Free Documentation License&textrdquo;.
+</para></quotation>
+</copying>
+<!-- c If your manual is published on paper by the FSF, it should include -->
+<!-- c the standard FSF Front-Cover and Back-Cover Texts, as given in -->
+<!-- c maintain.texi. -->
+
+<dircategory spaces=" ">Basics</dircategory>
+<direntry endspaces=" ">
+<menuentry leadingtext="* "><menutitle separator=": ">Hello</menutitle><menunode separator=".               ">(hello)</menunode><menudescription><pre xml:space="preserve">Hello, GNU world.
+</pre></menudescription></menuentry></direntry>
+
+<titlepage endspaces=" ">
+<title spaces=" ">GNU Hello</title>
+<subtitle spaces=" ">for version 2.6, 8 April 2010</subtitle>
+<author spaces=" ">GNU Hello Developers (<email><emailaddress>bug-hello&arobase;gnu.org</emailaddress></email>)</author>
+<page></page>
+<vskip> 0pt plus 1filll</vskip>
+<insertcopying></insertcopying>
+</titlepage>
+
+<contents></contents>
+
+
+<node name="Top" spaces=" "><nodename>Top</nodename><nodenext automatic="on">Overview</nodenext><nodeup automatic="on">(dir)</nodeup></node>
+<top spaces=" "><sectiontitle>GNU Hello</sectiontitle>
+
+<insertcopying></insertcopying>
+
+<menu endspaces=" ">
+<menuentry leadingtext="* "><menunode separator="::		">Overview</menunode><menudescription><pre xml:space="preserve">General purpose and information.
+</pre></menudescription></menuentry><menuentry leadingtext="* "><menunode separator="::	">Sample output</menunode><menudescription><pre xml:space="preserve">Sample output from <command>hello</command>.
+</pre></menudescription></menuentry><menuentry leadingtext="* "><menunode separator="::	">Invoking hello</menunode><menudescription><pre xml:space="preserve">How to run <command>hello</command>.
+</pre></menudescription></menuentry><menuentry leadingtext="* "><menunode separator="::	">Reporting bugs</menunode><menudescription><pre xml:space="preserve">Sending bug reports and feature suggestions.
+</pre></menudescription></menuentry><menuentry leadingtext="* "><menunode separator=":: ">GNU Free Documentation License</menunode><menudescription><pre xml:space="preserve">Copying and sharing this documentation.
+</pre></menudescription></menuentry><menuentry leadingtext="* "><menunode separator="::	">Concept index</menunode><menudescription><pre xml:space="preserve">Index of concepts.
+</pre></menudescription></menuentry></menu>
+
+
+</top>
+<node name="Overview" spaces=" "><nodename>Overview</nodename><nodenext automatic="on">Sample output</nodenext><nodeprev automatic="on">Top</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<chapter spaces=" "><sectiontitle>Overview</sectiontitle>
+
+<cindex index="cp" spaces=" "><indexterm index="cp">greetings</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">overview</indexterm></cindex>
+
+<para>The GNU <command>hello</command> program
+(<url><urefurl>http://www.gnu.org/software/hello/</urefurl></url>) produces a familiar,
+friendly greeting.  It allows nonprogrammers to use a classic computer
+science tool which would otherwise be unavailable to them.  Because it
+is protected by the GNU General Public License, users are free (in
+perpetuity) to share and change it.
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp">joke, not</indexterm></cindex>
+<para>Not to spoil the joke, but of course the practical purpose of GNU
+Hello is to serve as a minimal example of a GNU package.  So, although
+most manuals don&textrsquo;t need to discuss the implementation of the programs
+they document, that is part of the goal here.
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp">GNU coding standards</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">GNU maintainer standards</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">standards, GNU coding</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">standards, GNU maintainer</indexterm></cindex>
+<para>First, GNU Hello follows the GNU coding standards
+(<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>standards</xrefinfofile><xrefprintedname spaces=" ">GNU Coding Standards</xrefprintedname></pxref>) and GNU
+maintainer standards (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>maintain</xrefinfofile><xrefprintedname spaces=" ">Information for
+GNU Maintainers</xrefprintedname></pxref>).  These are the basic documents which all GNU
+packages should adhere to.
+</para>
+<para>The Hello package also implements recommended development practices
+not embodied in the standards, using other GNU packages and features:
+</para>
+<itemize commandarg="bullet" spaces=" " endspaces=" "><itemprepend><formattingcommand command="bullet" /></itemprepend>
+<beforefirstitem>
+</beforefirstitem><listitem><prepend>&bullet;</prepend>
+<cindex index="cp" spaces=" "><indexterm index="cp">Automake</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Autoconf</indexterm></cindex>
+<para>It uses Automake (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>automake</xrefinfofile><xrefprintedname>GNU Automake</xrefprintedname></pxref>) and
+hence also Autoconf (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>GNU Autoconf</xrefprintedname></pxref>)
+for configuration.
+</para>
+</listitem><listitem><prepend>&bullet;</prepend>
+<cindex index="cp" spaces=" "><indexterm index="cp">Gnulib</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp"><command>srclist-update</command> script</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp"><file>README-dev</file> source file</indexterm></cindex>
+<para>It uses Gnulib (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Gnulib</xrefprinteddesc><xrefinfofile>gnulib</xrefinfofile><xrefprintedname>GNU Gnulib</xrefprintedname></pxref>) to enhance
+portability and avoid duplication of common sources.  Both
+<code>gnulib-tool</code> and <code>srclist-update</code> are used, for purposes of
+example.  See the <file>README-dev</file> file in the distribution.
+</para>
+</listitem><listitem><prepend>&bullet;</prepend>
+<cindex index="cp" spaces=" "><indexterm index="cp">Gettext</indexterm></cindex>
+<para>GNU Gettext (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>gettext</xrefinfofile><xrefprintedname>GNU Gettext</xrefprintedname></pxref>) is used
+for internationalization support.  Hello&textrsquo;s greeting has been translated
+into many languages.
+</para>
+</listitem><listitem><prepend>&bullet;</prepend>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;help</indexterm></indexcommand>
+<para>Internally, Hello uses the GNU <code>getopt_long</code> function
+(<pxref><xrefnodename>Getopt Long Options</xrefnodename><xrefinfofile>libc</xrefinfofile><xrefprintedname>GNU C Library</xrefprintedname></pxref>) to parse options,
+thus supporting GNU-style long options such as <option>--help</option>.
+</para>
+</listitem><listitem><prepend>&bullet;</prepend>
+<cindex index="cp" spaces=" "><indexterm index="cp">Help2man</indexterm></cindex>
+<para>The Hello Man page is generated with GNU <code>help2man</code>
+(<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Overview</xrefprinteddesc><xrefinfofile>help2man</xrefinfofile><xrefprintedname>GNU <code>help2man</code></xrefprintedname></pxref>) from the
+<option>--help</option> output.  This relieves the maintainers from the burden
+of updating separate man documentation, yet provides a reasonable
+overview for man devotees.
+</para>
+</listitem><listitem><prepend>&bullet;</prepend>
+<cindex index="cp" spaces=" "><indexterm index="cp">Texinfo</indexterm></cindex>
+<para>Finally, Texinfo (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>texinfo</xrefinfofile><xrefprintedname>Texinfo</xrefprintedname></pxref>) is the
+documentation format for this manual.  It supports output in Info,
+HTML, PDF, DVI, plain text, XML, and other formats.
+</para>
+</listitem></itemize>
+
+<para>GNU Hello is implemented in C.  GNU Gettext contains &textldquo;hello world&textrdquo;
+examples in a variety of other programming languages; see the Gettext
+home page at <url><urefurl>http://www.gnu.org/software/gettext/</urefurl></url>.  
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp"><file>Makefile.am</file> targets</indexterm></cindex>
+<para>The top-level <file>Makefile.am</file> in Hello also contains a few special
+targets for other projects to adapt as desired:
+</para>
+<table commandarg="code" spaces=" " endspaces=" ">
+<tableentry><tableterm><item spaces=" "><itemformat command="code">diff</itemformat></item>
+</tableterm><tableitem><para>Make a diff from the previous release, assuming the current tarball is
+in the current tarball.
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">po-check</itemformat></item>
+</tableterm><tableitem><para>Verify that all source files using <code>_()</code> are included for
+translation in <file>po/POTFILES.in</file>, so translators will have all the
+messages.
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">wwwdoc</itemformat></item>
+</tableterm><tableitem><para>Sample procedure for updating the manual on the GNU web site, in this
+case <url><urefurl>http://www.gnu.org/software/hello/manual/</urefurl></url>.
+</para></tableitem></tableentry></table>
+
+<cindex index="cp" spaces=" "><indexterm index="cp">authors</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Haertel, Mike</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">MacKenzie, David</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Brittenson, Jan</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Hannum, Charles</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">McGrath, Roland</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Friedman, Noah</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Eichwalder, Karl</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">King, The</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">Berry, Karl</indexterm></cindex>
+<para>GNU Hello was written by Mike Haertel, David MacKenzie, Jan
+Brittenson, Charles Hannum, Roland McGrath, Noah Friedman, Karl
+Eichwalder, Karl Berry, and <w>The King</w>.
+</para>
+
+</chapter>
+<node name="Sample-output" spaces=" "><nodename>Sample output</nodename><nodenext automatic="on">Invoking hello</nodenext><nodeprev automatic="on">Overview</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<chapter spaces=" "><sectiontitle>Sample output</sectiontitle>
+
+<cindex index="cp" spaces=" "><indexterm index="cp">sample output</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">examples</indexterm></cindex>
+
+<para>Here are some realistic examples of running GNU Hello.
+</para>
+<para>This is the output of the command <samp>hello</samp>:
+</para>
+<example endspaces=" ">
+<pre xml:space="preserve">Hello, world!
+</pre></example>
+
+<para>This is the output of the command <samp>hello --traditional</samp>:
+</para>
+<example endspaces=" ">
+<pre xml:space="preserve">hello, world
+</pre></example>
+
+<para>This is the output of the command <samp>hello --greeting=hi</samp>:
+</para>
+<example endspaces=" ">
+<pre xml:space="preserve">hi
+</pre></example>
+
+
+</chapter>
+<node name="Invoking-hello" spaces=" "><nodename>Invoking hello</nodename><nodenext automatic="on">Reporting bugs</nodenext><nodeprev automatic="on">Sample output</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<chapter spaces=" "><sectiontitle>Invoking <command>hello</command></sectiontitle>
+
+<cindex index="cp" spaces=" "><indexterm index="cp">invoking</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">options</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">usage</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">help</indexterm></cindex>
+
+<para>The format for running the <command>hello</command> program is:
+</para>
+<example endspaces=" ">
+<pre xml:space="preserve">hello <var>option</var> &dots;
+</pre></example>
+
+<para>With no options, <command>hello</command> prints the greeting <samp>Hello,
+world!</samp>.
+</para>
+<para><command>hello</command> supports the following options:
+</para>
+<table commandarg="option" spaces=" " endspaces=" ">
+<tableentry><tableterm><item spaces=" "><itemformat command="option">--greeting=<var>text</var></itemformat></item>
+<itemx spaces=" "><itemformat command="option">-g <var>text</var></itemformat></itemx>
+</tableterm><tableitem><indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;greeting</indexterm></indexcommand>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">-g</indexterm></indexcommand>
+<para>Output <var>text</var> instead of the default greeting.
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="option">--help</itemformat></item>
+<itemx spaces=" "><itemformat command="option">-h</itemformat></itemx>
+</tableterm><tableitem><indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;help</indexterm></indexcommand>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">-h</indexterm></indexcommand>
+<para>Print an informative help message on standard output and exit
+successfully.
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp">environment variables, help for</indexterm></cindex>
+<para>For the <option>--help</option> output of GNU programs, it&textrsquo;s strongly
+encouraged to include a brief (one or two sentences) description of
+what the program does, as well as the synopsis of how to run the
+program.  Any environment variables which affect execution should also
+be mentioned (Hello doesn&textrsquo;t have any).
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="option">--next-generation</itemformat></item>
+<itemx spaces=" "><itemformat command="option">-n</itemformat></itemx>
+</tableterm><tableitem><indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;next-generation</indexterm></indexcommand>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">-n</indexterm></indexcommand>
+<para>Output <samp>Hello, world!</samp>, but possibly including box-drawing
+characters or other fancy stuff, especially in translated locales.
+(If you would like to volunteer to translate messages for GNU packages,
+please see <url><urefurl>http://translationproject.org</urefurl></url>.)
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="option">--traditional</itemformat></item>
+<itemx spaces=" "><itemformat command="option">-t</itemformat></itemx>
+</tableterm><tableitem><indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;traditional</indexterm></indexcommand>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">-t</indexterm></indexcommand>
+<cindex index="cp" spaces=" "><indexterm index="cp">traditional</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">modern</indexterm></cindex>
+<para>Output the traditional greeting message <samp>hello, world</samp>.
+</para>
+</tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="option">--version</itemformat></item>
+<itemx spaces=" "><itemformat command="option">-v</itemformat></itemx>
+</tableterm><tableitem><indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;version</indexterm></indexcommand>
+<indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">-v</indexterm></indexcommand>
+<para>Print the version number and licensing information of Hello on
+standard output and then exit successfully.
+</para>
+</tableitem></tableentry></table>
+
+<para>If more than one of the greeting options (<option>-g</option>, <option>-n</option>,
+<option>-t</option>, and their long-named equivalents) is specified, whichever
+comes last takes precedence.
+</para>
+
+</chapter>
+<node name="Reporting-bugs" spaces=" "><nodename>Reporting bugs</nodename><nodenext automatic="on">GNU Free Documentation License</nodenext><nodeprev automatic="on">Invoking hello</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<chapter spaces=" "><sectiontitle>Reporting bugs</sectiontitle>
+
+<cindex index="cp" spaces=" "><indexterm index="cp">bug reporting</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">problems</indexterm></cindex>
+<cindex index="cp" spaces=" "><indexterm index="cp">reporting bugs</indexterm></cindex>
+
+<para>To report bugs or suggest enhancements for GNU Hello, please
+send electronic mail to <email><emailaddress>bug-hello&arobase;gnu.org</emailaddress></email>.
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp">checklist for bug reports</indexterm></cindex>
+<para>For bug reports, please include enough information for the maintainers
+to reproduce the problem.  Generally speaking, that means:
+</para>
+<itemize commandarg="bullet" spaces=" " endspaces=" "><itemprepend><formattingcommand command="bullet" /></itemprepend>
+<listitem spaces=" "><prepend>&bullet;</prepend><para>The version numbers of Hello (which you can find by running
+      <w><samp>hello --version</samp></w>) and any other program(s) or
+      manual(s) involved.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>Hardware and operating system names and versions.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>The contents of any input files necessary to reproduce the bug.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>The expected behavior and/or output.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>A description of the problem and samples of any erroneous output.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>Options you gave to <command>configure</command> other than specifying
+      installation directories.
+</para></listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>Anything else that you think would be helpful.
+</para></listitem></itemize>
+
+<para>When in doubt whether something is needed or not, include it.  It&textrsquo;s
+better to include too much than to leave out something important.
+</para>
+<cindex index="cp" spaces=" "><indexterm index="cp">patches, contributing</indexterm></cindex>
+<para>Patches are welcome; if possible, please make them with <samp><w>diff
+-c</w></samp> (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc spaces=" ">Overview</xrefprinteddesc><xrefinfofile spaces=" ">diff</xrefinfofile><xrefprintedname spaces=" ">Comparing and Merging Files</xrefprintedname></pxref>) and
+include <file>ChangeLog</file> entries (<pxref><xrefnodename>Change Log</xrefnodename><xrefinfofile spaces=" ">emacs</xrefinfofile><xrefprintedname spaces=" ">The GNU
+Emacs Manual</xrefprintedname></pxref>).  Please follow the existing coding style.
+</para>
+
+</chapter>
+<node name="GNU-Free-Documentation-License" spaces=" "><nodename>GNU Free Documentation License</nodename><nodenext automatic="on">Concept index</nodenext><nodeprev automatic="on">Reporting bugs</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<appendix spaces=" "><sectiontitle>GNU Free Documentation License</sectiontitle>
+
+<!-- c The GNU Free Documentation License. -->
+<center spaces=" ">Version 1.3, 3 November 2008</center>
+
+<!-- c This file is intended to be included within another document, -->
+<!-- c hence no sectioning command or @node. -->
+
+<display endspaces=" ">
+<pre xml:space="preserve">Copyright &copyright; 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
 <uref><urefurl>http://fsf.org/</urefurl></uref>
 
 Everyone is permitted to copy and distribute verbatim copies
-of this license document, but changing it is not allowed.</display>
-      <enumerate first="0">
-        <item>
-          <para>PREAMBLE</para>
-          <para>The purpose of this License is to make a manual, textbook, or other functional and useful document <dfn>free</dfn> in the sense of freedom: to assure everyone the effective freedom to copy and redistribute it, with or without modifying it, either commercially or noncommercially. Secondarily, this License preserves for the author and publisher a way to get credit for their work, while not being considered responsible for modifications made by others.</para>
-          <para>This License is a kind of &ldquo;copyleft&rdquo;, which means that derivative works of the document must themselves be free in the same sense.  It complements the GNU General Public License, which is a copyleft license designed for free software.</para>
-          <para>We have designed this License in order to use it for manuals for free software, because free software needs free documentation: a free program should come with manuals providing the same freedoms that the software does.  But this License is not limited to software manuals; it can be used for any textual work, regardless of subject matter or whether it is published as a printed book.  We recommend this License principally for works whose purpose is instruction or reference.</para>
-        </item>
-        <item>
-          <para>APPLICABILITY AND DEFINITIONS</para>
-          <para>This License applies to any manual or other work, in any medium, that contains a notice placed by the copyright holder saying it can be distributed under the terms of this License.  Such a notice grants a world-wide, royalty-free license, unlimited in duration, to use that work under the conditions stated herein.  The &ldquo;Document&rdquo;, below, refers to any such manual or work.  Any member of the public is a licensee, and is addressed as &ldquo;you&rdquo;.  You accept the license if you copy, modify or distribute the work in a way requiring permission under copyright law.</para>
-          <para>A &ldquo;Modified Version&rdquo; of the Document means any work containing the Document or a portion of it, either copied verbatim, or with modifications and/or translated into another language.</para>
-          <para>A &ldquo;Secondary Section&rdquo; is a named appendix or a front-matter section of the Document that deals exclusively with the relationship of the publishers or authors of the Document to the Document's overall subject (or to related matters) and contains nothing that could fall directly within that overall subject.  (Thus, if the Document is in part a textbook of mathematics, a Secondary Section may not explain any mathematics.)  The relationship could be a matter of historical connection with the subject or with related matters, or of legal, commercial, philosophical, ethical or political position regarding them.</para>
-          <para>The &ldquo;Invariant Sections&rdquo; are certain Secondary Sections whose titles are designated, as being those of Invariant Sections, in the notice that says that the Document is released under this License.  If a section does not fit the above definition of Secondary then it is not allowed to be designated as Invariant.  The Document may contain zero Invariant Sections.  If the Document does not identify any Invariant Sections then there are none.</para>
-          <para>The &ldquo;Cover Texts&rdquo; are certain short passages of text that are listed, as Front-Cover Texts or Back-Cover Texts, in the notice that says that the Document is released under this License.  A Front-Cover Text may be at most 5 words, and a Back-Cover Text may be at most 25 words.</para>
-          <para>A &ldquo;Transparent&rdquo; copy of the Document means a machine-readable copy, represented in a format whose specification is available to the general public, that is suitable for revising the document straightforwardly with generic text editors or (for images composed of pixels) generic paint programs or (for drawings) some widely available drawing editor, and that is suitable for input to text formatters or for automatic translation to a variety of formats suitable for input to text formatters.  A copy made in an otherwise Transparent file format whose markup, or absence of markup, has been arranged to thwart or discourage subsequent modification by readers is not Transparent. An image format is not Transparent if used for any substantial amount of text.  A copy that is not &ldquo;Transparent&rdquo; is called &ldquo;Opaque&rdquo;.</para>
-          <para>Examples of suitable formats for Transparent copies include plain ASCII without markup, Texinfo input format, La&tex; input format, SGML or XML using a publicly available DTD, and standard-conforming simple HTML, PostScript or PDF designed for human modification.  Examples of transparent image formats include PNG, XCF and JPG.  Opaque formats include proprietary formats that can be read and edited only by proprietary word processors, SGML or XML for which the DTD and/or processing tools are not generally available, and the machine-generated HTML, PostScript or PDF produced by some word processors for output purposes only.</para>
-          <para>The &ldquo;Title Page&rdquo; means, for a printed book, the title page itself, plus such following pages as are needed to hold, legibly, the material this License requires to appear in the title page.  For works in formats which do not have any title page as such, &ldquo;Title Page&rdquo; means the text near the most prominent appearance of the work's title, preceding the beginning of the body of the text.</para>
-          <para>The &ldquo;publisher&rdquo; means any person or entity that distributes copies of the Document to the public.</para>
-          <para>A section &ldquo;Entitled XYZ&rdquo; means a named subunit of the Document whose title either is precisely XYZ or contains XYZ in parentheses following text that translates XYZ in another language.  (Here XYZ stands for a specific section name mentioned below, such as &ldquo;Acknowledgements&rdquo;, &ldquo;Dedications&rdquo;, &ldquo;Endorsements&rdquo;, or &ldquo;History&rdquo;.)  To &ldquo;Preserve the Title&rdquo; of such a section when you modify the Document means that it remains a section &ldquo;Entitled XYZ&rdquo; according to this definition.</para>
-          <para>The Document may include Warranty Disclaimers next to the notice which states that this License applies to the Document.  These Warranty Disclaimers are considered to be included by reference in this License, but only as regards disclaiming warranties: any other implication that these Warranty Disclaimers may have is void and has no effect on the meaning of this License.</para>
-        </item>
-        <item>
-          <para>VERBATIM COPYING</para>
-          <para>You may copy and distribute the Document in any medium, either commercially or noncommercially, provided that this License, the copyright notices, and the license notice saying this License applies to the Document are reproduced in all copies, and that you add no other conditions whatsoever to those of this License.  You may not use technical measures to obstruct or control the reading or further copying of the copies you make or distribute.  However, you may accept compensation in exchange for copies.  If you distribute a large enough number of copies you must also follow the conditions in section 3.</para>
-          <para>You may also lend copies, under the same conditions stated above, and you may publicly display copies.</para>
-        </item>
-        <item>
-          <para>COPYING IN QUANTITY</para>
-          <para>If you publish printed copies (or copies in media that commonly have printed covers) of the Document, numbering more than 100, and the Document's license notice requires Cover Texts, you must enclose the copies in covers that carry, clearly and legibly, all these Cover Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on the back cover.  Both covers must also clearly and legibly identify you as the publisher of these copies.  The front cover must present the full title with all words of the title equally prominent and visible.  You may add other material on the covers in addition. Copying with changes limited to the covers, as long as they preserve the title of the Document and satisfy these conditions, can be treated as verbatim copying in other respects.</para>
-          <para>If the required texts for either cover are too voluminous to fit legibly, you should put the first ones listed (as many as fit reasonably) on the actual cover, and continue the rest onto adjacent pages.</para>
-          <para>If you publish or distribute Opaque copies of the Document numbering more than 100, you must either include a machine-readable Transparent copy along with each Opaque copy, or state in or with each Opaque copy a computer-network location from which the general network-using public has access to download using public-standard network protocols a complete Transparent copy of the Document, free of added material. If you use the latter option, you must take reasonably prudent steps, when you begin distribution of Opaque copies in quantity, to ensure that this Transparent copy will remain thus accessible at the stated location until at least one year after the last time you distribute an Opaque copy (directly or through your agents or retailers) of that edition to the public.</para>
-          <para>It is requested, but not required, that you contact the authors of the Document well before redistributing any large number of copies, to give them a chance to provide you with an updated version of the Document.</para>
-        </item>
-        <item>
-          <para>MODIFICATIONS</para>
-          <para>You may copy and distribute a Modified Version of the Document under the conditions of sections 2 and 3 above, provided that you release the Modified Version under precisely this License, with the Modified Version filling the role of the Document, thus licensing distribution and modification of the Modified Version to whoever possesses a copy of it.  In addition, you must do these things in the Modified Version:</para>
-          <enumerate first="A">
-            <item>
-              <para>Use in the Title Page (and on the covers, if any) a title distinct from that of the Document, and from those of previous versions (which should, if there were any, be listed in the History section of the Document).  You may use the same title as a previous version if the original publisher of that version gives permission.</para>
-            </item>
-            <item>
-              <para>List on the Title Page, as authors, one or more persons or entities responsible for authorship of the modifications in the Modified Version, together with at least five of the principal authors of the Document (all of its principal authors, if it has fewer than five), unless they release you from this requirement.</para>
-            </item>
-            <item>
-              <para>State on the Title page the name of the publisher of the Modified Version, as the publisher.</para>
-            </item>
-            <item>
-              <para>Preserve all the copyright notices of the Document.</para>
-            </item>
-            <item>
-              <para>Add an appropriate copyright notice for your modifications adjacent to the other copyright notices.</para>
-            </item>
-            <item>
-              <para>Include, immediately after the copyright notices, a license notice giving the public permission to use the Modified Version under the terms of this License, in the form shown in the Addendum below.</para>
-            </item>
-            <item>
-              <para>Preserve in that license notice the full lists of Invariant Sections and required Cover Texts given in the Document's license notice.</para>
-            </item>
-            <item>
-              <para>Include an unaltered copy of this License.</para>
-            </item>
-            <item>
-              <para>Preserve the section Entitled &ldquo;History&rdquo;, Preserve its Title, and add to it an item stating at least the title, year, new authors, and publisher of the Modified Version as given on the Title Page.  If there is no section Entitled &ldquo;History&rdquo; in the Document, create one stating the title, year, authors, and publisher of the Document as given on its Title Page, then add an item describing the Modified Version as stated in the previous sentence.</para>
-            </item>
-            <item>
-              <para>Preserve the network location, if any, given in the Document for public access to a Transparent copy of the Document, and likewise the network locations given in the Document for previous versions it was based on.  These may be placed in the &ldquo;History&rdquo; section. You may omit a network location for a work that was published at least four years before the Document itself, or if the original publisher of the version it refers to gives permission.</para>
-            </item>
-            <item>
-              <para>For any section Entitled &ldquo;Acknowledgements&rdquo; or &ldquo;Dedications&rdquo;, Preserve the Title of the section, and preserve in the section all the substance and tone of each of the contributor acknowledgements and/or dedications given therein.</para>
-            </item>
-            <item>
-              <para>Preserve all the Invariant Sections of the Document, unaltered in their text and in their titles.  Section numbers or the equivalent are not considered part of the section titles.</para>
-            </item>
-            <item>
-              <para>Delete any section Entitled &ldquo;Endorsements&rdquo;.  Such a section may not be included in the Modified Version.</para>
-            </item>
-            <item>
-              <para>Do not retitle any existing section to be Entitled &ldquo;Endorsements&rdquo; or to conflict in title with any Invariant Section.</para>
-            </item>
-            <item>
-              <para>Preserve any Warranty Disclaimers.</para>
-            </item>
-          </enumerate>
-          <para>If the Modified Version includes new front-matter sections or appendices that qualify as Secondary Sections and contain no material copied from the Document, you may at your option designate some or all of these sections as invariant.  To do this, add their titles to the list of Invariant Sections in the Modified Version's license notice. These titles must be distinct from any other section titles.</para>
-          <para>You may add a section Entitled &ldquo;Endorsements&rdquo;, provided it contains nothing but endorsements of your Modified Version by various parties&mdash;for example, statements of peer review or that the text has been approved by an organization as the authoritative definition of a standard.</para>
-          <para>You may add a passage of up to five words as a Front-Cover Text, and a passage of up to 25 words as a Back-Cover Text, to the end of the list of Cover Texts in the Modified Version.  Only one passage of Front-Cover Text and one of Back-Cover Text may be added by (or through arrangements made by) any one entity.  If the Document already includes a cover text for the same cover, previously added by you or by arrangement made by the same entity you are acting on behalf of, you may not add another; but you may replace the old one, on explicit permission from the previous publisher that added the old one.</para>
-          <para>The author(s) and publisher(s) of the Document do not by this License give permission to use their names for publicity for or to assert or imply endorsement of any Modified Version.</para>
-        </item>
-        <item>
-          <para>COMBINING DOCUMENTS</para>
-          <para>You may combine the Document with other documents released under this License, under the terms defined in section 4 above for modified versions, provided that you include in the combination all of the Invariant Sections of all of the original documents, unmodified, and list them all as Invariant Sections of your combined work in its license notice, and that you preserve all their Warranty Disclaimers.</para>
-          <para>The combined work need only contain one copy of this License, and multiple identical Invariant Sections may be replaced with a single copy.  If there are multiple Invariant Sections with the same name but different contents, make the title of each such section unique by adding at the end of it, in parentheses, the name of the original author or publisher of that section if known, or else a unique number. Make the same adjustment to the section titles in the list of Invariant Sections in the license notice of the combined work.</para>
-          <para>In the combination, you must combine any sections Entitled &ldquo;History&rdquo; in the various original documents, forming one section Entitled &ldquo;History&rdquo;; likewise combine any sections Entitled &ldquo;Acknowledgements&rdquo;, and any sections Entitled &ldquo;Dedications&rdquo;.  You must delete all sections Entitled &ldquo;Endorsements.&rdquo;</para>
-        </item>
-        <item>
-          <para>COLLECTIONS OF DOCUMENTS</para>
-          <para>You may make a collection consisting of the Document and other documents released under this License, and replace the individual copies of this License in the various documents with a single copy that is included in the collection, provided that you follow the rules of this License for verbatim copying of each of the documents in all other respects.</para>
-          <para>You may extract a single document from such a collection, and distribute it individually under this License, provided you insert a copy of this License into the extracted document, and follow this License in all other respects regarding verbatim copying of that document.</para>
-        </item>
-        <item>
-          <para>AGGREGATION WITH INDEPENDENT WORKS</para>
-          <para>A compilation of the Document or its derivatives with other separate and independent documents or works, in or on a volume of a storage or distribution medium, is called an &ldquo;aggregate&rdquo; if the copyright resulting from the compilation is not used to limit the legal rights of the compilation's users beyond what the individual works permit. When the Document is included in an aggregate, this License does not apply to the other works in the aggregate which are not themselves derivative works of the Document.</para>
-          <para>If the Cover Text requirement of section 3 is applicable to these copies of the Document, then if the Document is less than one half of the entire aggregate, the Document's Cover Texts may be placed on covers that bracket the Document within the aggregate, or the electronic equivalent of covers if the Document is in electronic form. Otherwise they must appear on printed covers that bracket the whole aggregate.</para>
-        </item>
-        <item>
-          <para>TRANSLATION</para>
-          <para>Translation is considered a kind of modification, so you may distribute translations of the Document under the terms of section 4. Replacing Invariant Sections with translations requires special permission from their copyright holders, but you may include translations of some or all Invariant Sections in addition to the original versions of these Invariant Sections.  You may include a translation of this License, and all the license notices in the Document, and any Warranty Disclaimers, provided that you also include the original English version of this License and the original versions of those notices and disclaimers.  In case of a disagreement between the translation and the original version of this License or a notice or disclaimer, the original version will prevail.</para>
-          <para>If a section in the Document is Entitled &ldquo;Acknowledgements&rdquo;, &ldquo;Dedications&rdquo;, or &ldquo;History&rdquo;, the requirement (section 4) to Preserve its Title (section 1) will typically require changing the actual title.</para>
-        </item>
-        <item>
-          <para>TERMINATION</para>
-          <para>You may not copy, modify, sublicense, or distribute the Document except as expressly provided under this License.  Any attempt otherwise to copy, modify, sublicense, or distribute it is void, and will automatically terminate your rights under this License.</para>
-          <para>However, if you cease all violation of this License, then your license from a particular copyright holder is reinstated (a) provisionally, unless and until the copyright holder explicitly and finally terminates your license, and (b) permanently, if the copyright holder fails to notify you of the violation by some reasonable means prior to 60 days after the cessation.</para>
-          <para>Moreover, your license from a particular copyright holder is reinstated permanently if the copyright holder notifies you of the violation by some reasonable means, this is the first time you have received notice of violation of this License (for any work) from that copyright holder, and you cure the violation prior to 30 days after your receipt of the notice.</para>
-          <para>Termination of your rights under this section does not terminate the licenses of parties who have received copies or rights from you under this License.  If your rights have been terminated and not permanently reinstated, receipt of a copy of some or all of the same material does not give you any rights to use it.</para>
-        </item>
-        <item>
-          <para>FUTURE REVISIONS OF THIS LICENSE</para>
-          <para>The Free Software Foundation may publish new, revised versions of the GNU Free Documentation License from time to time.  Such new versions will be similar in spirit to the present version, but may differ in detail to address new problems or concerns.  See <uref><urefurl>http://www.gnu.org/copyleft/</urefurl></uref>.</para>
-          <para>Each version of the License is given a distinguishing version number. If the Document specifies that a particular numbered version of this License &ldquo;or any later version&rdquo; applies to it, you have the option of following the terms and conditions either of that specified version or of any later version that has been published (not as a draft) by the Free Software Foundation.  If the Document does not specify a version number of this License, you may choose any version ever published (not as a draft) by the Free Software Foundation.  If the Document specifies that a proxy can decide which future versions of this License can be used, that proxy's public statement of acceptance of a version permanently authorizes you to choose that version for the Document.</para>
-        </item>
-        <item>
-          <para>RELICENSING</para>
-          <para>&ldquo;Massive Multiauthor Collaboration Site&rdquo; (or &ldquo;MMC Site&rdquo;) means any World Wide Web server that publishes copyrightable works and also provides prominent facilities for anybody to edit those works.  A public wiki that anybody can edit is an example of such a server.  A &ldquo;Massive Multiauthor Collaboration&rdquo; (or &ldquo;MMC&rdquo;) contained in the site means any set of copyrightable works thus published on the MMC site.</para>
-          <para>&ldquo;CC-BY-SA&rdquo; means the Creative Commons Attribution-Share Alike 3.0 license published by Creative Commons Corporation, a not-for-profit corporation with a principal place of business in San Francisco, California, as well as future copyleft versions of that license published by that same organization.</para>
-          <para>&ldquo;Incorporate&rdquo; means to publish or republish a Document, in whole or in part, as part of another Document.</para>
-          <para>An MMC is &ldquo;eligible for relicensing&rdquo; if it is licensed under this License, and if all works that were first published under this License somewhere other than this MMC, and subsequently incorporated in whole or in part into the MMC, (1) had no cover texts or invariant sections, and (2) were thus incorporated prior to November 1, 2008.</para>
-          <para>The operator of an MMC Site may republish an MMC contained in the site under CC-BY-SA on the same site at any time before August 1, 2009, provided the MMC is eligible for relicensing.</para>
-        </item>
-      </enumerate>
-      <heading>ADDENDUM: How to use this License for your documents</heading>
-      <para>To use this License in a document you have written, include a copy of the License in the document and put the following copyright and license notices just after the title page:</para>
-      <smallexample xml:space="preserve"><group>  Copyright (C)  <var>year</var>  <var>your name</var>.
+of this license document, but changing it is not allowed.
+</pre></display>
+
+<enumerate spaces=" " endspaces=" "><enumeratefirst>0</enumeratefirst>
+<listitem>
+<para>PREAMBLE
+</para>
+<para>The purpose of this License is to make a manual, textbook, or other
+functional and useful document <dfn>free</dfn> in the sense of freedom: to
+assure everyone the effective freedom to copy and redistribute it,
+with or without modifying it, either commercially or noncommercially.
+Secondarily, this License preserves for the author and publisher a way
+to get credit for their work, while not being considered responsible
+for modifications made by others.
+</para>
+<para>This License is a kind of &textldquo;copyleft&textrdquo;, which means that derivative
+works of the document must themselves be free in the same sense.  It
+complements the GNU General Public License, which is a copyleft
+license designed for free software.
+</para>
+<para>We have designed this License in order to use it for manuals for free
+software, because free software needs free documentation: a free
+program should come with manuals providing the same freedoms that the
+software does.  But this License is not limited to software manuals;
+it can be used for any textual work, regardless of subject matter or
+whether it is published as a printed book.  We recommend this License
+principally for works whose purpose is instruction or reference.
+</para>
+</listitem><listitem>
+<para>APPLICABILITY AND DEFINITIONS
+</para>
+<para>This License applies to any manual or other work, in any medium, that
+contains a notice placed by the copyright holder saying it can be
+distributed under the terms of this License.  Such a notice grants a
+world-wide, royalty-free license, unlimited in duration, to use that
+work under the conditions stated herein.  The &textldquo;Document&textrdquo;, below,
+refers to any such manual or work.  Any member of the public is a
+licensee, and is addressed as &textldquo;you&textrdquo;.  You accept the license if you
+copy, modify or distribute the work in a way requiring permission
+under copyright law.
+</para>
+<para>A &textldquo;Modified Version&textrdquo; of the Document means any work containing the
+Document or a portion of it, either copied verbatim, or with
+modifications and/or translated into another language.
+</para>
+<para>A &textldquo;Secondary Section&textrdquo; is a named appendix or a front-matter section
+of the Document that deals exclusively with the relationship of the
+publishers or authors of the Document to the Document&textrsquo;s overall
+subject (or to related matters) and contains nothing that could fall
+directly within that overall subject.  (Thus, if the Document is in
+part a textbook of mathematics, a Secondary Section may not explain
+any mathematics.)  The relationship could be a matter of historical
+connection with the subject or with related matters, or of legal,
+commercial, philosophical, ethical or political position regarding
+them.
+</para>
+<para>The &textldquo;Invariant Sections&textrdquo; are certain Secondary Sections whose titles
+are designated, as being those of Invariant Sections, in the notice
+that says that the Document is released under this License.  If a
+section does not fit the above definition of Secondary then it is not
+allowed to be designated as Invariant.  The Document may contain zero
+Invariant Sections.  If the Document does not identify any Invariant
+Sections then there are none.
+</para>
+<para>The &textldquo;Cover Texts&textrdquo; are certain short passages of text that are listed,
+as Front-Cover Texts or Back-Cover Texts, in the notice that says that
+the Document is released under this License.  A Front-Cover Text may
+be at most 5 words, and a Back-Cover Text may be at most 25 words.
+</para>
+<para>A &textldquo;Transparent&textrdquo; copy of the Document means a machine-readable copy,
+represented in a format whose specification is available to the
+general public, that is suitable for revising the document
+straightforwardly with generic text editors or (for images composed of
+pixels) generic paint programs or (for drawings) some widely available
+drawing editor, and that is suitable for input to text formatters or
+for automatic translation to a variety of formats suitable for input
+to text formatters.  A copy made in an otherwise Transparent file
+format whose markup, or absence of markup, has been arranged to thwart
+or discourage subsequent modification by readers is not Transparent.
+An image format is not Transparent if used for any substantial amount
+of text.  A copy that is not &textldquo;Transparent&textrdquo; is called &textldquo;Opaque&textrdquo;.
+</para>
+<para>Examples of suitable formats for Transparent copies include plain
+ASCII without markup, Texinfo input format, La&tex; input
+format, SGML or XML using a publicly available
+DTD, and standard-conforming simple HTML,
+PostScript or PDF designed for human modification.  Examples
+of transparent image formats include PNG, XCF and
+JPG.  Opaque formats include proprietary formats that can be
+read and edited only by proprietary word processors, SGML or
+XML for which the DTD and/or processing tools are
+not generally available, and the machine-generated HTML,
+PostScript or PDF produced by some word processors for
+output purposes only.
+</para>
+<para>The &textldquo;Title Page&textrdquo; means, for a printed book, the title page itself,
+plus such following pages as are needed to hold, legibly, the material
+this License requires to appear in the title page.  For works in
+formats which do not have any title page as such, &textldquo;Title Page&textrdquo; means
+the text near the most prominent appearance of the work&textrsquo;s title,
+preceding the beginning of the body of the text.
+</para>
+<para>The &textldquo;publisher&textrdquo; means any person or entity that distributes copies
+of the Document to the public.
+</para>
+<para>A section &textldquo;Entitled XYZ&textrdquo; means a named subunit of the Document whose
+title either is precisely XYZ or contains XYZ in parentheses following
+text that translates XYZ in another language.  (Here XYZ stands for a
+specific section name mentioned below, such as &textldquo;Acknowledgements&textrdquo;,
+&textldquo;Dedications&textrdquo;, &textldquo;Endorsements&textrdquo;, or &textldquo;History&textrdquo;.)  To &textldquo;Preserve the Title&textrdquo;
+of such a section when you modify the Document means that it remains a
+section &textldquo;Entitled XYZ&textrdquo; according to this definition.
+</para>
+<para>The Document may include Warranty Disclaimers next to the notice which
+states that this License applies to the Document.  These Warranty
+Disclaimers are considered to be included by reference in this
+License, but only as regards disclaiming warranties: any other
+implication that these Warranty Disclaimers may have is void and has
+no effect on the meaning of this License.
+</para>
+</listitem><listitem>
+<para>VERBATIM COPYING
+</para>
+<para>You may copy and distribute the Document in any medium, either
+commercially or noncommercially, provided that this License, the
+copyright notices, and the license notice saying this License applies
+to the Document are reproduced in all copies, and that you add no other
+conditions whatsoever to those of this License.  You may not use
+technical measures to obstruct or control the reading or further
+copying of the copies you make or distribute.  However, you may accept
+compensation in exchange for copies.  If you distribute a large enough
+number of copies you must also follow the conditions in section 3.
+</para>
+<para>You may also lend copies, under the same conditions stated above, and
+you may publicly display copies.
+</para>
+</listitem><listitem>
+<para>COPYING IN QUANTITY
+</para>
+<para>If you publish printed copies (or copies in media that commonly have
+printed covers) of the Document, numbering more than 100, and the
+Document&textrsquo;s license notice requires Cover Texts, you must enclose the
+copies in covers that carry, clearly and legibly, all these Cover
+Texts: Front-Cover Texts on the front cover, and Back-Cover Texts on
+the back cover.  Both covers must also clearly and legibly identify
+you as the publisher of these copies.  The front cover must present
+the full title with all words of the title equally prominent and
+visible.  You may add other material on the covers in addition.
+Copying with changes limited to the covers, as long as they preserve
+the title of the Document and satisfy these conditions, can be treated
+as verbatim copying in other respects.
+</para>
+<para>If the required texts for either cover are too voluminous to fit
+legibly, you should put the first ones listed (as many as fit
+reasonably) on the actual cover, and continue the rest onto adjacent
+pages.
+</para>
+<para>If you publish or distribute Opaque copies of the Document numbering
+more than 100, you must either include a machine-readable Transparent
+copy along with each Opaque copy, or state in or with each Opaque copy
+a computer-network location from which the general network-using
+public has access to download using public-standard network protocols
+a complete Transparent copy of the Document, free of added material.
+If you use the latter option, you must take reasonably prudent steps,
+when you begin distribution of Opaque copies in quantity, to ensure
+that this Transparent copy will remain thus accessible at the stated
+location until at least one year after the last time you distribute an
+Opaque copy (directly or through your agents or retailers) of that
+edition to the public.
+</para>
+<para>It is requested, but not required, that you contact the authors of the
+Document well before redistributing any large number of copies, to give
+them a chance to provide you with an updated version of the Document.
+</para>
+</listitem><listitem>
+<para>MODIFICATIONS
+</para>
+<para>You may copy and distribute a Modified Version of the Document under
+the conditions of sections 2 and 3 above, provided that you release
+the Modified Version under precisely this License, with the Modified
+Version filling the role of the Document, thus licensing distribution
+and modification of the Modified Version to whoever possesses a copy
+of it.  In addition, you must do these things in the Modified Version:
+</para>
+<enumerate first="A" spaces=" " endspaces=" "><enumeratefirst>A</enumeratefirst>
+<listitem>
+<para>Use in the Title Page (and on the covers, if any) a title distinct
+from that of the Document, and from those of previous versions
+(which should, if there were any, be listed in the History section
+of the Document).  You may use the same title as a previous version
+if the original publisher of that version gives permission.
+</para>
+</listitem><listitem>
+<para>List on the Title Page, as authors, one or more persons or entities
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
+</para>
+</listitem><listitem>
+<para>State on the Title page the name of the publisher of the
+Modified Version, as the publisher.
+</para>
+</listitem><listitem>
+<para>Preserve all the copyright notices of the Document.
+</para>
+</listitem><listitem>
+<para>Add an appropriate copyright notice for your modifications
+adjacent to the other copyright notices.
+</para>
+</listitem><listitem>
+<para>Include, immediately after the copyright notices, a license notice
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.
+</para>
+</listitem><listitem>
+<para>Preserve in that license notice the full lists of Invariant Sections
+and required Cover Texts given in the Document&textrsquo;s license notice.
+</para>
+</listitem><listitem>
+<para>Include an unaltered copy of this License.
+</para>
+</listitem><listitem>
+<para>Preserve the section Entitled &textldquo;History&textrdquo;, Preserve its Title, and add
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page.  If
+there is no section Entitled &textldquo;History&textrdquo; in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.
+</para>
+</listitem><listitem>
+<para>Preserve the network location, if any, given in the Document for
+public access to a Transparent copy of the Document, and likewise
+the network locations given in the Document for previous versions
+it was based on.  These may be placed in the &textldquo;History&textrdquo; section.
+You may omit a network location for a work that was published at
+least four years before the Document itself, or if the original
+publisher of the version it refers to gives permission.
+</para>
+</listitem><listitem>
+<para>For any section Entitled &textldquo;Acknowledgements&textrdquo; or &textldquo;Dedications&textrdquo;, Preserve
+the Title of the section, and preserve in the section all the
+substance and tone of each of the contributor acknowledgements and/or
+dedications given therein.
+</para>
+</listitem><listitem>
+<para>Preserve all the Invariant Sections of the Document,
+unaltered in their text and in their titles.  Section numbers
+or the equivalent are not considered part of the section titles.
+</para>
+</listitem><listitem>
+<para>Delete any section Entitled &textldquo;Endorsements&textrdquo;.  Such a section
+may not be included in the Modified Version.
+</para>
+</listitem><listitem>
+<para>Do not retitle any existing section to be Entitled &textldquo;Endorsements&textrdquo; or
+to conflict in title with any Invariant Section.
+</para>
+</listitem><listitem>
+<para>Preserve any Warranty Disclaimers.
+</para></listitem></enumerate>
+
+<para>If the Modified Version includes new front-matter sections or
+appendices that qualify as Secondary Sections and contain no material
+copied from the Document, you may at your option designate some or all
+of these sections as invariant.  To do this, add their titles to the
+list of Invariant Sections in the Modified Version&textrsquo;s license notice.
+These titles must be distinct from any other section titles.
+</para>
+<para>You may add a section Entitled &textldquo;Endorsements&textrdquo;, provided it contains
+nothing but endorsements of your Modified Version by various
+parties&textmdash;for example, statements of peer review or that the text has
+been approved by an organization as the authoritative definition of a
+standard.
+</para>
+<para>You may add a passage of up to five words as a Front-Cover Text, and a
+passage of up to 25 words as a Back-Cover Text, to the end of the list
+of Cover Texts in the Modified Version.  Only one passage of
+Front-Cover Text and one of Back-Cover Text may be added by (or
+through arrangements made by) any one entity.  If the Document already
+includes a cover text for the same cover, previously added by you or
+by arrangement made by the same entity you are acting on behalf of,
+you may not add another; but you may replace the old one, on explicit
+permission from the previous publisher that added the old one.
+</para>
+<para>The author(s) and publisher(s) of the Document do not by this License
+give permission to use their names for publicity for or to assert or
+imply endorsement of any Modified Version.
+</para>
+</listitem><listitem>
+<para>COMBINING DOCUMENTS
+</para>
+<para>You may combine the Document with other documents released under this
+License, under the terms defined in section 4 above for modified
+versions, provided that you include in the combination all of the
+Invariant Sections of all of the original documents, unmodified, and
+list them all as Invariant Sections of your combined work in its
+license notice, and that you preserve all their Warranty Disclaimers.
+</para>
+<para>The combined work need only contain one copy of this License, and
+multiple identical Invariant Sections may be replaced with a single
+copy.  If there are multiple Invariant Sections with the same name but
+different contents, make the title of each such section unique by
+adding at the end of it, in parentheses, the name of the original
+author or publisher of that section if known, or else a unique number.
+Make the same adjustment to the section titles in the list of
+Invariant Sections in the license notice of the combined work.
+</para>
+<para>In the combination, you must combine any sections Entitled &textldquo;History&textrdquo;
+in the various original documents, forming one section Entitled
+&textldquo;History&textrdquo;; likewise combine any sections Entitled &textldquo;Acknowledgements&textrdquo;,
+and any sections Entitled &textldquo;Dedications&textrdquo;.  You must delete all
+sections Entitled &textldquo;Endorsements.&textrdquo;
+</para>
+</listitem><listitem>
+<para>COLLECTIONS OF DOCUMENTS
+</para>
+<para>You may make a collection consisting of the Document and other documents
+released under this License, and replace the individual copies of this
+License in the various documents with a single copy that is included in
+the collection, provided that you follow the rules of this License for
+verbatim copying of each of the documents in all other respects.
+</para>
+<para>You may extract a single document from such a collection, and distribute
+it individually under this License, provided you insert a copy of this
+License into the extracted document, and follow this License in all
+other respects regarding verbatim copying of that document.
+</para>
+</listitem><listitem>
+<para>AGGREGATION WITH INDEPENDENT WORKS
+</para>
+<para>A compilation of the Document or its derivatives with other separate
+and independent documents or works, in or on a volume of a storage or
+distribution medium, is called an &textldquo;aggregate&textrdquo; if the copyright
+resulting from the compilation is not used to limit the legal rights
+of the compilation&textrsquo;s users beyond what the individual works permit.
+When the Document is included in an aggregate, this License does not
+apply to the other works in the aggregate which are not themselves
+derivative works of the Document.
+</para>
+<para>If the Cover Text requirement of section 3 is applicable to these
+copies of the Document, then if the Document is less than one half of
+the entire aggregate, the Document&textrsquo;s Cover Texts may be placed on
+covers that bracket the Document within the aggregate, or the
+electronic equivalent of covers if the Document is in electronic form.
+Otherwise they must appear on printed covers that bracket the whole
+aggregate.
+</para>
+</listitem><listitem>
+<para>TRANSLATION
+</para>
+<para>Translation is considered a kind of modification, so you may
+distribute translations of the Document under the terms of section 4.
+Replacing Invariant Sections with translations requires special
+permission from their copyright holders, but you may include
+translations of some or all Invariant Sections in addition to the
+original versions of these Invariant Sections.  You may include a
+translation of this License, and all the license notices in the
+Document, and any Warranty Disclaimers, provided that you also include
+the original English version of this License and the original versions
+of those notices and disclaimers.  In case of a disagreement between
+the translation and the original version of this License or a notice
+or disclaimer, the original version will prevail.
+</para>
+<para>If a section in the Document is Entitled &textldquo;Acknowledgements&textrdquo;,
+&textldquo;Dedications&textrdquo;, or &textldquo;History&textrdquo;, the requirement (section 4) to Preserve
+its Title (section 1) will typically require changing the actual
+title.
+</para>
+</listitem><listitem>
+<para>TERMINATION
+</para>
+<para>You may not copy, modify, sublicense, or distribute the Document
+except as expressly provided under this License.  Any attempt
+otherwise to copy, modify, sublicense, or distribute it is void, and
+will automatically terminate your rights under this License.
+</para>
+<para>However, if you cease all violation of this License, then your license
+from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.
+</para>
+<para>Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+</para>
+<para>Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, receipt of a copy of some or all of the same material does
+not give you any rights to use it.
+</para>
+</listitem><listitem>
+<para>FUTURE REVISIONS OF THIS LICENSE
+</para>
+<para>The Free Software Foundation may publish new, revised versions
+of the GNU Free Documentation License from time to time.  Such new
+versions will be similar in spirit to the present version, but may
+differ in detail to address new problems or concerns.  See
+<uref><urefurl>http://www.gnu.org/copyleft/</urefurl></uref>.
+</para>
+<para>Each version of the License is given a distinguishing version number.
+If the Document specifies that a particular numbered version of this
+License &textldquo;or any later version&textrdquo; applies to it, you have the option of
+following the terms and conditions either of that specified version or
+of any later version that has been published (not as a draft) by the
+Free Software Foundation.  If the Document does not specify a version
+number of this License, you may choose any version ever published (not
+as a draft) by the Free Software Foundation.  If the Document
+specifies that a proxy can decide which future versions of this
+License can be used, that proxy&textrsquo;s public statement of acceptance of a
+version permanently authorizes you to choose that version for the
+Document.
+</para>
+</listitem><listitem>
+<para>RELICENSING
+</para>
+<para>&textldquo;Massive Multiauthor Collaboration Site&textrdquo; (or &textldquo;MMC Site&textrdquo;) means any
+World Wide Web server that publishes copyrightable works and also
+provides prominent facilities for anybody to edit those works.  A
+public wiki that anybody can edit is an example of such a server.  A
+&textldquo;Massive Multiauthor Collaboration&textrdquo; (or &textldquo;MMC&textrdquo;) contained in the
+site means any set of copyrightable works thus published on the MMC
+site.
+</para>
+<para>&textldquo;CC-BY-SA&textrdquo; means the Creative Commons Attribution-Share Alike 3.0
+license published by Creative Commons Corporation, a not-for-profit
+corporation with a principal place of business in San Francisco,
+California, as well as future copyleft versions of that license
+published by that same organization.
+</para>
+<para>&textldquo;Incorporate&textrdquo; means to publish or republish a Document, in whole or
+in part, as part of another Document.
+</para>
+<para>An MMC is &textldquo;eligible for relicensing&textrdquo; if it is licensed under this
+License, and if all works that were first published under this License
+somewhere other than this MMC, and subsequently incorporated in whole
+or in part into the MMC, (1) had no cover texts or invariant sections,
+and (2) were thus incorporated prior to November 1, 2008.
+</para>
+<para>The operator of an MMC Site may republish an MMC contained in the site
+under CC-BY-SA on the same site at any time before August 1, 2009,
+provided the MMC is eligible for relicensing.
+</para>
+</listitem></enumerate>
+
+<page></page>
+<heading spaces=" ">ADDENDUM: How to use this License for your documents</heading>
+
+<para>To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and
+license notices just after the title page:
+</para>
+<smallexample endspaces=" ">
+<group endspaces=" ">
+<pre xml:space="preserve">  Copyright (C)  <var>year</var>  <var>your name</var>.
   Permission is granted to copy, distribute and/or modify this document
   under the terms of the GNU Free Documentation License, Version 1.3
   or any later version published by the Free Software Foundation;
   with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
   Texts.  A copy of the license is included in the section entitled ``GNU
-  Free Documentation License''.</group></smallexample>
-      <para>If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts, replace the &ldquo;with&dots;Texts.&rdquo; line with this:</para>
-      <smallexample xml:space="preserve"><group>    with the Invariant Sections being <var>list their titles</var>, with
+  Free Documentation License''.
+</pre></group>
+</smallexample>
+
+<para>If you have Invariant Sections, Front-Cover Texts and Back-Cover Texts,
+replace the &textldquo;with&dots;Texts.&textrdquo; line with this:
+</para>
+<smallexample endspaces=" ">
+<group endspaces=" ">
+<pre xml:space="preserve">    with the Invariant Sections being <var>list their titles</var>, with
     the Front-Cover Texts being <var>list</var>, and with the Back-Cover Texts
-    being <var>list</var>.</group></smallexample>
-      <para>If you have Invariant Sections without Cover Texts, or some other combination of the three, merge those two alternatives to suit the situation.</para>
-      <para>If your document contains nontrivial examples of program code, we recommend releasing these examples in parallel under your choice of free software license, such as the GNU General Public License, to permit their use in free software.</para>
-<!-- Local Variables: -->
-<!-- ispell-local-pdict: "ispell-dict" -->
-<!-- End: -->
-    </appendix>
-  </node>
-  <node>
-    <nodename>Concept index</nodename>
-    <nodeprev>GNU Free Documentation License</nodeprev>
-    <nodeup>Top</nodeup>
-    <unnumbered>
-      <title>Concept index</title>
-      <printindex>cp</printindex>
-    </unnumbered>
-  </node>
+    being <var>list</var>.
+</pre></group>
+</smallexample>
+
+<para>If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+</para>
+<para>If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License,
+to permit their use in free software.
+</para>
+<!-- c Local Variables: -->
+<!-- c ispell-local-pdict: "ispell-dict" -->
+<!-- c End: -->
+
+
+
+</appendix>
+<node name="Concept-index" spaces=" "><nodename>Concept index</nodename><nodeprev automatic="on">GNU Free Documentation License</nodeprev><nodeup automatic="on">Top</nodeup></node>
+<unnumbered spaces=" "><sectiontitle>Concept index</sectiontitle>
+
+<printindex value="cp" line=" cp"></printindex>
+
+</unnumbered>
+<bye></bye>
 </texinfo>
-<!-- Keep this comment at the end of the file
-Local variables:
-mode: sgml
-sgml-indent-step:1
-sgml-indent-data:nil
-End:
--->
