@@ -140,9 +140,6 @@ See end for copying conditions.
         - external
 	  - for HTML anchors and such
 	  - via "normalized label"
-        - internal
-	  - from nodes to indices
-	  - via "ix coordinate"
     - image snarfing (* is current choice)
       - how? -- binary, *base64
       - when? -- never, optional, *always
