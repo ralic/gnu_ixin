@@ -409,7 +409,9 @@ Overall, the format is a series of text blocks.  All SXML trees (none of
 which appear at the top-level, by the way) are @dfn{third-normal form}:
 with abutting character-data sequences coalesced and attributes explicit
 in the tree's second position (i.e., @sc{cadr}).  Valid SXML elements
-and attributes are defined in the Texinfo DTDs with ``public id'':
+and attributes,
+except for attribute @code{ixcc} (@pxref{no ixcc in DTD}),
+are defined in the Texinfo DTDs with ``public id'':
 
 @example
 -//GNU//DTD TexinfoML V5.00//EN
@@ -1074,8 +1076,80 @@ In other words, a @code{node} SXML sans the initial symbol
 @code{node}.  The order is the same as in the node index.
 
 @menu
+* references::              Avoiding duplication of forms.
 * image inlining::          Embedded image data.
 @end menu
+
+
+@c ---------------------------------------------------------------------------
+@node       references
+@subsection references
+
+@cindex coordinate, cartesian
+@cindex cartesian coordinate
+@cindex @code{ixcc}
+To avoid duplication of forms already expressed in the various indices
+(summarized in @ref{counts}), the node data SXML makes use of the
+@code{ixcc} (i.e., @dfn{IXIN cartesian coordinate}) attribute, to
+reference those forms.  The attribute value is a string (to be proper
+SXML) having the form:
+
+@example
+"(FAMILY POSITION)"
+@end example
+
+@table @var
+@item family
+A single symbol or a list of symbols.
+Here are the families:
+
+@table @asis
+@item @code{node}
+Refers to the node index (@pxref{node index}).
+@*Found in elements:
+@example
+menunode ref xref pxref
+@end example
+@doubtindex @code{node} @code{ixcc}, others?
+@qqq{} Others?
+
+@item @code{(dts @var{name})}
+Refers to the DTS named @var{name} (@pxref{document-term sets}.
+Found in element @code{indexterm}.
+
+@item @code{(floset @var{type})}
+Refers to the floset of type @var{type} (@pxref{float sets}).
+Found in element @code{float}.
+@end table
+
+@item position
+A non-negative integer.
+@end table
+
+@noindent
+All @code{ixcc} references are @dfn{internal} (pointing to targets
+defined in ``this'' file), allowing the element hosting them to be
+abbreviated accordingly.  External references are more verbose.  For
+example, here is how @code{@@pxref@{Top@}} (@pxref{Top}) appears:
+
+@example
+(pxref (@@ (ixcc "(node 0)")))
+@end example
+
+@noindent
+whereas @code{@@pxref@{Top,,,emacs@}} (@pxref{Top,,,emacs}) is:
+
+@example
+(pxref (@@)
+       (xrefnodename (@@) "Top")
+       (xrefinfofile (@@) "emacs"))
+@end example
+
+@doubtindex @code{ixcc} not in DTD
+@qqq{} Should we be excruciatingly correct and add @code{ixcc} to the
+DTD?  @anchor{no ixcc in DTD}If not, some validators might complain.  On
+the other hand, there really is no point aside from that.  As long as
+all the exceptions are fully documented, we should be OK.
 
 
 @c ---------------------------------------------------------------------------

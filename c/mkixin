@@ -39,7 +39,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
  ((srfi srfi-2) #:select (and-let*))
  ((srfi srfi-11) #:select (let-values
                            let*-values))
- ((srfi srfi-13) #:select (string-drop
+ ((srfi srfi-13) #:select (substring/shared
+                           string-drop
                            string-drop-right
                            string-trim-both
                            string-index
@@ -131,6 +132,20 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (at-first 'printindex node
               (lambda (nf)
                 (string->symbol (get nf))))))
+
+;; Express "0-based index", yet avoid the word "index"!
+(define position (make-object-property))
+
+(define (positioned alist . x)
+  (let ((ht (make-hash-table)))
+    (let loop ((ls alist) (id 0))
+      (cond ((pair? ls)
+             (hash-set! ht (caar ls) id)
+             (loop (cdr ls) (1+ id)))
+            (else
+             (set! (position x) (lambda (k)
+                                  (hash-ref ht k)))
+             x)))))
 
 (define (fs s . args)
   (apply simple-format #f s args))
@@ -457,12 +472,12 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (define (write! pp cur)
       (lambda (type ents)
         (let ((count (length ents))
+              (ents (reverse! ents))
               (bef (cur)))
           (pp (list count))
-          (FE (reverse! ents) pp)
+          (FE ents pp)
           (force-output)
-          (list type
-                (- (cur) bef)))))
+          (positioned ents type (- (cur) bef)))))
 
     (let ((float? (element? 'float)))
       (FE nodes (lambda (node)
@@ -567,8 +582,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            (cons '- ent)))
                      ls)
                 pp)
-            (list name
-                  (- (cur) before)))))
+            (positioned ls name (- (cur) before)))))
 
       ;; rv
       (lambda (one two)
@@ -795,17 +809,16 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
          (full (map maybe-four! nodes))
          (names (map car full)))
 
-    (define id<-name
-      (let ((alist (map cons names ids)))
-        ;; id<-name
-        (lambda (name)
-          (or (assoc-ref alist name)
-              -1))))
+    (define try (position (apply positioned full nodes)))
+
+    (define (id<-name name)
+      (or (try name)
+          -1))
 
     (FE ids nodes
         (lambda (id node)
           (set! (node-id node) id)))
-
+    (set! (position nodes) try)
     (values count
             names
             (map (lambda (loc)
@@ -886,6 +899,72 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (dts (document-term-sets cur? dts-setup nodes))
            (lonely-dts (two-phase-accumulator)))
 
+      (define (dedup! nf)
+
+        (define id<-node-name
+          (let ((try (position nodes)))
+            ;; id<-node-name
+            (lambda (full)
+              (try (if (char=? #\( (string-ref full 0))
+                       (string-trim-both
+                        (substring/shared full (1+ (string-index full #\)))))
+                       full)))))
+
+        (define (id<-document-term dts-name term)
+          ((position (assq dts-name dts))
+           (simplified term)))
+
+        (define (id<-float type name)
+          ((position (assq type flosets))
+           name))
+
+        (define (zcoord! zonk position . family)
+          (and zonk (assq-remove! (cadr nf) zonk))
+          (hang! (cadr nf)
+                 (list 'ixcc            ; cartesian coordinate
+                       (fs "(~A ~A)"
+                           (simplified family)
+                           position))))
+
+        (define (coord! . coord)
+          (apply zcoord! #f coord))
+
+        (define (kids! ls)
+          (set-cdr! (cdr nf) ls))
+
+        (case (car nf)
+
+          ((menunode)
+           (and-let* ((kids (kids nf))
+                      (id (id<-node-name (car kids))))
+             (coord! id 'node)
+             (kids! (cdr kids))))
+
+          ((indexterm)
+           (let ((name (string->symbol
+                        (or (attribute-try nf 'mergedindex car)
+                            (attribute-ref nf 'index)))))
+             (zcoord! 'index (id<-document-term name (kids nf))
+                      'dts name)
+             (kids! '())))
+
+          ((float)
+           (let ((type (float-type nf)))
+             (zcoord! 'name (id<-float type (float-name cur? nf))
+                      'floset type)
+             (FE '(floattype floatpos shortcaption)
+                 (let ((rest (cdr nf)))
+                   (lambda (element)
+                     (assq-remove! rest element))))))
+
+          ((ref xref pxref)
+           ;; Don't touch external ‘xref’.
+           (or (pair? (cdr (kids nf)))
+               (and-let* ((name-nf (assq 'xrefnodename (cdr nf)))
+                          (id (id<-node-name (car (kids name-nf)))))
+                 (coord! id 'node)
+                 (kids! (delq name-nf (kids nf))))))))
+
       (define (grok! name loc node)
 
         (define (stash!)
@@ -899,6 +978,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             ;; Subtract 1 to ignore the trailing newline.
             (- (sz) bef 1)))
 
+        ((walker dedup!) node)
         (let ((len (stash!))
               (id (node-id node)))
 

@@ -1,5 +1,13 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle internal references.
+
+	* ixin.texi (overall): Mention "no ‘ixcc’ in DTD", w/ ‘@pxref’.
+	(node data): Add "references" to menu.
+	(references): New node/subsection.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Move image inlining to its own node/subsection.
 
 	* ixin.texi (node data): Add menu; move image inlining to...

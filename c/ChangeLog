@@ -1,5 +1,20 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle internal references.
+
+	* mkixin: Import SRFI 13 ‘substring/shared’.
+	(position): New object property.
+	(positioned): New proc.
+	(floating-environments write!): Use ‘positioned’.
+	(document-term-sets manager write!): Likewise.
+	(identify try): New proc.
+	(identify id<-name): Use ‘try’.
+	(identify): Set ‘(position nodes)’.
+	(do-it! dedup!): New proc.
+	(do-it! grok!): Use it.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Add abstractions: float-type, float-name
 
 	* mkixin (float-type, float-name): New procs.
