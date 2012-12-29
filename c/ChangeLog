@@ -1,5 +1,12 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Drop COUNTS TOP.
+
+	* mkixin (do-it!): Don't detect or output ‘top’.
+	* retrieve (dts-list, flosets-list): Update ‘counts’ access.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Expand willful ignorance.
 
 	* mkixin (IGNORABLE): Add ‘macro’.

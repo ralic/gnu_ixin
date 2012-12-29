@@ -906,7 +906,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (pnodes (open-output-file "TMP-W-NODES"))
            (pp-nodes (ppp pnodes))
            (index (make-vector count #f))
-           (top -1)
            (flosets (floating-environments cur? nodes))
            (lonely-flosets (two-phase-accumulator))
            (dts (document-term-sets cur? dts-setup nodes))
@@ -1002,8 +1001,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                               (lonely key 0)))))
                        (set-cdr! lp (cons id (cdr lp)))))))
 
-          (and (negative? (caddr loc))
-               (set! top id))
           (vector-set! index id (cons* name len loc))
           (note-summary! find-listoffloats flosets lonely-flosets)
           (note-summary! (find-printindex cur?) dts lonely-dts)))
@@ -1037,7 +1034,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (close-port pnodes)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue cur? meta) port)
-        (fso "~S~%" (list index-length count top
+        (fso "~S~%" (list index-length count
                           s-tree-length
                           (append dts (lonely-dts))
                           (append flosets (lonely-flosets))))

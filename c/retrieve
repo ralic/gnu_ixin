@@ -56,10 +56,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
      (match:substring m 1))))
 
 (define (dts-list counts)
-  (list-ref counts 4))
+  (list-ref counts 3))
 
 (define (flosets-list counts)
-  (list-ref counts 5))
+  (list-ref counts 4))
 
 (define (in filename)
   (let ((p (open-input-file filename))

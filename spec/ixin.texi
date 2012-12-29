@@ -842,7 +842,7 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LENGTH COUNT TOP S-TREE-LENGTH DTS-INDEX FLOSETS-INDEX)
+(INDEX-LENGTH COUNT S-TREE-LENGTH DTS-INDEX FLOSETS-INDEX)
 @end example
 
 @table @var
@@ -851,12 +851,6 @@ The byte-length of the node index (@pxref{node index}).
 
 @item count
 The total number of nodes.
-
-@item top
-The node identifier of the @code{Top} node.
-@*
-@doubtindex @var{counts} @var{top}, necessity
-@qqq{} If this is always zero, we can omit it.
 
 @item s-tree-length
 The byte-length of the sectioning tree.
