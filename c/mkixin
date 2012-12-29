@@ -697,18 +697,25 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (cdadr (vr 0)))))
 
 (define IGNORABLE
-  ;; Top-level elements of the input SXML that we can safely ignore a priori.
+  ;; Elements of the input SXML that we can safely ignore a priori.
   '(filename
     preamble
     ;; We laboriously infer the merged DTS, for older makeinfo,
     ;; so these are superfluous.
     synindex syncodeindex
     ;; Add elements here.
+    macro
     alias
     include
     bye))
 
-(define (tuck ls)
+(define (tuck nf)
+
+  (define (neglecting-some-kids nf)
+    (remove! (lambda (kid)
+               (and (pair? kid)
+                    (memq (car kid) IGNORABLE)))
+             (cdr nf)))
 
   (define node? (element? 'node))
 
@@ -754,36 +761,41 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                   (memq (car x) '(defindex defcodeindex)))
                 meta))
 
-  (define w/o-macro
-    (let ((macro? (element? 'macro)))
-
-      (define (zonkable? kid)
-        (and (pair? kid)
-             (macro? kid)))
-
-      ;; w/o-macro
+  (define w/o-useless-attributes
+    (let ((useless '(leadingtext
+                     separator
+                     endspaces
+                     spaces
+                     line))
+          (particularly `(,@(map (lambda (element)
+                                   (list element 'index))
+                                 '(cindex findex kindex pindex tindex
+                                          vindex indexcommand))
+                          ;; Add other particulars here.
+                          )))
+      ;; w/o-useless-attributes
       (lambda (nf)
-        (let ((rest (cdr nf)))
-          (set-cdr! rest (remove! zonkable? (cdr rest)))))))
 
-  (define (w/o-stupid-spaces-attribute nf)
-    (let ((attr (cadr nf)))
-      (set-cdr! attr (assq-remove! (cdr attr) 'endspaces))
-      (set-cdr! attr (assq-remove! (cdr attr) 'spaces))))
+        (define (useless? pair)
+          (let ((name (car pair)))
+            (or (memq name useless)
+                (and=> (assq-ref particularly (car nf))
+                       (lambda (particularly-useless)
+                         (memq name particularly-useless))))))
+
+        (let ((attr (cadr nf)))
+          (set-cdr! attr (remove! useless? (cdr attr)))))))
 
   ;; do it!
-  (remove! (lambda (pair)
-             (memq (car pair) IGNORABLE))
-           ls)
-  ((walker w/o-macro) (cons #f ls))
-  (let-values (((meta rest) (bef+aft ls)))
+  ((walker neglecting-some-kids) nf)
+  (let-values (((meta rest) (bef+aft (cdr nf))))
     (if (every node? rest)
         (values #f '() meta rest)
         (let*-values (((meta rest) (normalize meta rest))
                       ((dts-setup meta) (extract-dts-setup meta)))
-          (let ((zonk-spaces (walker w/o-stupid-spaces-attribute)))
-            (zonk-spaces meta)
-            (FE rest zonk-spaces)
+          (let ((prune-attributes (walker w/o-useless-attributes)))
+            (prune-attributes (cons #f meta))
+            (FE rest prune-attributes)
             (values #t dts-setup meta rest))))))
 
 (define (identify nodes)
@@ -887,7 +899,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
 (define (do-it! filename)
   (let*-values (((stem snarf) (how-to-handle filename))
-                ((cur? dts-setup meta nodes) (tuck (cdr (snarf))))
+                ((cur? dts-setup meta nodes) (tuck (snarf)))
                 ((count names locs) (identify nodes)))
     (FE nodes (inline-images! cur? (dirname filename)))
     (let* ((coding 'utf-8)              ; TODO

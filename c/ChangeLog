@@ -1,5 +1,19 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Expand willful ignorance.
+
+	* mkixin (IGNORABLE): Add ‘macro’.
+	(tuck): Take ‘nf’, not ‘ls’.
+	(tuck neglecting-some-kids): New proc.
+	(tuck w/o-macro): Delete proc.
+	(tuck w/o-useless-attributes): New proc.
+	(tuck w/o-stupid-spaces-attribute): Delete proc.
+	(tuck): Ignore elements in IGNORABLE for the whole tree;
+	update to use ‘w/o-useless-attributes’.
+	(do-it!): Update call to ‘tuck’.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] mkixin: Ignore element ‘alias’.
 
 	* mkixin (IGNORABLE): Add ‘alias’.
