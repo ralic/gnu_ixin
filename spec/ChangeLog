@@ -1,5 +1,14 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[maint] Split out some rules into common.mk.
+
+	* GNUmakefile: Include ../d/common.mk.
+	(ixin.xml): Rename target from ‘../d/ixin.xml’.
+	(../d/logo.png): Delete target.
+	(check): Rewrite rule.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify / handle internal references.
 
 	* ixin.texi (overall): Mention "no ‘ixcc’ in DTD", w/ ‘@pxref’.

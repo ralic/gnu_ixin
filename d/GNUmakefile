@@ -17,18 +17,12 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-C := ../c/
+include common.mk
 
 hmm := hello alive prob rcs serveez
 ixin := $(addsuffix .ixin, $(hmm))
 
 all: $(ixin)
-
-%.ixin : %.sxml
-	$(C)mkixin $<
-
-%.sxml : %.xml
-	$(C)a1-nf3-mixp $< > $@
 
 %.sxml-not-quite : %.xml
 	  $(C)a1-nf1 $< 2>/dev/null		\
@@ -65,11 +59,5 @@ ZOW = alive
 
 demo-zow: $(ZOW).ixin
 	$(C)retrieve $(ZOW).ixin repl 17 < zow
-
-TRY =
-
-try-%:
-	$(C)mkixin $*.sxml
-	$(C)retrieve $*.ixin $(TRY)
 
 # GNUmakefile ends here

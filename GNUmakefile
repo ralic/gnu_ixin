@@ -28,7 +28,7 @@ dist-files := \
  dtd/* \
  spec/* \
  d/*.xml d/*.sxml d/*.ixin d/zow \
- d/GNUmakefile d/ChangeLog \
+ d/common.mk d/GNUmakefile d/ChangeLog \
  c/SxprWriter.pm.patch \
  c/a1-* c/mkixin c/retrieve \
  c/z-fixed-pp.scm c/zomg \

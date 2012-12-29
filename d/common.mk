@@ -1,4 +1,4 @@
-# GNUmakefile
+# common.mk
 #
 # Copyright (C) 2012 Thien-Thi Nguyen
 #
@@ -17,36 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-MAKEINFO = makeinfo
-TEXI2PDF = texi2pdf
+C := ../c/
 
-include ../d/common.mk
+%.ixin : %.sxml
+	$(C)mkixin $<
 
-all: ixin.info ixin.xml
+%.sxml : %.xml
+	$(C)a1-nf3-mixp $< > $@
 
-input := ixin.texi release.texi todo.texi fdl.texi
+TRY =
 
-ixin.info: $(input)
-	$(MAKEINFO) -o $@ $<
+try-%:
+	$(C)mkixin $*.sxml
+	$(C)retrieve $*.ixin $(TRY)
 
-release.texi: ../GNUmakefile
-	{ sed '/^VERSION =/!d;s/.*=/@set VERSION/' $< ; \
-	  date -r $< +'@set UPDATED %Y-%m-%d' ; \
-	} > $@
-
-todo.texi: ../README
-	< $<					\
-	  sed -e '/Texinfo..hackers/,/^..-/!d'	\
-	| sed -e '1s/.*/@verbatim/'		\
-	      -e '$$s/.*/@end verbatim/'	\
-	> $@
-
-ixin.xml: $(input)
-	$(MAKEINFO) -o $@ --xml --no-split $<
-
-check: all ixin.sxml try-ixin
-
-ixin.pdf: $(input)
-	$(TEXI2PDF) -o $@ $< --clean --batch
-
-# GNUmakefile ends here
+# common.mk ends here
