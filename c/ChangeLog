@@ -1,5 +1,12 @@
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Add abstractions: float-type, float-name
+
+	* mkixin (float-type, float-name): New procs.
+	(floating-environments plucker): Use them.
+
+2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Generalize ‘simplified’ to work w/ ATOM, not just STRING.
 
 	* mkixin (simplified): ...here.

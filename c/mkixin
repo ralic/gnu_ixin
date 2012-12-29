@@ -413,6 +413,20 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (car ls)
       ls))
 
+(define (float-type nf)
+  (at-first 'floattype nf
+            (lambda (nf)
+              (let ((ls (kids nf)))
+                (if (pair? ls)
+                    (symbol/hyphen<-string (car ls))
+                    '-)))))
+
+(define (float-name cur? nf)
+  (if cur?
+      (at-first 'floatname nf (lambda (nf)
+                                (car (kids nf))))
+      (attribute-ref nf 'name)))
+
 (define (floating-environments cur? nodes)
   (let ((all '()))
 
@@ -423,12 +437,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (define (w/ element proc)
           (at-first element nf proc))
 
-        (let* ((type (at-first 'floattype nf
-                               (lambda (nf)
-                                 (let ((ls (kids nf)))
-                                   (if (pair? ls)
-                                       (symbol/hyphen<-string (car ls))
-                                       '-)))))
+        (let* ((type (float-type nf))
                (slot (or (assq type all)
                          (let ((s (list type)))
                            (set! all (cons s all))
@@ -436,10 +445,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (set-cdr! slot
                     (cons (list
                            ;; name
-                           (if cur?
-                               (w/ 'floatname (lambda (nf)
-                                                (car (kids nf))))
-                               (attribute-ref nf 'name))
+                           (float-name cur? nf)
                            ;; short-caption
                            (or (w/ 'shortcaption
                                    (lambda (nf)
