@@ -394,6 +394,7 @@ not very firm in the author's mind.
 * counts::               Summarize the indices.
 * node index::           For the nodes.
 * sectioning tree::      Chapters, appendices, etc.
+* labels::               For external reference.
 * document-term sets::   Zero or more.
 * float sets::           Zero or more.
 * node data::            (Almost) SXML.
@@ -823,7 +824,7 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LEN COUNT S-TREE-LEN DTS-INDEX FLOSETS-INDEX)
+(INDEX-LEN COUNT S-TREE-LEN LABELS-LEN DTS-INDEX FLOSETS-INDEX)
 @end example
 
 @table @var
@@ -835,6 +836,9 @@ The total number of nodes.
 
 @item s-tree-len
 The byte-length of the sectioning tree.
+
+@item labels-len
+The byte-length of the labels block (@pxref{labels}).
 
 @item dts-index
 A list of entries, each of the form:
@@ -963,6 +967,54 @@ for subsections.
 
 Sectioning tree top-level elements have a @var{type} from level 1, their
 children from level 2, and so on.
+
+
+@c ---------------------------------------------------------------------------
+@node    labels
+@section labels
+
+If @var{labels-len} (@pxref{counts}) is non-zero, the list:
+
+@example
+(NON-NODE-COUNT [NODE-LABEL...])
+@end example
+
+@noindent
+followed by a series of @var{non-node-count} lists, each of the form:
+
+@example
+(LABEL NID WHAT)
+@end example
+
+@table @var
+@item non-node-count
+A non-negative integer.  Zero means only nodes have labels.
+
+@item node-label
+A string, the node's label, or a symbol.  If the symbol is @code{-}
+(hyphen), the node has no label.  If the symbol is @code{=} (equal
+sign), the node's label is identical to its name.
+
+@item label
+@cindex label syntax
+A string whose characters are strictly from the set
+@code{[-_A-Za-z0-9]}, i.e., the ASCII letters and digits plus @code{-}
+(hyphen) and @code{_} (underscore).  Note that this means that the
+file's coding (@pxref{first line}) must be compatibile with ASCII.
+@xref{HTML Xref,HTML Xref,,texinfo,The GNU Texinfo Manual}, for details.
+
+@item nid
+A node identifier.
+
+@item what
+A symbol indicating what has this label, e.g., @code{anchor}.
+@end table
+
+The first form's list of node labels correspond (in order) to nodes in
+the node index (@pxref{node index}).  As a special case, if the
+@code{node-label} values would @strong{all} be @code{-} (hyphen), then
+@code{node-label} information is omitted entirely; the first form then
+simply lists @var{non-node-count}.
 
 
 @c ---------------------------------------------------------------------------

@@ -40,6 +40,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
  ((srfi srfi-11) #:select (let-values
                            let*-values))
  ((srfi srfi-13) #:select (substring/shared
+                           string-every
                            string-drop
                            string-drop-right
                            string-trim-both
@@ -47,7 +48,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            string-skip
                            string-skip-right
                            string-suffix-ci?))
- ((srfi srfi-14) #:select (char-set:whitespace))
+ ((srfi srfi-14) #:select (char-set:whitespace
+                           char-set:letter+digit
+                           char-set:ascii
+                           char-set-intersection
+                           char-set-adjoin!))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 popen) #:select (open-input-pipe close-pipe))
  ((ice-9 rdelim) #:select (read-line write-line read-delimited)))
@@ -797,6 +802,58 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (FE rest prune-attributes)
             (values #t dts-setup meta rest))))))
 
+(define (labels names nodes)
+
+  (define (label name node)
+    (or (and-let* ((label (attribute-ref node 'name)))
+          (if (string=? label name)
+              '=
+              label))
+        '-))
+
+  (let ((known (map label names nodes))
+        (ok (char-set-adjoin! (char-set-intersection
+                               char-set:letter+digit
+                               char-set:ascii)
+                              #\_ #\-))
+        (acc '()))
+
+    (define (acc! . x)
+      (set! acc (cons x acc)))
+
+    (define (get id)
+      (lambda (nf)
+        (and-let* ((element (car nf))
+                   ((not (memq element '(set setvalue clear clearvalue))))
+                   (label (attribute-ref nf 'name))
+                   ;; Don't be fooled by makeinfo 4.13 and earlier.
+                   ((string-every ok label)))
+          (acc! label id element))))
+
+    (FE nodes (lambda (node)
+                (FE (kids node)
+                    (walker (get (node-id node))))))
+    (let ((sorry (every (lambda (label)
+                          (eq? '- label))
+                        known)))
+      (if (and (null? acc)
+               sorry)
+          0
+          (call-with-output-file "TMP-W-LABELS"
+            (lambda (port)
+
+              (define (pp obj)
+                ;; Everything is ASCII, so we can avoid ‘ppp’.
+                (simple-format port "~S~%" obj))
+
+              (pp (cons (length acc)
+                        (if sorry
+                            '()
+                            known)))
+              (FE acc pp)
+              (force-output)
+              (ftell port)))))))
+
 (define (identify nodes)
 
   (define four (map element? '(nodename
@@ -904,6 +961,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (let* ((coding 'utf-8)              ; TODO
            (pnodes (open-output-file "TMP-W-NODES"))
            (pp-nodes (ppp pnodes))
+           (labels-len (labels names nodes))
            (index (make-vector count #f))
            (flosets (floating-environments cur? nodes))
            (lonely-flosets (two-phase-accumulator))
@@ -1034,11 +1092,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue cur? meta) port)
         (fso "~S~%" (list index-length count
-                          s-tree-length
+                          s-tree-length labels-len
                           (append dts (lonely-dts))
                           (append flosets (lonely-flosets))))
         (close-port port)
-        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A ~A TMP-W-NODES"
+        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A ~A ~A TMP-W-NODES"
+                        (if (positive? labels-len)
+                            "TMP-W-LABELS"
+                            "")
                         (if (pair? dts)
                             "TMP-W-DTS"
                             "")

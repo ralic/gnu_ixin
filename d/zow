@@ -1,5 +1,6 @@
 dump-meta
 dump-index
+show-labels
 list-dts
 dump-dts cp
 where

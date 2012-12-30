@@ -1,3 +1,11 @@
+2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify / handle external reference targets aka labels.
+
+	* ixin.texi (Specification): Add "labels" to menu.
+	(counts): Add LABELS-LEN to form and table.
+	(labels): New node/section.
+
 2012-12-29  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Drop META ATTRS.

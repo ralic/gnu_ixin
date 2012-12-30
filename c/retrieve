@@ -30,7 +30,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
   #:export (main))
 
 (use-modules
- ((srfi srfi-1) #:select (fold))
+ ((srfi srfi-1) #:select (fold car+cdr))
  ((srfi srfi-2) #:select (and-let*))
  ((srfi srfi-11) #:select (let-values))
  ((ice-9 pretty-print) #:select (pretty-print))
@@ -56,10 +56,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
      (match:substring m 1))))
 
 (define (dts-list counts)
-  (list-ref counts 3))
+  (list-ref counts 4))
 
 (define (flosets-list counts)
-  (list-ref counts 4))
+  (list-ref counts 5))
 
 (define (in filename)
   (let ((p (open-input-file filename))
@@ -68,6 +68,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (meta #f)
         (counts #f)
         (index #f)
+        (labels #f)
         (flosets #f)
         (dtsi #f)
         (s-tree #f)
@@ -87,6 +88,13 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
            (set! (index-index ent) i)
            (vector-set! index i ent)))
        (set! s-tree (read p))
+       (let ((label-len (cadddr counts)))
+         (or (zero? label-len)
+             (let-values (((n known) (car+cdr (read p))))
+               (let loop ((n n) (acc '()))
+                 (if (positive? n)
+                     (loop (1- n) (cons (read p) acc))
+                     (set! labels (cons known (reverse! acc))))))))
        (let loop ((acc '()) (ls (dts-list counts)))
          (if (pair? ls)
              (let ((dts (car ls)))
@@ -146,6 +154,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               counts
               index
               s-tree
+              labels
               dtsi
               flosets
               base
@@ -183,7 +192,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers coding meta counts index s-tree dtsi flosets base port)
+  (lambda (vers coding meta counts index s-tree labels dtsi flosets base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -218,6 +227,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
           (fso "~Y" (by-id i)))
         (newline)
         (fso "s-tree:~%~Y~%" s-tree)
+        (and labels (fso "labels:~%~{~Y~}~%" labels))
         (FE (map car dtsi)
             (map cdr dtsi)
             (lambda (details dts)
@@ -266,6 +276,24 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             alist
             (lambda (i ent)
               (fso "~6,D  ~Y" i ent))))
+
+      (define (show-labels)
+        (and labels
+             (let-values (((raw rest) (car+cdr labels)))
+               (let* ((cooked (map (lambda (label id)
+                                     (list
+                                      (if (eq? '= label)
+                                          (car (vector-ref index id))
+                                          label)
+                                      id
+                                      ""))
+                                   raw (iota (length raw))))
+                      (all (append! cooked rest))
+                      (width (apply max (map string-length (map car all))))
+                      (ugh (map (lambda (ent)
+                                  (cons width ent))
+                                all)))
+                 (fso "~:{~V,A  ~4,D   ~A~%~}" ugh)))))
 
       (define (list-dts)
         (fso "~{~Y~}" (dts-list counts)))
@@ -411,6 +439,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              raw
                              dump-meta
                              dump-index
+                             show-labels
                              list-dts
                              dump-dts
                              dump-s-tree))
@@ -426,6 +455,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      dump-meta
                      dump-counts
                      dump-index
+                     show-labels
                      list-dts
                      dump-dts
                      dump-s-tree
