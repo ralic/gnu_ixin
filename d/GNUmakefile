@@ -40,18 +40,18 @@ sxml: $(sxml)
 
 not-quite: $(addsuffix .sxml-not-quite, $(hmm))
 
-r := @printf '\f\n' ; $(C)retrieve
-hello := $(r) hello.ixin
-alive := $(r) alive.ixin
-rcs   := $(r) rcs.ixin
-serveez := $(r) serveez.ixin
+demo-commands :=				\
+ 'dump-meta'					\
+ 'dump-counts'					\
+ 'dump-index'					\
+ 'show-node Top'
 
 demo-%: all
 	@printf '\n======================================== %s\n' $*
-	$($*) dump-meta
-	$($*) dump-counts
-	$($*) dump-index
-	$($*) show-node Top
+	@for c in $(demo-commands) ; do		\
+	  printf '\f\n' ;			\
+	  $(C)retrieve $*.ixin $$c ;		\
+	done
 
 demo: demo-hello demo-alive demo-rcs
 

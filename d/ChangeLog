@@ -1,5 +1,13 @@
 2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[maint] Reimplement "make demo-foo".
+
+	* GNUmakefile (r, hello, alive, rcs, serveez): Delete vars.
+	(demo-commands): New var.
+	(demo-%): Use shell ‘for’ loop, $(demo-commands).
+
+2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify / handle external reference targets aka labels.
 
 	* zow: Use ‘show-labels’.
