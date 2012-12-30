@@ -274,7 +274,7 @@ Similar to ``string'', above, but with some important omissions:
 The on-disk representation of a character, possibly multibyte.
 A common encoding is UTF-8: @uref{http://www.utf8everywhere.org/}.
 
-@more length
+@more byte-length
 An integer representing the number of bytes on disk occupied by
 some text.  This depends on the encoding.
 
