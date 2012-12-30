@@ -1,5 +1,12 @@
 2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add doc: coreutils
+
+	* coreutils.xml: New file.
+	* GNUmakefile (hmm): Add coreutils.
+
+2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[maint] Reimplement "make demo-foo".
 
 	* GNUmakefile (r, hello, alive, rcs, serveez): Delete vars.
