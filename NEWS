@@ -2,6 +2,140 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.5 | 2012-12-30
+
+  - default now ‘-’ (hyphen)
+
+	The following now default, if unspecified or unavailable, to ‘-’
+	(hyphen).  In the first case (XID element), the previous default
+	was the symbol ‘none’.  For the rest, no default was specified
+	previously.
+
+	XID element
+	META COPYING
+
+  - META COPYING default now ‘-’ (hyphen)
+
+	This applies to copying.
+
+  - DIRCATEGORY (in META XID) replaced by INVITATIONS
+
+	INVITATIONS is derived from all ‘@dircategory’ and ‘@direntry’
+	commands.  If there are none, this is ‘-’ (hyphen).  Otherwise,
+	it is a list that combines the (possbily zero) entries for each
+	category.  An unspecified category is represented by ‘-’ (hyphen).
+
+  - dropped POSITION in ‘float’ entry
+
+	Form is now the minimal needed for ‘@listoffloats’ rendering:
+
+	(NAME SHORT-CAPTION NID)
+
+  - whitespace normalization specified
+
+	Yes, that invisible yet strangely ugly topic.  Sigh.
+
+    - trimmed
+
+	These elements should not "begin" with newline and
+	should not "end" with whitespace.
+
+	example     smallexample    verbatim
+	lisp        smalllisp       quotation
+	display     smalldisplay    para
+	format      smallformat     pre
+	flushleft   flushright      cartouche
+
+    - s/newline/space/ for ‘para’
+
+	Internal newlines not protected by ‘xml:space’ "preserve"
+	should be changed to space.
+
+  - new support for TexinfoML V5.00
+
+	The DTDs from both Texinfo 4.13 and 4.13.92 are now in subdir
+	dtd/, as 4.13.dtd and 5.00.dtd, respectively, and mkixin can
+	handle either version, unifying handling (and thus output) for
+	the most part.  Some unavoidable differences remain, due to
+	fundamental changes in the DTD.  For example, in element ‘node’,
+	V4.13 uses child element ‘title’, and V5.00 ‘sectiontitle’.
+
+	Except for d/prob.xml and (new file) spec/z4.xml, the .xml files
+	are now in V5.00 format.  In a future release, support for V4.13
+	will be dropped.
+
+  - META TITLEPAGE no longer specifes attribute ‘copying’
+
+	It used to require ‘(@ (copying "copying"))’ to signal presence
+	of child element ‘insertcopying’.  Redundant, noisy, bye-bye!
+
+  - miscellaneous improvements in the spec document
+
+    - expanded index
+
+	The largely superfluous Program Index is now the Program and
+	Doubt Index.  This is mostly to exercise ‘@syncodeindex’.
+
+    - "image inlining" moved to its own subsection
+
+	It used to be part of "node data".
+
+    - say "byte-length" instead of "length"
+
+	Relatedly, the blocks are named foo-LEN, to save space.
+
+  - internal references specified
+
+	The SXML attribute ‘ixcc’ (IXIN cartesian coordinate) is used in
+	various contexts to reduce duplication of forms in the nodes.
+	This attribute is not in the DTD, but perhaps should be added.
+
+  - "make check" in spec builds files in same dir
+
+	Previously, ixin.ixin was built in ../d, but that's lame.
+
+  - COUNTS TOP dropped
+
+	The ‘Top’ node always has node identifier 0.
+
+  - META ATTRS dropped
+
+	The ‘xml:lang’ attribute is captured in META XID LANG, so META
+	ATTRS is redundant.  Good-bye!
+
+  - doc d/prob.xml includes element ‘anchor’
+
+	This is in the (broken) style of makeinfo 4.13 and earlier,
+	i.e., the value of attribute ‘name’ contains characters outside
+	of [-_a-zA-Z0-9], the set for valid labels.
+
+	See: (info "(texinfo) HTML Xref Node Name Expansion")
+
+  - external reference targets (aka normalized labels)  specified
+
+	If there are any labels (info "(texinfo) HTML Xref")
+	then this new block appears after the sectioning tree.
+	COUNTS now includes LABELS-LEN.
+
+	Relatedly, util program retrieve has new command ‘show-labels’
+	(also available via command ‘repl’, btw).  This displays a line:
+
+	LABEL NID [WHAT]
+
+	for each label, where WHAT, if omitted, implies ‘node’.  Try
+	"make demo-zow" in c/ and "../c/retrieve ixin.ixin show-labels"
+	in spec/.
+
+  - support for "make try-STEM TRY=COMMAND"
+
+	For example: "cd d && make try-rcs TRY=show-labels".
+
+  - new doc: coreutils.{xml,sxml,ixin}
+
+	This is from GNU coreutils Git repo, circa January 2012.  It
+	features heavy @dircatalog / @direntry usage and general heft.
+
+
 - 1.4 | 2012-12-22
 
   - retrieve reads ‘coding’, as well
