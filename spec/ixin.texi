@@ -271,7 +271,6 @@ Similar to ``string'', above, but with some important omissions:
 @end enumerate
 
 @more encoding
-@cindex encoding
 The on-disk representation of a character, possibly multibyte.
 A common encoding is UTF-8: @uref{http://www.utf8everywhere.org/}.
 
