@@ -13,13 +13,13 @@
 <set name="txideftypefnnl" line=" txideftypefnnl"></set>
 <!-- c %** end of header -->
 
-<set name="UPDATED" line=" UPDATED 11 December 2012">11 December 2012</set>
+<set name="UPDATED" line=" UPDATED 31 December 2012">31 December 2012</set>
 <set name="UPDATED-MONTH" line=" UPDATED-MONTH December 2012">December 2012</set>
 <set name="EDITION" line=" EDITION 0.1.7">0.1.7</set>
 <set name="VERSION" line=" VERSION 0.1.7">0.1.7</set>
 <copying endspaces=" ">
 <para>This manual documents GNU Serveez 0.1.7,
-released 11 December 2012.
+released 31 December 2012.
 </para>
 <para>Copyright &copyright; 2011, 2012 Thien-Thi Nguyen&linebreak;
 Copyright &copyright; 2000&textndash;2002 Stefan Jahn &lt;stefan&arobase;lkcc.org&gt;&linebreak;
@@ -49,7 +49,7 @@ Free Documentation License&textrdquo;.
 <titlepage endspaces=" ">
 <title spaces=" ">GNU Serveez</title>
 <subtitle spaces=" ">A server framework</subtitle>
-<subtitle spaces=" ">Edition 0.1.7, 11 December 2012</subtitle>
+<subtitle spaces=" ">Edition 0.1.7, 31 December 2012</subtitle>
 <author spaces=" ">Stefan Jahn</author>
 <author spaces=" ">Raimund Jacob</author>
 <author spaces=" ">Thien-Thi Nguyen</author>
@@ -65,7 +65,7 @@ Free Documentation License&textrdquo;.
 <top spaces=" "><sectiontitle>GNU Serveez</sectiontitle>
 
 <para>This manual documents GNU Serveez 0.1.7,
-released 11 December 2012.
+released 31 December 2012.
 </para>
 <!-- c blurb.texi - standard GNU Serveez description -->
 <!-- c -->
@@ -1766,7 +1766,7 @@ described in the previous section.  Each of the callbacks is passed
 certain arguments and is meant to return specific values to indicate
 success or failure.  This section describes each of these callbacks.
 </para>
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>global-init</defparam> <defparam>servertype</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">global-init</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>global-init</deffunction> <defparam>servertype</defparam></definitionterm>
 <definitionitem><para>This callback is invoked once for every type of server right after
 the <code>define-servertype!</code> statement.  Here you can initialise
 resources shared between all instances of your server type.  The callback
@@ -1775,7 +1775,7 @@ return zero to indicate success and non-zero to indicate failure.  If the
 global initialiser fails, Serveez will refuse to register the server type.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>global-finalize</defparam> <defparam>servertype</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">global-finalize</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>global-finalize</deffunction> <defparam>servertype</defparam></definitionterm>
 <definitionitem><para>If you want to free shared resources, which were possibly allocated
 within the global initialiser, you can do so here.  The callback is
 invoked when Serveez shuts down (issued by <code>serveez-nuke</code>) or the
@@ -1784,7 +1784,7 @@ signal success.  The callback can be set up in <code>define-servertype!</code>
 and is optional.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>init</defparam> <defparam>server</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">init</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>init</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>Within this callback you can initialise everything you might need for
 a single instance of your server.  The callback is invoked for each
 server instance which has been created by <code>define-server!</code> and
@@ -1793,7 +1793,7 @@ server instance.  The callback can be set up in <code>define-servertype!</code>
 and is optional.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>finalize</defparam> <defparam>server</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">finalize</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>finalize</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>The server instance finaliser gets its instance representation passed
 as argument.  You need to free all resources used by this server
 instance which might have been allocated within the server instance
@@ -1802,7 +1802,7 @@ the <code>define-servertype!</code> statement.  The callback is optional
 and should return zero to indicate success.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>detect-proto</defparam> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">detect-proto</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>detect-proto</deffunction> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>Connection oriented protocols like TCP and PIPE allow more than one
 server to be listening on the same network port.  Therefore, it is
 necessary to be able to detect the type of client connecting to a port.
@@ -1837,7 +1837,7 @@ connection oriented protocol (TCP and PIPE) port configurations by
 <code>bind-server!</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>connect-socket</defparam> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">connect-socket</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>connect-socket</deffunction> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>If the client detection signalled success, this callback is invoked to
 assign the client connection to a server instance.  The arguments are
 the same as the detection callback.  In this callback you can assign
@@ -1851,7 +1851,7 @@ On success you should return zero, otherwise the connection will be
 shutdown by Serveez.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>info-server</defparam> <defparam>server</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">info-server</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>info-server</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>This callback gets invoked when requested by the builtin
 <ref><xrefnodename>Control Protocol Server</xrefnodename></ref>.  The callback is optional and can be
 set up in <code>define-servertype!</code>.  The returned character string
@@ -1860,7 +1860,7 @@ separator).  Usually you will return information about the server instance
 configuration and/or state.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>info-client</defparam> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">info-client</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>info-client</deffunction> <defparam>server</defparam> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>This callback is optional.  You can set it up in the
 <code>define-servertype!</code> procedure.  It is meant to provide socket
 structure specific information.  (The socket structure is a client/child
@@ -1869,14 +1869,14 @@ character string without trailing newlines.  The information provided
 can be requested by the builtin <ref><xrefnodename>Control Protocol Server</xrefnodename></ref>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>notify</defparam> <defparam>server</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">notify</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>notify</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>The server instance notifier callback will be invoked whenever there is idle
 time available.  In practice, it is run approximately once a second.
 A server instance can use it to perform periodic tasks.  The callback
 is optional and can be set up in <code>define-servertype!</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>reset</defparam> <defparam>server</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">reset</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>reset</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>This callback is invoked when the Serveez process receives a <code>SIGHUP</code>
 signal which can be issued via <samp>killall -HUP serveez</samp> from user
 land.  If the underlying operating system does not provide <code>SIGHUP</code>
@@ -1885,7 +1885,7 @@ perform asynchronous tasks scheduled from outside Serveez.  You can
 optionally set it up in the <code>define-servertype!</code> procedure.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>handle-request</defparam> <defparam>socket</defparam> <defparam>binary</defparam> <defparam>size</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">handle-request</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>handle-request</deffunction> <defparam>socket</defparam> <defparam>binary</defparam> <defparam>size</defparam></definitionterm>
 <definitionitem><para>This callback is invoked whenever a complete packet has been detected
 in the receive buffer.  The packet data is passed to the callback as a
 <code>#&lt;svz-binary&gt;</code>.  The <var>size</var> argument is passed for convenience
@@ -1917,7 +1917,7 @@ packet oriented protocols (UDP and ICMP) but is optional otherwise.
 You can modify the callback by calling <code>svz:sock:handle-request</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>check-request</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">check-request</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>check-request</deffunction> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>This callback is invoked whenever new data has arrived in the receive buffer.
 The receive buffer of the given <code>#&lt;svz-socket&gt;</code> can be obtained
 using <code>svz:sock:receive-buffer</code>.  The callback is initially not
@@ -1930,13 +1930,13 @@ You should return zero to indicate success and non-zero to indicate
 failure.  On failure Serveez shuts the connection down.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>disconnected</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">disconnected</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>disconnected</deffunction> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>The <code>disconnected</code> callback gets invoked whenever the socket is
 lost for some external reason and is going to be shutdown by Serveez.
 It can be set up with <code>svz:sock:disconnected</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>kicked</defparam> <defparam>socket</defparam> <defparam>reason</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">kicked</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>kicked</deffunction> <defparam>socket</defparam> <defparam>reason</defparam></definitionterm>
 <definitionitem><para>This callback gets invoked whenever the socket gets closed by Serveez
 intentionally.  It can be set up with <code>svz:sock:kicked</code>.  The
 <var>reason</var> argument can be either <code>KICK_FLOOD</code>, indicating the
@@ -1944,7 +1944,7 @@ socket is a victim of the builtin flood protection, or <code>KICK_QUEUE</code>
 which indicates a send buffer overflow.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>idle</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">idle</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>idle</deffunction> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>The <code>idle</code> callback gets invoked from the periodic task scheduler,
 which maintains a <code>idle-counter</code> for each socket structure.
 This counter is decremented whenever Serveez becomes idle and the
@@ -1954,14 +1954,14 @@ set its socket&textrsquo;s <code>idle-counter</code> to some value with the proc
 task.  You can set up this callback with <code>svz:sock:idle</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>trigger-condition</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">trigger-condition</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>trigger-condition</deffunction> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>This callback is invoked once every server loop for the socket structure.
 If you return <code>#f</code> nothing else is happening.  Otherwise the
 <code>trigger</code> callback will be invoked immediately.  You can set up the
 callback using the procedure <code>svz:sock:trigger-condition</code>.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>trigger</defparam> <defparam>socket</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">trigger</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>trigger</deffunction> <defparam>socket</defparam></definitionterm>
 <definitionitem><para>The <code>trigger</code> callback is invoked when the <code>trigger-condition</code>
 returns <code>#t</code>.  The callback can be set up with the procedure
 <code>svz:sock:trigger</code>.  Returning a non-zero value shuts the
@@ -1970,7 +1970,7 @@ can be used to perform connection related updates, e.g., you can ensure
 a certain send buffer fill.
 </para></definitionitem></deffn>
 
-<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">Procedure</indexterm><defcategory>Scheme</defcategory> <deffunction>Procedure</deffunction> <defparam>check-oob-request</defparam> <defparam>socket</defparam> <defparam>oob-byte</defparam></definitionterm>
+<deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">check-oob-request</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>check-oob-request</deffunction> <defparam>socket</defparam> <defparam>oob-byte</defparam></definitionterm>
 <definitionitem><para>This callback is invoked whenever urgent data (out-of-band) has been detected
 on a socket.  Initially this event is ignored and the callback can be set
 up with the procedure <code>svz:sock:check-oob-request</code>.  The
