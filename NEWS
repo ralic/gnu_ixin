@@ -14,10 +14,6 @@ See end for copying conditions.
 	XID element
 	META COPYING
 
-  - META COPYING default now ‘-’ (hyphen)
-
-	This applies to copying.
-
   - DIRCATEGORY (in META XID) replaced by INVITATIONS
 
 	INVITATIONS is derived from all ‘@dircategory’ and ‘@direntry’
@@ -123,7 +119,7 @@ See end for copying conditions.
 	LABEL NID [WHAT]
 
 	for each label, where WHAT, if omitted, implies ‘node’.  Try
-	"make demo-zow" in c/ and "../c/retrieve ixin.ixin show-labels"
+	"make demo-zow" in d/ and "../c/retrieve ixin.ixin show-labels"
 	in spec/.
 
   - support for "make try-STEM TRY=COMMAND"
