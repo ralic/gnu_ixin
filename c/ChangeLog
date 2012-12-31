@@ -1,3 +1,13 @@
+2012-12-31  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	mkixin: Fix bug: Consider ‘definitionterm’ also for cur.
+
+	Regression introduced 2012-12-28,
+	"Handle XML from makeinfo 4.13.92 (TexinfoML V5.00)".
+
+	* mkixin (document-term-sets collect-indexterm! pluck):
+	For cur, if ‘incode’ test fails, fall back to ‘definitionterm’ test.
+
 2012-12-30  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.5

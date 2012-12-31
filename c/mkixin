@@ -601,10 +601,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (let ((it? (element? 'indexterm)))
         (lambda (parent nf)
           (cond ((it? nf)
-                 (and (if cur?
-                          (attribute-try nf 'incode
-                                         (lambda (ls)
-                                           (string=? "1" (car ls))))
+                 (and (or (and cur? (attribute-try
+                                     nf 'incode
+                                     (lambda (ls)
+                                       (string=? "1" (car ls)))))
                           (eq? 'definitionterm parent))
                       (set! (font nf) 'code))
                  ((get-mgr (if cur?
