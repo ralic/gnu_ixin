@@ -67,10 +67,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (attribute-try nf name proc)
   (and=> (assq-ref (cdadr nf)
                    name)
-         proc))
+         (lambda (ls)
+           (proc (car ls)))))
 
 (define (attribute-ref nf name)
-  (attribute-try nf name car))
+  (attribute-try nf name identity))
 
 (define (symbol<-attribute-ref nf name)
   (string->symbol
@@ -603,13 +604,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (cond ((it? nf)
                  (and (or (and cur? (attribute-try
                                      nf 'incode
-                                     (lambda (ls)
-                                       (string=? "1" (car ls)))))
+                                     (lambda (s)
+                                       (string=? "1" s))))
                           (eq? 'definitionterm parent))
                       (set! (font nf) 'code))
                  ((get-mgr (if cur?
                                (string->symbol
-                                (or (attribute-try nf 'mergedindex car)
+                                (or (attribute-ref nf 'mergedindex)
                                     (attribute-ref nf 'index)))
                                (symbol<-attribute-ref nf 'index)))
                   nf
@@ -1011,7 +1012,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
           ((indexterm)
            (let ((name (string->symbol
-                        (or (attribute-try nf 'mergedindex car)
+                        (or (attribute-ref nf 'mergedindex)
                             (attribute-ref nf 'index)))))
              (zcoord! 'index (id<-document-term name (kids nf))
                       'dts name)

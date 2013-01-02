@@ -1,5 +1,16 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Handle destructuring in ‘attribute-try’.
+
+	* mkixin (attribute-try): If the attribute is found,
+	pass a string to PROC instead of a list of one string element.
+	(attribute-ref): Use ‘identity’.
+	(document-term-sets collect-indexterm! pluck):
+	Update call; use ‘attribute-ref’ directly.
+	(do-it! dedup!): Use ‘attribute-ref’ directly.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	retrieve: Bump default byte-count to 128.
 
 	* retrieve (main): ...here.
