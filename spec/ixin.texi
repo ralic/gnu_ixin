@@ -415,7 +415,7 @@ except for attribute @code{ixcc} (@pxref{no ixcc in DTD}),
 are defined in the Texinfo DTDs with ``public id'':
 
 @example
--//GNU//DTD TexinfoML V5.00//EN
+-//GNU//DTD TexinfoML V5.0//EN
 -//GNU//DTD TexinfoML V4.13//EN
 @end example
 

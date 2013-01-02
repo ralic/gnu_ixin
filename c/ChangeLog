@@ -1,5 +1,11 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Synch DTD w/ Texinfo 4.13.93.
+
+	* zomg (V5.0): Rename from ‘V5.00’.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Handle destructuring in ‘attribute-try’.
 
 	* mkixin (attribute-try): If the attribute is found,
