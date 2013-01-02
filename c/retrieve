@@ -311,7 +311,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                    (ls (or (assq-ref (map cons
                                           (map caar dtsi)
                                           (map cdr dtsi))
-                                     (string->symbol name))
+                                     (if (string? name)
+                                         (string->symbol name)
+                                         name))
                            (error "no such dts:" name))))
               (one ls))
             (FE (map car dtsi)
@@ -418,16 +420,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                            cur)))
 
           (define (loop)
-            (let* ((line (read-line (current-input-port)))
-                   (sp (if (eof-object? line)
-                           (quit)
-                           (string-index line #\space)))
-                   (cmd (string->symbol (if sp
-                                            (string-take line sp)
-                                            line)))
-                   (args (if sp
-                             (list (string-trim-both (string-drop line sp)))
-                             '())))
+            (let* ((form (read (current-input-port)))
+                   (cmd (car form))
+                   (args (cdr form)))
               (apply (shunt (quit
                              where
                              nav

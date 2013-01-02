@@ -1,5 +1,12 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Make "retrieve repl" read forms, not lines.
+
+	* retrieve (out dump-dts): If ‘name’ is a symbol, use it directly.
+	(out repl loop): Use ‘read’; derive ‘cmd’ and ‘args’ from it.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Fix bug: Consider syn{,code}index for default font.
 
 	This was an omission from 2012-12-28, "Handle

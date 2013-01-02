@@ -111,23 +111,23 @@ See end for copying conditions.
   formfeed (aka, ‘\f’).
 
   In ‘repl’ mode, retrieve maintains a "current node", initially id 0
-  (name "Top"), and loops reading a line from stdin and displaying
-  results to stdout.  Valid commands (and args) are:
+  (name "Top"), and loops reading a form from stdin and displaying
+  results to stdout.  Valid forms are:
 
-  - where        -- display current node information
-  - nav          -- display next/prev/up links (subset of ‘where’)
-  - next         -- move to ‘next’ node, if possible
-  - prev         -- move to ‘prev’ node, if possible
-  - up           -- move to ‘up’ node, if possible
-  - goto WHICH   -- jump directly to node WHICH
-  - show [WHICH] -- do ‘show-node’ for WHICH or current node
-  - raw [WHICH]  -- do ‘dump-node’ for WHICH or current node
-  - dump-meta    -- as from command-line (above)
-  - dump-index   -- likewise
-  - list-dts     -- likewise
-  - dump-dts [TYPE] -- likewise
-  - dump-s-tree  -- likewise
-  - quit         -- exit immediately
+  - (where) 	      -- display current node information
+  - (nav)   	      -- display next/prev/up links (subset of ‘where’)
+  - (next)  	      -- move to ‘next’ node, if possible
+  - (prev)  	      -- move to ‘prev’ node, if possible
+  - (up)    	      -- move to ‘up’ node, if possible
+  - (goto WHICH)      -- jump directly to node WHICH
+  - (show [WHICH])    -- do ‘show-node’ for WHICH or current node
+  - (raw [WHICH])     -- do ‘dump-node’ for WHICH or current node
+  - (dump-meta)       -- as from command-line (above)
+  - (dump-index)      -- likewise
+  - (list-dts)        -- likewise
+  - (dump-dts [TYPE]) -- likewise
+  - (dump-s-tree)     -- likewise
+  - (quit)            -- exit immediately
 
 * What needs to be done, still?
 

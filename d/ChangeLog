@@ -1,5 +1,11 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Make "retrieve repl" read forms, not lines.
+
+	* zow: Convert to series of forms; add comments.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Regenerate XML files with makeinfo 4.13.93.
 
 	* alive.xml: Regenerate.
