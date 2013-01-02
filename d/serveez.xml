@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.00//EN" "http://www.gnu.org/software/texinfo/dtd/5.00/texinfo.dtd">
+<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.0//EN" "http://www.gnu.org/software/texinfo/dtd/5.0/texinfo.dtd">
 <texinfo xml:lang="en">
 <filename file="serveez.xml"></filename>
 <preamble>\input texinfo
@@ -306,7 +306,7 @@ collected set of flags built into previous Serveez releases:
 
 <para>Note that not all flags may be compatible with your compiler or even
 each other.  That&textrsquo;s one of the reasons we no longer take this approach.
-<xref><xrefnodename>Defining Variables</xrefnodename><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>The Autoconf Manual</xrefprintedname></xref>.
+<xref label="Defining-Variables" manual="autoconf"><xrefnodename>Defining Variables</xrefnodename><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>The Autoconf Manual</xrefprintedname></xref>.
 </para>
 <example endspaces=" ">
 <pre xml:space="preserve">sleepless ~/serveez-0.1.7&gt; ./configure \
@@ -382,7 +382,7 @@ terminal.
 </para></tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-P, --password=STRING</itemformat></item>
 </tableterm><tableitem><para>Set the password for control connections.
 This option is available only if the control protocol is enabled.
-<xref><xrefnodename>Control Protocol Server</xrefnodename></xref>.
+<xref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></xref>.
 </para></tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-m, --max-sockets=COUNT</itemformat></item>
 </tableterm><tableitem><para>Set the maximum number of socket descriptors.
 </para></tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-d, --daemon</itemformat></item>
@@ -650,7 +650,7 @@ specify a user creating the named pipe (file ownership) use either the
 <subsubsection spaces=" "><sectiontitle>ICMP port definition</sectiontitle>
 <para>Define an ICMP port configuration which will accept connections from the
 network interface <samp>127.0.0.1</samp> only and communicates via the message
-type 8 as described in the <ref><xrefnodename>Tunnel Server</xrefnodename></ref> chapter.  The name of
+type 8 as described in the <ref label="Tunnel-Server"><xrefnodename>Tunnel Server</xrefnodename></ref> chapter.  The name of
 this port configuration is <code>foo-icmp-port</code>.  When you are going to bind
 some server to this kind of port you have to ensure root (or
 Administrator under Windows) privileges.
@@ -687,7 +687,7 @@ has a unique name you assign to it.  The name of the server is later used
 to bind it to a port.
 </para>
 <para>The following example instantiates a server with the short name &textldquo;foo&textrdquo;.  Each
-server in Serveez has got a short name.  <xref><xrefnodename>Existing servers</xrefnodename></xref>, for the
+server in Serveez has got a short name.  <xref label="Existing-servers"><xrefnodename>Existing servers</xrefnodename></xref>, for the
 details.  This example demonstrates everything which is possible in server
 configurations.  You start a definition of a server with the procedure
 <code>define-server!</code>.  The following argument specifies the name of the
@@ -695,7 +695,7 @@ server instance (in this case <code>foo-server</code>) which starts with the sho
 name.  The second argument describes the server in detail.  Each
 configuration item is setup with a <code>(key . value)</code> pair where <var>key</var> is
 the name of the configuration item and <var>value</var> is the value which depends
-on the type of the item.  <xref><xrefnodename>Configuring servers</xrefnodename></xref>, for a detailed
+on the type of the item.  <xref label="Configuring-servers"><xrefnodename>Configuring servers</xrefnodename></xref>, for a detailed
 description of each type of value.
 </para>
 <example endspaces=" ">
@@ -872,7 +872,7 @@ does nothing if the control protocol is not enabled.
 
 <para>We now have a closer look at the internals of Serveez.  If you
 are not interested in that have a look at the existing
-servers (<xref><xrefnodename>Existing servers</xrefnodename></xref>.).
+servers (<xref label="Existing-servers"><xrefnodename>Existing servers</xrefnodename></xref>.).
 </para>
 </subsubsection>
 </subsection>
@@ -911,7 +911,7 @@ server, &textldquo;Let me be the server.  Please connect to this <var>host</var>
 </listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>platform portability&linebreak;
 When writing this software the authors were always mindful of platform
 portability.  Serveez compiles and runs on various Unix platforms as
-well as on Windows systems.  <xref><xrefnodename>Porting issues</xrefnodename></xref>, for details.  Most
+well as on Windows systems.  <xref label="Porting-issues"><xrefnodename>Porting issues</xrefnodename></xref>, for details.  Most
 of the routines in the core library can be used without regard to the
 platform on which you are programming or the details of its underlying
 system calls.  Exceptions are noted in the documentation.  Platform
@@ -934,7 +934,7 @@ programmer need pay little or no attention to the networking code but is
 free to direct his attention to the protocol the server is meant to
 support.  That protocol may be an established one such as HTTP, or may
 be a custom protocol fitting the specific application&textrsquo;s requirements.
-The <ref><xrefnodename>Writing servers</xrefnodename></ref> section describes this process in detail.
+The <ref label="Writing-servers"><xrefnodename>Writing servers</xrefnodename></ref> section describes this process in detail.
 </para>
 </listitem><listitem spaces=" "><prepend>&bullet;</prepend><para>code reusability&linebreak;
 The Serveez package comes along with a core library (depending on the
@@ -1115,7 +1115,7 @@ server type) can share the same port configuration.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="asis">port configuration</itemformat></item>
 </tableterm><tableitem><para>A port configuration in Serveez is represented by the <code>svz_portcfg_t</code>
 structure.  Depending on a shared flag it contains different type of
-information specifying a transport endpoint.  <xref><xrefnodename>Define ports</xrefnodename></xref>, for more
+information specifying a transport endpoint.  <xref label="Define-ports"><xrefnodename>Define ports</xrefnodename></xref>, for more
 on this topic.  It also can be a special configuration item within a server
 configuration.  This is necessary if a server needs for some reason a remote
 transport endpoint.  A server instance does not usually need to know about
@@ -1128,7 +1128,7 @@ the port configuration it is bound to.
 
 <para>Serveez is meant to be a server framework.  That is why it supports various
 ways to implement Internet servers.  First of all there are some servers
-already included in the main serveez package (<pxref><xrefnodename>Existing servers</xrefnodename></pxref>).
+already included in the main serveez package (<pxref label="Existing-servers"><xrefnodename>Existing servers</xrefnodename></pxref>).
 These are called <samp>Builtin servers</samp>.  Another possibility to add a new
 server are <samp>Embedded servers</samp> which are shared libraries (or DLL&textrsquo;s)
 containing the server implementation.  These can be dynamically loaded by
@@ -1188,7 +1188,7 @@ __declspec (dllexport) extern svz_servertype_t foo_server_definition;
 </pre></example>
 
 <para>The data symbol <code>foo_server_definition</code> must be statically filled with
-the proper content (<xref><xrefnodename>Builtin servers</xrefnodename></xref>.)
+the proper content (<xref label="Builtin-servers"><xrefnodename>Builtin servers</xrefnodename></xref>.)
 </para>
 </subsubsection>
 </subsection>
@@ -1212,7 +1212,7 @@ to a simple data processor.
 <set name="TSINCURMOD" line=" TSINCURMOD (guile)">(guile)</set>
 <deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">libserveez-features</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>libserveez-features</deffunction></definitionterm>
 <definitionitem><para>Return a list of symbols representing the features of the underlying
-libserveez.  For details, <xref><xrefnodename>Library features</xrefnodename></xref>.
+libserveez.  For details, <xref label="Library-features"><xrefnodename>Library features</xrefnodename></xref>.
 </para></definitionitem></deffn>
 
 </subsubsection>
@@ -1853,7 +1853,7 @@ shutdown by Serveez.
 
 <deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">info-server</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>info-server</deffunction> <defparam>server</defparam></definitionterm>
 <definitionitem><para>This callback gets invoked when requested by the builtin
-<ref><xrefnodename>Control Protocol Server</xrefnodename></ref>.  The callback is optional and can be
+<ref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></ref>.  The callback is optional and can be
 set up in <code>define-servertype!</code>.  The returned character string
 can be multiple lines separated by <code>\r\n</code> (but without a trailing
 separator).  Usually you will return information about the server instance
@@ -1866,7 +1866,7 @@ configuration and/or state.
 structure specific information.  (The socket structure is a client/child
 of the given server instance.)  You need to return a single line
 character string without trailing newlines.  The information provided
-can be requested by the builtin <ref><xrefnodename>Control Protocol Server</xrefnodename></ref>.
+can be requested by the builtin <ref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></ref>.
 </para></definitionitem></deffn>
 
 <deffn spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">notify</indexterm><defcategory bracketed="on">Scheme Procedure</defcategory> <deffunction>notify</deffunction> <defparam>server</defparam></definitionterm>
@@ -1991,7 +1991,7 @@ works on other platforms.
 <node name="Builtin-servers" spaces=" "><nodename>Builtin servers</nodename><nodeprev automatic="on">Guile servers</nodeprev><nodeup automatic="on">Writing servers</nodeup></node>
 <subsection spaces=" "><sectiontitle>Builtin servers</sectiontitle>
 
-<para>All of the servers listed in <ref><xrefnodename>Existing servers</xrefnodename></ref> are builtin servers.
+<para>All of the servers listed in <ref label="Existing-servers"><xrefnodename>Existing servers</xrefnodename></ref> are builtin servers.
 The following sections describe in detail how to setup a new builtin server
 type.  This kind of server will be part of the Serveez executable.  That is
 why you should make it configurable in the configure script via a
@@ -2072,7 +2072,7 @@ with the default values (<code>foo_config_prototype</code>) it serves as a
 template for newly instantiated servers.  The structure contains a long and a
 short description of your server.  The short name is used as the prefix for
 all server instances of this specific type.  The long description is
-used in the control protocol (<xref><xrefnodename>Control Protocol Server</xrefnodename></xref>.).  The server
+used in the control protocol (<xref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></xref>.).  The server
 definition also contains the callbacks your server (mandatorily) provides.
 </para>
 </subsubsection>
@@ -2126,14 +2126,14 @@ server assigns the <code>handle_request</code> method.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">client info (optional)</itemformat></item>
 </tableterm><tableitem><para>If this callback is given the control protocol
-(<xref><xrefnodename>Control Protocol Server</xrefnodename></xref>.) can give information about a specific
+(<xref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></xref>.) can give information about a specific
 client if requested with <samp>stat id NUM</samp>.  The first argument given
 is the server instance and the second one the client&textrsquo;s socket
 structure.  You have to return a static single line character string.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">server info (optional)</itemformat></item>
 </tableterm><tableitem><para>This function is called when listing the server instances via
-<samp>stat all</samp> from the control protocol (<xref><xrefnodename>Control Protocol Server</xrefnodename></xref>.).
+<samp>stat all</samp> from the control protocol (<xref label="Control-Protocol-Server"><xrefnodename>Control Protocol Server</xrefnodename></xref>.).
 The returned character string might be multilined separated by
 <code>\r\n</code> (no trailing separator).  Usually you will return all the
 server configuration information.
@@ -2303,7 +2303,7 @@ Example: (item . #f)
 </tableterm><tableitem><para>Hash maps associate keys with values.  Both must be character strings.&linebreak;
 Example: (item . (key1 . &quot;value1&quot;) (key2 . &quot;value2&quot;))
 </para></tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="asis">Port configuration&linebreak;</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Define ports</xrefnodename></xref>, for more information on this.  When configuring a port
+</tableterm><tableitem><para><xref label="Define-ports"><xrefnodename>Define ports</xrefnodename></xref>, for more information on this.  When configuring a port
 configuration you need to define it via <code>define-port!</code> previously and
 put its symbolic name into the configuration.&linebreak;
 Example: (item . foo-tcp-port)
@@ -2695,7 +2695,7 @@ administrative purposes.  You just need to start a telnet session like:
 </pre></example>
 <para>After pressing <key>RET</key> you will be asked for a password which you
 might setup passing Serveez the -P argument.
-<xref><xrefnodename>Using Serveez</xrefnodename></xref>.  The next section describes the interactive commands
+<xref label="Using-Serveez"><xrefnodename>Using Serveez</xrefnodename></xref>.  The next section describes the interactive commands
 available.
 </para>
 </subsubsection>
@@ -2743,7 +2743,7 @@ SERVER is one of server names you specified in the configuration file.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="samp">stat id NUM</itemformat></item>
 </tableterm><tableitem><para>Show statistics about a specific connection.  This will give you all
 available information about every connection you specified.
-<xref><xrefnodename>Writing servers</xrefnodename></xref>, for more information about how to provide these
+<xref label="Writing-servers"><xrefnodename>Writing servers</xrefnodename></xref>, for more information about how to provide these
 information.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="samp">stat con</itemformat></item>
@@ -2755,7 +2755,7 @@ with <samp>stat id NUM</samp> or <samp>stat all</samp>.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="samp">stat all</itemformat></item>
 </tableterm><tableitem><para>Server and coserver instance statistics.  This command lists all
 the information about instantiated servers and coservers.
-<xref><xrefnodename>Writing servers</xrefnodename></xref>, for more information about how to provide these
+<xref label="Writing-servers"><xrefnodename>Writing servers</xrefnodename></xref>, for more information about how to provide these
 information.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="samp">stat cache</itemformat></item>
@@ -2791,7 +2791,7 @@ Total : 248458 byte in 3 cache entries
 
 <subsubsection spaces=" "><sectiontitle>General description</sectiontitle>
 <para>The Foo Server is a simple example on how to write Internet protocol
-servers with Serveez.  <xref><xrefnodename>Writing servers</xrefnodename></xref>.
+servers with Serveez.  <xref label="Writing-servers"><xrefnodename>Writing servers</xrefnodename></xref>.
 </para>
 </subsubsection>
 <subsubsection spaces=" "><sectiontitle>Configuration</sectiontitle>
@@ -3391,7 +3391,7 @@ MyIdentCallback (char *user, int id, int version)
 hostname to the associated IP address.  The format of the coserver input
 line and the macro from <file>coserver.h</file> is shown below.  The IRC server is
 currently using this coserver for resolving its <samp>?-Lines</samp>.
-<xref><xrefnodename>Existing servers</xrefnodename></xref>, for more information.  In the example below
+<xref label="Existing-servers"><xrefnodename>Existing servers</xrefnodename></xref>, for more information.  In the example below
 <code>realhost</code> is something like <samp>www.lkcc.org</samp>.
 </para>
 <example endspaces=" ">
@@ -3526,7 +3526,7 @@ print the list of known network interface.  As you will notice there are
 three major steps to do: Include the library header with <code>#include
 &lt;libserveez.h&gt;</code>, initialize the library via <code>svz_boot</code> and finalize
 it via <code>svz_halt</code>.  In between these calls you can use all of the
-API functions, variables and macros described in <ref><xrefnodename>Embedding API</xrefnodename></ref>.
+API functions, variables and macros described in <ref label="Embedding-API"><xrefnodename>Embedding API</xrefnodename></ref>.
 </para>
 <example endspaces=" ">
 <pre xml:space="preserve">#include &lt;stdio.h&gt;
@@ -3611,7 +3611,7 @@ conflict with the other &textldquo;Port configuration&textrdquo; node. &textmdas
 <subsection spaces=" "><sectiontitle>Library features</sectiontitle>
 
 <para>The <file>configure</file> script used to build libserveez takes many options
-(<pxref><xrefnodename>Build and install</xrefnodename></pxref>).
+(<pxref label="Build-and-install"><xrefnodename>Build and install</xrefnodename></pxref>).
 Some of these are encapsulated by <code>svz_library_features</code>.
 </para>
 <set name="TSINCURMOD" line=" TSINCURMOD (-- s3as sez thx tsin --)">(-- s3as sez thx tsin --)</set>
@@ -3860,7 +3860,7 @@ section, but any attempt to pass to the rest of libserveez an address
 with a <var>family</var> other than <code>AF_INET</code> will immediately abort
 the process.  When full IPv6 support is in place, this blurb will be
 deleted and the list returned by <code>svz_library_features</code> will
-include an appropriate indicator (<pxref><xrefnodename>Library features</xrefnodename></pxref>).
+include an appropriate indicator (<pxref label="Library-features"><xrefnodename>Library features</xrefnodename></pxref>).
 </para>
 <deftypefun spaces=" " endspaces=" "><definitionterm><indexterm index="fn" mergedindex="cp">svz_address_make</indexterm><defcategory automatic="on">Function</defcategory> <deftype bracketed="on">svz_address_t *</deftype> <deffunction>svz_address_make</deffunction> <defdelimiter>(</defdelimiter><defparamtype>int</defparamtype><defparam>&nbsp;</defparam><defparam><var>family</var></defparam><defdelimiter>,</defdelimiter> <defparamtype>const</defparamtype><defparam>&nbsp;</defparam><defparamtype>void</defparamtype><defparam>&nbsp;</defparam><defparamtype>*</defparamtype><defparam><var>bits</var></defparam><defdelimiter>)</defdelimiter></definitionterm>
 <definitionitem><para>Return an address object to hold an address in <var>family</var>,
@@ -4770,7 +4770,7 @@ created from <code>char *<var>cvar</var>[]</code>.
 <subsubsection spaces=" "><sectiontitle>Bindings</sectiontitle>
 
 <para>The following functionality represents the relationship between port
-configurations as described in <ref><xrefnodename>Port config funcs</xrefnodename></ref> and server
+configurations as described in <ref label="Port-config-funcs"><xrefnodename>Port config funcs</xrefnodename></ref> and server
 instances.  When binding a server to a specific port configuration the
 core library creates listeners as needed by itself.
 </para>

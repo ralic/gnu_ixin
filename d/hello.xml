@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.00//EN" "http://www.gnu.org/software/texinfo/dtd/5.00/texinfo.dtd">
+<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.0//EN" "http://www.gnu.org/software/texinfo/dtd/5.0/texinfo.dtd">
 <texinfo xml:lang="en">
 <filename file="hello.xml"></filename>
 <preamble>\input texinfo @c -*-texinfo-*-
@@ -95,8 +95,8 @@ they document, that is part of the goal here.
 <cindex index="cp" spaces=" "><indexterm index="cp">standards, GNU coding</indexterm></cindex>
 <cindex index="cp" spaces=" "><indexterm index="cp">standards, GNU maintainer</indexterm></cindex>
 <para>First, GNU Hello follows the GNU coding standards
-(<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>standards</xrefinfofile><xrefprintedname spaces=" ">GNU Coding Standards</xrefprintedname></pxref>) and GNU
-maintainer standards (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>maintain</xrefinfofile><xrefprintedname spaces=" ">Information for
+(<pxref label="Top" manual="standards"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>standards</xrefinfofile><xrefprintedname spaces=" ">GNU Coding Standards</xrefprintedname></pxref>) and GNU
+maintainer standards (<pxref label="Top" manual="maintain"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Preface</xrefprinteddesc><xrefinfofile>maintain</xrefinfofile><xrefprintedname spaces=" ">Information for
 GNU Maintainers</xrefprintedname></pxref>).  These are the basic documents which all GNU
 packages should adhere to.
 </para>
@@ -108,42 +108,42 @@ not embodied in the standards, using other GNU packages and features:
 </beforefirstitem><listitem><prepend>&bullet;</prepend>
 <cindex index="cp" spaces=" "><indexterm index="cp">Automake</indexterm></cindex>
 <cindex index="cp" spaces=" "><indexterm index="cp">Autoconf</indexterm></cindex>
-<para>It uses Automake (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>automake</xrefinfofile><xrefprintedname>GNU Automake</xrefprintedname></pxref>) and
-hence also Autoconf (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>GNU Autoconf</xrefprintedname></pxref>)
+<para>It uses Automake (<pxref label="Top" manual="automake"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>automake</xrefinfofile><xrefprintedname>GNU Automake</xrefprintedname></pxref>) and
+hence also Autoconf (<pxref label="Top" manual="autoconf"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>autoconf</xrefinfofile><xrefprintedname>GNU Autoconf</xrefprintedname></pxref>)
 for configuration.
 </para>
 </listitem><listitem><prepend>&bullet;</prepend>
 <cindex index="cp" spaces=" "><indexterm index="cp">Gnulib</indexterm></cindex>
 <cindex index="cp" spaces=" "><indexterm index="cp"><command>srclist-update</command> script</indexterm></cindex>
 <cindex index="cp" spaces=" "><indexterm index="cp"><file>README-dev</file> source file</indexterm></cindex>
-<para>It uses Gnulib (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Gnulib</xrefprinteddesc><xrefinfofile>gnulib</xrefinfofile><xrefprintedname>GNU Gnulib</xrefprintedname></pxref>) to enhance
+<para>It uses Gnulib (<pxref label="Top" manual="gnulib"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Gnulib</xrefprinteddesc><xrefinfofile>gnulib</xrefinfofile><xrefprintedname>GNU Gnulib</xrefprintedname></pxref>) to enhance
 portability and avoid duplication of common sources.  Both
 <code>gnulib-tool</code> and <code>srclist-update</code> are used, for purposes of
 example.  See the <file>README-dev</file> file in the distribution.
 </para>
 </listitem><listitem><prepend>&bullet;</prepend>
 <cindex index="cp" spaces=" "><indexterm index="cp">Gettext</indexterm></cindex>
-<para>GNU Gettext (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>gettext</xrefinfofile><xrefprintedname>GNU Gettext</xrefprintedname></pxref>) is used
+<para>GNU Gettext (<pxref label="Top" manual="gettext"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>gettext</xrefinfofile><xrefprintedname>GNU Gettext</xrefprintedname></pxref>) is used
 for internationalization support.  Hello&textrsquo;s greeting has been translated
 into many languages.
 </para>
 </listitem><listitem><prepend>&bullet;</prepend>
 <indexcommand command="opindex" index="op" spaces=" "><indexterm index="op" incode="1" mergedindex="cp">&textndash;help</indexterm></indexcommand>
 <para>Internally, Hello uses the GNU <code>getopt_long</code> function
-(<pxref><xrefnodename>Getopt Long Options</xrefnodename><xrefinfofile>libc</xrefinfofile><xrefprintedname>GNU C Library</xrefprintedname></pxref>) to parse options,
+(<pxref label="Getopt-Long-Options" manual="libc"><xrefnodename>Getopt Long Options</xrefnodename><xrefinfofile>libc</xrefinfofile><xrefprintedname>GNU C Library</xrefprintedname></pxref>) to parse options,
 thus supporting GNU-style long options such as <option>--help</option>.
 </para>
 </listitem><listitem><prepend>&bullet;</prepend>
 <cindex index="cp" spaces=" "><indexterm index="cp">Help2man</indexterm></cindex>
 <para>The Hello Man page is generated with GNU <code>help2man</code>
-(<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Overview</xrefprinteddesc><xrefinfofile>help2man</xrefinfofile><xrefprintedname>GNU <code>help2man</code></xrefprintedname></pxref>) from the
+(<pxref label="Top" manual="help2man"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Overview</xrefprinteddesc><xrefinfofile>help2man</xrefinfofile><xrefprintedname>GNU <code>help2man</code></xrefprintedname></pxref>) from the
 <option>--help</option> output.  This relieves the maintainers from the burden
 of updating separate man documentation, yet provides a reasonable
 overview for man devotees.
 </para>
 </listitem><listitem><prepend>&bullet;</prepend>
 <cindex index="cp" spaces=" "><indexterm index="cp">Texinfo</indexterm></cindex>
-<para>Finally, Texinfo (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>texinfo</xrefinfofile><xrefprintedname>Texinfo</xrefprintedname></pxref>) is the
+<para>Finally, Texinfo (<pxref label="Top" manual="texinfo"><xrefnodename>Top</xrefnodename><xrefprinteddesc>Introduction</xrefprinteddesc><xrefinfofile>texinfo</xrefinfofile><xrefprintedname>Texinfo</xrefprintedname></pxref>) is the
 documentation format for this manual.  It supports output in Info,
 HTML, PDF, DVI, plain text, XML, and other formats.
 </para>
@@ -320,8 +320,8 @@ better to include too much than to leave out something important.
 </para>
 <cindex index="cp" spaces=" "><indexterm index="cp">patches, contributing</indexterm></cindex>
 <para>Patches are welcome; if possible, please make them with <samp><w>diff
--c</w></samp> (<pxref><xrefnodename>Top</xrefnodename><xrefprinteddesc spaces=" ">Overview</xrefprinteddesc><xrefinfofile spaces=" ">diff</xrefinfofile><xrefprintedname spaces=" ">Comparing and Merging Files</xrefprintedname></pxref>) and
-include <file>ChangeLog</file> entries (<pxref><xrefnodename>Change Log</xrefnodename><xrefinfofile spaces=" ">emacs</xrefinfofile><xrefprintedname spaces=" ">The GNU
+-c</w></samp> (<pxref label="Top" manual="diff"><xrefnodename>Top</xrefnodename><xrefprinteddesc spaces=" ">Overview</xrefprinteddesc><xrefinfofile spaces=" ">diff</xrefinfofile><xrefprintedname spaces=" ">Comparing and Merging Files</xrefprintedname></pxref>) and
+include <file>ChangeLog</file> entries (<pxref label="Change-Log" manual="emacs"><xrefnodename>Change Log</xrefnodename><xrefinfofile spaces=" ">emacs</xrefinfofile><xrefprintedname spaces=" ">The GNU
 Emacs Manual</xrefprintedname></pxref>).  Please follow the existing coding style.
 </para>
 

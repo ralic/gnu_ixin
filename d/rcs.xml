@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.00//EN" "http://www.gnu.org/software/texinfo/dtd/5.00/texinfo.dtd">
+<!DOCTYPE texinfo PUBLIC "-//GNU//DTD TexinfoML V5.0//EN" "http://www.gnu.org/software/texinfo/dtd/5.0/texinfo.dtd">
 <texinfo xml:lang="en">
 <filename file="rcs.xml"></filename>
 <preamble>\input texinfo @c -*-texinfo-*-
@@ -136,7 +136,7 @@ binary files, although functionality is reduced for the latter.
 <para>A normal installation includes the commands: <b>ci</b>,
 <b>co</b>, <b>ident</b>, <b>merge</b>,
 <b>rcs</b>, <b>rcsclean</b>, <b>rcsdiff</b>,
-<b>rcsmerge</b> and <b>rlog</b> (<pxref><xrefnodename>Usage</xrefnodename></pxref>).
+<b>rcsmerge</b> and <b>rlog</b> (<pxref label="Usage"><xrefnodename>Usage</xrefnodename></pxref>).
 These are small and fast programs (amenable to scripting) and indeed the
 distribution also includes the script <b>rcsfreeze</b> showing
 some of the possibilities.
@@ -342,7 +342,7 @@ with the selected revision.  In either case, the content may
 undergo <dfn>keyword expansion</dfn>, which replaces text of the
 form <samp>$Keyword$</samp> with (possibly) different text comprising the
 keyword and its <dfn>value</dfn>, depending on the current keyword expansion
-mode (<pxref><xrefnodename>Substitution mode option</xrefnodename></pxref>).
+mode (<pxref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></pxref>).
 </para>
 </subsection>
 <subsection spaces=" "><sectiontitle>Keywords</sectiontitle>
@@ -431,9 +431,9 @@ of <b>rcs</b> or <b>ci</b>.
 <node name="Quick-tour" spaces=" "><nodename>Quick tour</nodename><nodeprev automatic="on">Concepts</nodeprev><nodeup automatic="on">Overview</nodeup></node>
 <section spaces=" "><sectiontitle>Quick tour</sectiontitle>
 
-<para>This section complements the preceding section (<pxref><xrefnodename>Concepts</xrefnodename></pxref>),
+<para>This section complements the preceding section (<pxref label="Concepts"><xrefnodename>Concepts</xrefnodename></pxref>),
 presenting a handful of RCS commands in quick succession.  For
-details on individual RCS commands, <xref><xrefnodename>Usage</xrefnodename></xref>.
+details on individual RCS commands, <xref label="Usage"><xrefnodename>Usage</xrefnodename></xref>.
 </para>
 <para>Suppose you have a file <file>f.c</file> that you wish to put under
 control of RCS.  If you have not already done so, make an <file>RCS</file>
@@ -537,7 +537,7 @@ RCS files, create a subdirectory called <file>RCS</file> in your working
 directory, and move all your RCS files there.  RCS commands
 will look first into that directory to find needed files.  All
 the commands discussed above will still work, without any
-modification.  <xref><xrefnodename>Common elements</xrefnodename></xref>.
+modification.  <xref label="Common-elements"><xrefnodename>Common elements</xrefnodename></xref>.
 </para>
 <para>To avoid the deletion of the working file during checkin (in
 case you want to continue editing or compiling), invoke one of:
@@ -554,7 +554,7 @@ revision, the second one doesn&textrsquo;t.  Thus, these options save you
 one checkout operation.  The first form is useful if you want
 to continue editing, the second one if you just want to read
 the file.  Both update the keyword substitutions in your
-working file <pxref><xrefnodename>Concepts</xrefnodename></pxref>.
+working file <pxref label="Concepts"><xrefnodename>Concepts</xrefnodename></pxref>.
 </para>
 <para>You can give <b>ci</b> the number you want assigned to a
 checked-in revision.  Assume all your revisions were numbered
@@ -600,7 +600,7 @@ showing the new revision in relation to its branch and the trunk.
 </pre></example>
 
 <noindent></noindent>
-<para>For more information about branches, <xref><xrefnodename>Concepts</xrefnodename></xref>.
+<para>For more information about branches, <xref label="Concepts"><xrefnodename>Concepts</xrefnodename></xref>.
 </para>
 
 <!-- c - -->
@@ -688,7 +688,7 @@ aliases) and exits.
 <cindex index="cp" spaces=" "><indexterm index="cp">command version</indexterm></cindex>
 <noindent></noindent>
 <para>All RCS commands accept <option>--help</option> and <option>--version</option>.
-<xref><xrefnodename>Command-Line Interfaces</xrefnodename><xrefinfofile>standards</xrefinfofile><xrefprintedname>The GNU Coding Standards</xrefprintedname></xref>.
+<xref label="Command_002dLine-Interfaces" manual="standards"><xrefnodename>Command-Line Interfaces</xrefnodename><xrefinfofile>standards</xrefinfofile><xrefprintedname>The GNU Coding Standards</xrefprintedname></xref>.
 </para>
 <para>Aside from <option>--help</option> and <option>--version</option>, RCS commands take the
 form <samp>-<var>letter</var>[<var>arg</var>]</samp>, i.e., a hyphen followed by a
@@ -758,7 +758,7 @@ A revision can be specified in many ways:
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="asis"><var>br</var></itemformat></item>
 </tableterm><tableitem><para>Like <var>br</var>.<var>n</var>, using the a command-specific computation of
 <var>n</var>, given the current tip <var>i</var>.
-For <b>ci</b> (<pxref><xrefnodename>ci</xrefnodename></pxref>), <var>n</var> would be <code><var>i</var> + 1</code>,
+For <b>ci</b> (<pxref label="ci"><xrefnodename>ci</xrefnodename></pxref>), <var>n</var> would be <code><var>i</var> + 1</code>,
 while for other commands <var>n</var> would be simply <var>i</var>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="asis"><var>name</var></itemformat></item>
@@ -859,7 +859,7 @@ contents of <var>file-name</var>.
 <cindex index="cp" spaces=" "><indexterm index="cp">substitution mode, specifying</indexterm></cindex>
 
 <para>Some commands accept an option of the form <option>-k<var>subst</var></option>, used
-to control how keywords (<pxref><xrefnodename>Concepts</xrefnodename></pxref>) are expanded in the working
+to control how keywords (<pxref label="Concepts"><xrefnodename>Concepts</xrefnodename></pxref>) are expanded in the working
 file.  In the following table of <var>subst</var> values, the example keyword
 is <samp>Revision</samp> and its value is <samp>5.13</samp>.
 </para>
@@ -964,7 +964,7 @@ the timestamp (for standalone lock/unlock operations), or use the
 timestamp of the working file (for <b>ci</b>).
 </para>
 <para>This can be useful if the RCS file is found in a makefile target&textrsquo;s
-list of prerequisites (<pxref><xrefnodename>Rule Syntax</xrefnodename><xrefinfofile>make</xrefinfofile><xrefprintedname>The GNU Make Manual</xrefprintedname></pxref>),
+list of prerequisites (<pxref label="Rule-Syntax" manual="make"><xrefnodename>Rule Syntax</xrefnodename><xrefinfofile>make</xrefinfofile><xrefprintedname>The GNU Make Manual</xrefprintedname></pxref>),
 that is, if some target should be rebuilt if the RCS file is newer
 than it.  In that case, you can do <samp>rcs -u -T</samp>, for example, to
 unlock a revision in the RCS file without triggering a recompilation.
@@ -1064,7 +1064,7 @@ of one of the environment variables <code>TMPDIR</code>, <code>TMP</code>, or
 <defvr spaces=" " endspaces=" "><definitionterm><indexterm index="vr" mergedindex="cp">LOGNAME</indexterm><defcategory bracketed="on">Environment Variable</defcategory> <defvariable>LOGNAME</defvariable></definitionterm>
 <defvrx spaces=" "><definitionterm><indexterm index="vr" mergedindex="cp">USER</indexterm><defcategory bracketed="on">Environment Variable</defcategory> <defvariable>USER</defvariable></definitionterm></defvrx>
 <definitionitem><para>Absent <option>-w<var>login</var></option>, or when <var>login</var> is omitted
-(<pxref><xrefnodename>Misc common options</xrefnodename></pxref>), commands check environment variables
+(<pxref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></pxref>), commands check environment variables
 <code>LOGNAME</code> and <code>USER</code> (in that order).  If neither of these
 are set, RCS queries the host for, and uses, your login.
 </para></definitionitem></defvr>
@@ -1091,7 +1091,7 @@ the current state of the working file.  This operation is also known as
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-I[<var>rev</var>]</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-q[<var>rev</var>]</itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-i[<var>rev</var>]</itemformat></item>
 </tableterm><tableitem><para>Initial checkin; error if the RCS file already exists.
@@ -1127,16 +1127,16 @@ than any existing on <var>br</var>, or <var>br</var> must be new.
 If <var>rev</var> is omitted, compute it from the last lock
 (<command>co -l</command>), perhaps starting a new branch.
 If there is no lock, use <code><var>defbr</var>.(L+1)</code>.
-<xref><xrefnodename>Revision options</xrefnodename></xref>.
+<xref label="Revision-options"><xrefnodename>Revision options</xrefnodename></xref>.
 </para>
 <table commandarg="code" spaces=" " endspaces=" ">
 <tableentry><tableterm><item spaces=" "><itemformat command="code">-d[<var>date</var>]</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.  If no <var>date</var> specified,
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.  If no <var>date</var> specified,
 use the working file modification time.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-m[<var>msg</var>]</itemformat></item>
-</tableterm><tableitem><para>Use <var>msg</var> as the log message.  <xref><xrefnodename>Log message option</xrefnodename></xref>.
+</tableterm><tableitem><para>Use <var>msg</var> as the log message.  <xref label="Log-message-option"><xrefnodename>Log message option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-n<var>name</var></itemformat></item>
 <itemx spaces=" "><itemformat command="code">-N<var>name</var></itemformat></itemx>
@@ -1145,11 +1145,11 @@ For <option>-n</option>, <var>name</var> must be new (no previous assignment).
 For <option>-N</option>, overwrite any previous assignment.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-s<var>state</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Set the state.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Set the state.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-t-<var>text</var></itemformat></item>
 <itemx spaces=" "><itemformat command="code">-t<var>file-name</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Description option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Description-option"><xrefnodename>Description option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-T</itemformat></item>
 </tableterm><tableitem><para>Set the RCS file&textrsquo;s modification time to the new revision&textrsquo;s
@@ -1162,7 +1162,7 @@ revision; preserve the RCS file&textrsquo;s modification time otherwise.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para></tableitem></tableentry></table>
 
 </section>
@@ -1185,7 +1185,7 @@ writing a new working file.  This operation is also known as &textldquo;checkout
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-I[<var>rev</var>]</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-q[<var>rev</var>]</itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-p[<var>rev</var>]</itemformat></item>
 </tableterm><tableitem><para>Write to stdout instead of the working file.
@@ -1206,23 +1206,23 @@ writing a new working file.  This operation is also known as &textldquo;checkout
 <noindent></noindent>
 <para>Multiple flags in <code>-&lbrace;fIlMpqru&rbrace;</code> may be given, except for
 <option>-r</option>, <option>-l</option>, <option>-u</option>, which are mutually exclusive.
-<xref><xrefnodename>Revision options</xrefnodename></xref>.
+<xref label="Revision-options"><xrefnodename>Revision options</xrefnodename></xref>.
 </para>
 <table commandarg="code" spaces=" " endspaces=" ">
 <tableentry><tableterm><item spaces=" "><itemformat command="code">-k<var>subst</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Substitution mode option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-d<var>date</var></itemformat></item>
 <itemx spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.
 Select latest before or on <var>date</var>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-j<var>joins</var></itemformat></item>
 </tableterm><tableitem><para>Merge using <var>joins</var>, a list of <code><var>rev</var>:<var>rev</var></code> pairs.
-<strong>NB</strong>: This option is obsolete (<pxref><xrefnodename>rcsmerge</xrefnodename></pxref>).
+<strong>NB</strong>: This option is obsolete (<pxref label="rcsmerge"><xrefnodename>rcsmerge</xrefnodename></pxref>).
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-s<var>state</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Select matching state.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Select matching state.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-S</itemformat></item>
 </tableterm><tableitem><para>Enable &quot;self-same&quot; mode.
@@ -1253,7 +1253,7 @@ it changes because a lock is added or removed.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para></tableitem></tableentry></table>
 
 </section>
@@ -1269,7 +1269,7 @@ it changes because a lock is added or removed.
 <noindent></noindent>
 <para>If no <var>file</var> is specified, scan standard input.
 The <b>ident</b> command scans its input for keywords
-(<pxref><xrefnodename>Concepts</xrefnodename></pxref>), displaying to standard output what it finds.
+(<pxref label="Concepts"><xrefnodename>Concepts</xrefnodename></pxref>), displaying to standard output what it finds.
 </para>
 <table commandarg="code" spaces=" " endspaces=" ">
 <tableentry><tableterm><item spaces=" "><itemformat command="code">-q</itemformat></item>
@@ -1277,7 +1277,7 @@ The <b>ident</b> command scans its input for keywords
 emits a warning.  This option suppresses the warning.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Note that <option>-V<var>n</var></option> is <emph>not</emph> a valid option for
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Note that <option>-V<var>n</var></option> is <emph>not</emph> a valid option for
 <b>ident</b>, in contrast to most other RCS commands.
 </para></tableitem></tableentry></table>
 
@@ -1325,7 +1325,7 @@ respectively.
 </tableterm><tableitem><para>Write to stdout instead of overwriting <var>receiving-sibling</var>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-q</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Suppress conflict warnings.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Suppress conflict warnings.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-L<var>label</var></itemformat></item>
 </tableterm><tableitem><para>(up to three times) Specify the conflict labels for
@@ -1333,7 +1333,7 @@ respectively.
 respectively.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Note that <option>-V<var>n</var></option> is <emph>not</emph> a valid option for
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Note that <option>-V<var>n</var></option> is <emph>not</emph> a valid option for
 <b>merge</b>, in contrast to most other RCS commands.
 </para></tableitem></tableentry></table>
 
@@ -1370,7 +1370,7 @@ unless a revision is removed.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-I</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-q</itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-a<var>logins</var></itemformat></item>
 </tableterm><tableitem><para>Append <var>logins</var> (comma-separated list of usernames) to access-list.
@@ -1397,10 +1397,10 @@ highest branch on trunk if <var>rev</var> is omitted.
 <strong>NB</strong>: Don&textrsquo;t use; obsolete.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-k<var>subst</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Substitution mode option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-m<var>rev</var>:[<var>msg</var>]</itemformat></item>
-</tableterm><tableitem><para>Replace log message with <var>msg</var>.  <xref><xrefnodename>Log message option</xrefnodename></xref>.
+</tableterm><tableitem><para>Replace log message with <var>msg</var>.  <xref label="Log-message-option"><xrefnodename>Log message option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-n<var>name</var>[:[<var>rev</var>]]</itemformat></item>
 </tableterm><tableitem><para>If <var>:rev</var> is omitted, delete symbolic <var>name</var>.
@@ -1430,16 +1430,16 @@ Otherwise, associate <var>name</var> with <var>rev</var>; <var>name</var> must b
 </para></tableitem></tableentry></table>
 
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-s<var>state</var>[:<var>rev</var>]</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.  Set state.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.  Set state.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-t-<var>text</var></itemformat></item>
 <itemx spaces=" "><itemformat command="code">-t<var>file-name</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Description option</xrefnodename></xref>.  Replace description.
+</tableterm><tableitem><para><xref label="Description-option"><xrefnodename>Description option</xrefnodename></xref>.  Replace description.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></item>
 </tableterm><tableitem><para>No effect; included for compatibility with other commands.
@@ -1473,10 +1473,10 @@ current directory.
 </tableterm><tableitem><para>Dry run (no act, don&textrsquo;t operate).
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-q[<var>rev</var>]</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-k<var>subst</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Substitution mode option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-T</itemformat></item>
 </tableterm><tableitem><para>Preserve the modification time on the RCS file even
@@ -1485,10 +1485,10 @@ it changes because a lock is removed.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.
 </para></tableitem></tableentry></table>
 
 </section>
@@ -1504,7 +1504,7 @@ it changes because a lock is removed.
 <noindent></noindent>
 <para>The <b>rcsdiff</b> command runs <b>diff</b>
 to compare two revisions in an RCS file.
-<xref><xrefnodename>Invoking diff</xrefnodename><xrefinfofile>diff</xrefinfofile><xrefprintedname>The GNU Diffutils Manaual</xrefprintedname></xref>.
+<xref label="Invoking-diff" manual="diff"><xrefnodename>Invoking diff</xrefnodename><xrefinfofile>diff</xrefinfofile><xrefprintedname>The GNU Diffutils Manaual</xrefprintedname></xref>.
 </para>
 <table commandarg="code" spaces=" " endspaces=" ">
 <tableentry><tableterm><item spaces=" "><itemformat command="code">-r<var>rev</var></itemformat></item>
@@ -1517,18 +1517,18 @@ If given no revisions, compare the working file with the latest
 revision on the default branch.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-k<var>subst</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Substitution mode option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-q</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.
 </para></tableitem></tableentry></table>
 
 <noindent></noindent>
@@ -1563,7 +1563,7 @@ revisions of an RCS file into the corresponding working file.
 </tableterm><tableitem><para>Write to stdout instead of overwriting the working file.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-q[<var>rev</var>]</itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-r<var>rev</var></itemformat></item>
 </tableterm><tableitem><para>(one or two times) specify a revision.
@@ -1577,15 +1577,15 @@ to the latest revision on the default branch.
 </para>
 <table commandarg="code" spaces=" " endspaces=" ">
 <tableentry><tableterm><item spaces=" "><itemformat command="code">-k<var>subst</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Substitution mode option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Substitution-mode-option"><xrefnodename>Substitution mode option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.
 </para></tableitem></tableentry></table>
 
 </section>
@@ -1621,7 +1621,7 @@ to the latest revision on the default branch.
 </tableterm><tableitem><para>Select the default branch.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-d<var>dates</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.  Select revisions based on timestamp,
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.  Select revisions based on timestamp,
 in the range <var>dates</var>, with spec:
 </para>
 <table commandarg="asis" spaces=" " endspaces=" ">
@@ -1655,7 +1655,7 @@ range specs, one of: <var>rev</var>, <code><var>rev</var>:</code>,
 <code>:<var>rev</var></code>, <code><var>rev1</var>:<var>rev2</var></code>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-s<var>states</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 <var>states</var> can also be a comma-separated list of states.
 Select revisions with specified state(s).
 </para>
@@ -1666,10 +1666,10 @@ or by the user if <var>who</var> is omitted.
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-V</itemformat></item>
 <itemx spaces=" "><itemformat command="code">-V<var>n</var></itemformat></itemx>
 <itemx spaces=" "><itemformat command="code">-x<var>suff</var></itemformat></itemx>
-</tableterm><tableitem><para><xref><xrefnodename>Misc common options</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Misc-common-options"><xrefnodename>Misc common options</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-z<var>zone</var></itemformat></item>
-</tableterm><tableitem><para><xref><xrefnodename>Date option</xrefnodename></xref>.
+</tableterm><tableitem><para><xref label="Date-option"><xrefnodename>Date option</xrefnodename></xref>.
 </para>
 </tableitem></tableentry><tableentry><tableterm><item spaces=" "><itemformat command="code">-q</itemformat></item>
 </tableterm><tableitem><para>No effect, included for consistency with other commands.
@@ -1685,7 +1685,7 @@ or by the user if <var>who</var> is omitted.
 
 <para>RCS is still missing some features.  The following is an unordered list
 of &textldquo;to-do musings&textrdquo; kept by the RCS maintainers.  If you would like to
-hack on an item, <xref><xrefnodename>Reporting bugs</xrefnodename></xref>.
+hack on an item, <xref label="Reporting-bugs"><xrefnodename>Reporting bugs</xrefnodename></xref>.
 </para>
 <itemize commandarg="bullet" endspaces=" ">
 <beforefirstitem>
@@ -1824,7 +1824,7 @@ better to include too much than to leave out something important.
 <cindex index="cp" spaces=" "><indexterm index="cp">patches, contributing</indexterm></cindex>
 <para>Patches are welcome; if possible, please make them with
 <samp>git format-patch</samp> and
-include <file>ChangeLog</file> entries (<pxref><xrefnodename>Change Log</xrefnodename><xrefinfofile spaces=" ">emacs</xrefinfofile><xrefprintedname spaces=" ">The GNU
+include <file>ChangeLog</file> entries (<pxref label="Change-Log" manual="emacs"><xrefnodename>Change Log</xrefnodename><xrefinfofile spaces=" ">emacs</xrefinfofile><xrefprintedname spaces=" ">The GNU
 Emacs Manual</xrefprintedname></pxref>).  Please follow the existing coding style.
 </para>
 
