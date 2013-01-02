@@ -506,25 +506,30 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (document-term-sets cur? setup nodes)
 
   (define default-font
-    (let ((new (map cons
-                    (map (lambda (nf)
-                           (symbol<-attribute-ref nf 'value))
-                         setup)
-                    (map (lambda (nf)
-                           (case (car nf)
-                             ((defindex) 'r)
-                             ((defcodeindex) 'code)))
-                         setup))))
+    (let ((syn (map (lambda (nf)
+                      (cons (symbol<-attribute-ref nf 'from)
+                            (case (car nf)
+                              ((synindex) 'r)
+                              ((syncodeindex) 'code))))
+                    (car setup)))
+          (def (map (lambda (nf)
+                      (cons (symbol<-attribute-ref nf 'value)
+                            (case (car nf)
+                              ((defindex) 'r)
+                              ((defcodeindex) 'code))))
+                    (cdr setup))))
       ;; default font
       (lambda (name)
-        (case name
-          ;; builtin (info "(texinfo) Predefined Indices")
-          ((cp) 'r)
-          ((fn ky pg tp vr) 'code)
-          (else (or (assq-ref new name)
-                    ;; NB: Input SXML from makeinfo 4.13 does not
-                    ;; include ‘def{code}index’ info; we must guess.
-                    'r))))))
+        (or (assq-ref syn name)
+            (assq-ref def name)
+            (case name
+              ;; builtin (info "(texinfo) Predefined Indices")
+              ((cp) 'r)
+              ((fn ky pg tp vr) 'code)
+              (else
+               ;; NB: Input SXML from makeinfo 4.13 does not
+               ;; include ‘{def,syn}{code}index’ info; we must guess.
+               'r))))))
 
   (define font (make-object-property))
 
@@ -601,18 +606,26 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (define (pluck node)
       (let ((it? (element? 'indexterm)))
         (lambda (parent nf)
+
+          (define (type!/cur)
+
+            (define (attry name proc)
+              (attribute-try nf name proc))
+
+            (let ((orig (symbol<-attribute-ref nf 'index)))
+              (set! (font nf) (default-font orig))
+              (or (attry 'mergedindex string->symbol)
+                  orig)))
+
+          (define (type!/old)
+            (and (eq? 'definitionterm parent)
+                 (set! (font nf) 'code))
+            (symbol<-attribute-ref nf 'index))
+
           (cond ((it? nf)
-                 (and (or (and cur? (attribute-try
-                                     nf 'incode
-                                     (lambda (s)
-                                       (string=? "1" s))))
-                          (eq? 'definitionterm parent))
-                      (set! (font nf) 'code))
-                 ((get-mgr (if cur?
-                               (string->symbol
-                                (or (attribute-ref nf 'mergedindex)
-                                    (attribute-ref nf 'index)))
-                               (symbol<-attribute-ref nf 'index)))
+                 ((get-mgr ((if cur?
+                                type!/cur
+                                type!/old)))
                   nf
                   (node-id node)))))))
 
@@ -705,10 +718,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
   ;; Elements of the input SXML that we can safely ignore a priori.
   '(filename
     preamble
-    ;; We laboriously infer the merged DTS, for older makeinfo,
-    ;; so these are superfluous.
-    synindex syncodeindex
-    ;; Add elements here.
     macro
     alias
     include
@@ -762,9 +771,16 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (values meta (reverse! acc)))))
 
   (define (extract-dts-setup meta)
-    (partition! (lambda (x)
-                  (memq (car x) '(defindex defcodeindex)))
-                meta))
+
+    (define (segregate! ls interesting)
+      (partition! (lambda (x)
+                    (memq (car x) interesting))
+                  ls))
+
+    (let*-values (((syn rest) (segregate! meta '(synindex syncodeindex)))
+                  ((def meta) (segregate! rest '(defindex defcodeindex))))
+      (values (cons syn def)
+              meta)))
 
   (define w/o-useless-attributes
     (let ((useless '(leadingtext
@@ -776,6 +792,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                    (list element 'index))
                                  '(cindex findex kindex pindex tindex
                                           vindex indexcommand))
+                          (indexterm incode)
                           ;; Add other particulars here.
                           )))
       ;; w/o-useless-attributes
@@ -795,7 +812,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
   ((walker neglecting-some-kids) nf)
   (let-values (((meta rest) (bef+aft (cdr nf))))
     (if (every node? rest)
-        (values #f '() meta rest)
+        (values #f '(()) meta rest)
         (let*-values (((meta rest) (normalize meta rest))
                       ((dts-setup meta) (extract-dts-setup meta)))
           (let ((prune-attributes (walker w/o-useless-attributes)))

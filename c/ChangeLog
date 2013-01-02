@@ -1,5 +1,24 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Fix bug: Consider syn{,code}index for default font.
+
+	This was an omission from 2012-12-28, "Handle
+	XML from makeinfo 4.13.92 (TexinfoML V5.00)".
+
+	* mkixin (document-term-sets default-font): Rewrite.
+	(document-term-sets pluck type!/cur): New proc.
+	(document-term-sets pluck type!/old): Likewise.
+	(document-term-sets pluck): Use them.
+	(IGNORABLE): Remove ‘synindex’, ‘syncodeindex’.
+	(tuck extract-dts-setup segregate!): New proc.
+	(tuck extract-dts-setup): Also extract ‘synindex’ and
+	‘syncodeindex’ elements; return (SYNS . DEFS).
+	(tuck w/o-useless-attributes): Add attribute
+	‘incode’ for particular element ‘indexterm’.
+	(tuck): Update returned DTS-SETUP value for not-cur case.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Synch DTD w/ Texinfo 4.13.93.
 
 	* zomg (V5.0): Rename from ‘V5.00’.
