@@ -549,12 +549,14 @@ commands, respectively.
 
 @table @var
 @item filename
-@itemx title
 A string, or the symbol @code{-} (hyphen).
 
 @item lang
 A symbol or a list of two symbols.
 If @code{@@documentlanguage} is unspecified, defaults to @code{(en US)}.
+
+@item title
+A string, or a renderable sequence, or the symbol @code{-} (hyphen).
 
 @item invitations
 If there are no @code{@@dircategory} or @code{@@direntry}

@@ -277,8 +277,15 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                      (proc x)))
             '-))
 
-      (define (x!string element)
-        (x! element cadr))
+      (define (nice-title ls)
+        (set! ls (cdr ls))
+        (cond ((null? ls)
+               '-)
+              ((and (string? (car ls))
+                    (null? (cdr ls)))
+               (car ls))
+              (else
+               ls)))
 
       (define (nice x)
 
@@ -323,9 +330,9 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            (cdr ls))
                      (reverse! acc))))))
 
-      (list (x!string 'setfilename)
+      (list (x! 'setfilename cadr)
             lang
-            (x!string 'settitle)
+            (x! 'settitle nice-title)
             (or (x!invitations) '-)))
 
     (define (grab-variables!)

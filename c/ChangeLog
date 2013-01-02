@@ -1,5 +1,13 @@
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Allow XID TITLE to be a renderable sequence.
+
+	* mkixin (rescue grab-xid! x!string): Delete proc.
+	(rescue grab-xid! nice-title): New proc.
+	(rescue grab-xid!): Use ‘x!’ directly; use ‘nice-title’.
+
+2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Make "retrieve repl" read forms, not lines.
 
 	* retrieve (out dump-dts): If ‘name’ is a symbol, use it directly.
