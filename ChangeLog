@@ -1,3 +1,9 @@
+2013-01-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add provisionary Emacs Lisp library for visual vetting.
+
+	* GNUmakefile (dist-files): Add c/spit.el.
+
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Synch DTD w/ Texinfo 4.13.93.

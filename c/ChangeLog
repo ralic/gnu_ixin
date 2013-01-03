@@ -1,3 +1,9 @@
+2013-01-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add provisionary Emacs Lisp library for visual vetting.
+
+	* spit.el: New file.
+
 2013-01-02  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Allow XID TITLE to be a renderable sequence.

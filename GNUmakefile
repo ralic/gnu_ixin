@@ -32,6 +32,7 @@ dist-files := \
  c/SxprWriter.pm.patch \
  c/a1-* c/mkixin c/retrieve \
  c/z-fixed-pp.scm c/zomg \
+ c/spit.el \
  c/ChangeLog \
  ChangeLog
 

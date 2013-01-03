@@ -33,6 +33,8 @@ See end for copying conditions.
   new format.  You can do "make demo" to see some of the potential,
   though.
 
+  See also [[file:c/spit.el]] (if you use Emacs).
+
 * dependencies
 
   The distribution includes pre-built .sxml and .ixin files, so the
@@ -141,7 +143,7 @@ See end for copying conditions.
       - when? -- never, optional, *always
       - where? -- blobs + blobs-index, *inline
     - resolve ‘???’ doubts
-  - write ixin.el that uses retrieve repl
+  - make spit.el use shr.el
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 
