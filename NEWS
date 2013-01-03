@@ -2,6 +2,57 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.6 | 2013-01-03
+
+  - bugfix: detect ‘code’ DTS entries again
+
+	IXIN 1.5 introduced a regression whereby V5.00 ‘indexterm’ was
+	incorrectly assigned font ‘r’ instead of ‘code’.  This was
+	evident in d/serveez.ixin, for example -- most of the entries in
+	DTS ‘cp’ should be inverted (due to ‘@syncodeindex’).
+
+  - bugfix: consider ‘@synindex’ / ‘@syncodeindex’ for default font
+
+	These commands now influence the default font for any particular
+	DTS entry, instead of only ‘@defindex’ / ‘@defcodeindex’.  For
+	example, the sequence:
+
+	@synindex pg fn
+	@pindex mkixin
+
+	now results in predefined DTS ‘fn’ having the default font
+	‘code’ and entry:
+
+	(- "mkixin" NID)
+
+	in the IXIN file, indicating that "mkixin" should be rendered
+	with the inverse (i.e., ‘r’) font.  Previously, the entry would
+	lack the leading ‘-’ (hyphen) because the default font for ‘pg’
+	is ‘code’.
+
+  - DTD upgraded to V5.0
+
+	This is from Texinfo 4.13.93.  Incidentally, the coreutils doc
+	is also updated to a snapshot from the repository, 2012-12-30.
+	The d/{alive,coreutils,hello,rcs,serveez}.xml and spec/ixin.xml
+	files have been regenerated accordingly.
+
+  - "retrieve repl" now reads forms, not lines
+
+	We've regained our senses.  See d/zow, for example.
+
+  - XID TITLE can also be a renderable sequence
+
+	Previously, XID TITLE could only be a string or ‘-’ (hyphen).
+	For example, coreutils uses ‘@settitle @sc{gnu} Coreutils’.
+
+  - new elisp lib for visual vetting: spit.el
+
+	This is a first cut, very rough.  You can use it to check the
+	bugfixes described above, and perhaps find others.  Obviously,
+	you lose if you don't use Emacs, but that goes w/o saying...
+
+
 - 1.5 | 2012-12-30
 
   - default now ‘-’ (hyphen)
