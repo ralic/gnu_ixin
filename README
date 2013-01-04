@@ -120,6 +120,8 @@ See end for copying conditions.
   - (nav)   	      -- display next/prev/up links (subset of ‘where’)
   - (next)  	      -- move to ‘next’ node, if possible
   - (prev)  	      -- move to ‘prev’ node, if possible
+  - (forward)         -- move to "1+ current-node"
+  - (backward)        -- move to "1- current-node"
   - (up)    	      -- move to ‘up’ node, if possible
   - (goto WHICH)      -- jump directly to node WHICH
   - (show [WHICH])    -- do ‘show-node’ for WHICH or current node

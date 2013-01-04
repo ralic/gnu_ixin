@@ -393,15 +393,21 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                                 (rel cur)))))
 
           (define (move! get)
-            (let ((id (get (rel cur))))
-              (if (negative? id)
-                  (fso "sorry~%")
-                  (begin (set! cur id)
-                         (where)))))
+            (let ((id (if (procedure? get)
+                          (get (rel cur))
+                          (+ cur get))))
+              (cond ((< -1 id (vector-length index))
+                     (set! cur id)
+                     (where))
+                    (else
+                     (fso "sorry~%")))))
 
           (define (next) (move! car))
           (define (prev) (move! cadr))
           (define (up)   (move! caddr))
+
+          (define (forward)  (move!  1))
+          (define (backward) (move! -1))
 
           (define (goto which)
             (nd! which (lambda (en)
@@ -428,6 +434,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              nav
                              next
                              prev
+                             forward
+                             backward
                              up
                              goto
                              show

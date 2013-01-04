@@ -1,3 +1,13 @@
+2013-01-04  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[repl] Add commands: forward, backward
+
+	* retrieve (out repl move!): Rewrite.
+	(out repl forward): New proc, shunted.
+	(out repl backward): Likewise.
+	* spit.el (spit-%backward, spit-%forward): New commands.
+	(spit-mode-map): Bind them to "[" and "]", respectively.
+
 2013-01-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.6

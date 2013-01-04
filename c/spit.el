@@ -232,6 +232,16 @@ With args (noninteractively), like `message' for the spit area."
   "Do ‘(prev)’."
   (spit--do nil 'prev))
 
+(defun spit-%backward ()
+  (interactive)
+  "Do ‘(backward)’."
+  (spit--do nil 'backward))
+
+(defun spit-%forward ()
+  (interactive)
+  "Do ‘(forward)’."
+  (spit--do nil 'forward))
+
 (defun spit-%up ()
   (interactive)
   "Do ‘(up)’."
@@ -433,6 +443,8 @@ See also variable `spit-retrieve'."
                        "N"       spit-%nav
                        "n"       spit-%next
                        "p"       spit-%prev
+                       "["       spit-%backward
+                       "]"       spit-%forward
                        "u"       spit-%up
                        "s"       spit-%show
                        "\M-m"    spit-%dump-meta
