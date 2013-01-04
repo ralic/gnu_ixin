@@ -279,7 +279,8 @@ The title replaces the filename on the first line."
   (spit--do nil 'dump-index)
   (save-excursion
     (let ((nid<-name (make-hash-table :test 'equal))
-          (name<-nid (make-hash-table :test 'eq))
+          (name<-nid (unless (spit--cache 'name<-nid)
+                       (make-hash-table :test 'eq)))
           nid)
       (while (progn (skip-syntax-forward "-")
                     (< (point) (point-max)))
@@ -294,9 +295,11 @@ The title replaces the filename on the first line."
                                '(?n ?p ?u)))
                   (spit--vp name))
           (puthash name nid nid<-name)
-          (puthash nid name name<-nid)))
+          (when name<-nid
+            (puthash nid (spit--vp name) name<-nid))))
       (spit--cache 'nid<-name nid<-name)
-      (spit--cache 'name<-nid name<-nid)
+      (when name<-nid
+        (spit--cache 'name<-nid name<-nid))
       (spit--cache))))
 
 (defun spit-%show-labels ()
@@ -326,7 +329,8 @@ Report unhandled elements."
                          ((code) '(:foreground "blue"))))
                (invert (case default-font
                          ((code) '(:inherit variable-pitch :foreground "green"))
-                         ((r) '(:foreground "yellow")))))
+                         ((r) '(:foreground "yellow"))))
+               col)
           (delete-region (line-beginning-position) (point))
           (insert (spit--vp "DTS: %s / entries: %d / " name (car details))
                   (propertize "normal" 'face normal)
@@ -348,18 +352,17 @@ Report unhandled elements."
                                                   term)
                                                 face))
               (if cache
-                  (let ((name (gethash nid cache))
-                        col)
+                  (flet ((pretty (nid) (gethash nid cache)))
                     (insert " " term)
                     ;; FIXME: Neither ‘current-column’ nor ‘string-width’
                     ;;        take into account the actual displayed face.
                     (setq col (1+ (string-width term)))
-                    (insert " -- " (spit--vp name))
+                    (insert " -- " (pretty nid))
                     (dolist (nid more)
                       (newline)
                       (insert (propertize " " 'display `(space :align-to ,col))
                               " -- "
-                              (spit--vp (gethash nid cache)))))
+                              (pretty nid))))
                 (insert " " term
                         " -- " (mapconcat 'number-to-string
                                           (cons nid more)
@@ -369,10 +372,13 @@ Report unhandled elements."
 
 (defun spit-%dump-s-tree ()
   (interactive)
-  "Do ‘(dump-s-tree)’ and prettify.
+  "Do ‘(dump-s-tree)’, prettify and cache some metainfo.
 Report unhandled elements."
   (spit--do nil 'dump-s-tree)
-  (let ((p (point)) fmt)
+  (let ((name<-nid (or (spit--cache 'name<-nid)
+                       (make-hash-table :test 'eq)))
+        (p (point))
+        fmt)
     (let (lens)
       (while (re-search-forward spit--s-tree-parts nil t)
         (push (length (match-string 0)) lens))
@@ -383,14 +389,18 @@ Report unhandled elements."
       (backward-up-list)
       (destructuring-bind (nid what &rest rs) (spit--gobble)
         (let ((prefix (make-string (* 3 (- (current-column) 2))
-                                   ?\s)))
+                                   ?\s))
+              (pretty (spit--propertize-kids
+                       rs '(:inherit variable-pitch :foreground "red"))))
           (delete-region (line-beginning-position) (point))
-          (insert (format fmt nid what prefix)
-                  (spit--propertize-kids
-                   rs '(:inherit variable-pitch :foreground "red")))))
+          (puthash nid pretty name<-nid)
+          (insert (format fmt nid what prefix) pretty)))
       (delete-region (point) (line-end-position)))
     (spit--check-unhandled)
-    (goto-char p)))
+    (goto-char p)
+    (spit--cache 'name<-nid name<-nid)
+    (save-excursion
+      (spit--cache))))
 
 (defun spit (filename)
   "Browse IXIN FILENAME in a buffer in `spit-mode'. \\<spit-mode-map>

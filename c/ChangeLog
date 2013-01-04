@@ -1,5 +1,20 @@
 2013-01-04  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Upgrade ‘name<-nid’ as side-effect of sectioning tree dump.
+
+	That is, cache the fully-propertized node names,
+	beyond mere ‘variable-pitch’.
+
+	* spit.el (spit-%dump-index): If ‘name<-nid’ is already set,
+	don't touch it again; also, hash the name w/ ‘variable-pitch’ face.
+	(spit-%dump-dts pretty): New ‘flet’.
+	(spit-%dump-dts): Use it instead of consulting
+	‘cache’ directly and propertizing the name.
+	(spit-%dump-s-tree): Save the fully-propertized name in the
+	corresponding entry in ‘name<-nid’; update first line when done.
+
+2013-01-04  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[repl] Add commands: forward, backward
 
 	* retrieve (out repl move!): Rewrite.
