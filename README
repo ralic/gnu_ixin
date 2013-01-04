@@ -165,7 +165,7 @@ See end for copying conditions.
     their decoded (and re-encoded, for the links) contents) into the
     index.
 
-    This is the only non-functional (destructive) operation on the nodes.
+    Other elements and attributes are stripped, too.
 
 *** retrieve
 
