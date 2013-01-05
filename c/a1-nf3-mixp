@@ -133,6 +133,16 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
 
 (define (crunch port)
 
+  (define current-xml:space-preserve
+    (let ((stack '()))
+      (lambda args
+        (if (null? args)
+            (car stack)
+            (set! stack (let ((arg (car args)))
+                          (if (boolean? arg)
+                              (cons arg stack)
+                              (cdr stack))))))))
+
   (define (no-s s)
     (string-every char-set:whitespace s))
 
@@ -161,6 +171,10 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
                                     (cadr x))))
                    (acc! name)
                    (acc! (cons '@ attrs))
+                   (current-xml:space-preserve
+                    (and=> (assq-ref attrs 'xml:space)
+                           (lambda (ls)
+                             (string=? "preserve" (car ls)))))
                    (FE (map crunch-1 (map list (combine-character-data-children
                                                 head)))
                        (lambda (res)
@@ -168,10 +182,12 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
                                ((and-map string? res)
                                 (FE res acc!))
                                (else
-                                (acc! res)))))))
+                                (acc! res)))))
+                   (current-xml:space-preserve 0)))
                 ((character-data)
                  (let ((s (cadr head)))
-                   (or (no-s s)
+                   (or (and (not (current-xml:space-preserve))
+                            (no-s s))
                        (acc! s))))
                 ((comment)
                  ;; ignore

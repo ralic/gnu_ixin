@@ -1,3 +1,15 @@
+2013-01-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	a1-nf3-mixp: Fix bug: Respect ‘xml:space’ attribute.
+
+	That is, when it has value "preserve".
+
+	* a1-nf3-mixp (crunch current-xml:space-preserve): New proc.
+	(crunch crunch-1) <element>: Push state of attribute
+	‘xml:space’ being "preserve" before recursing; pop afterwards.
+	(crunch crunch-1) <character-data>: Inhibit ‘no-s’ override
+	if current element's attribute ‘xml:space’ has value "preserve".
+
 2013-01-04  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[spit] Upgrade ‘name<-nid’ as side-effect of sectioning tree dump.
