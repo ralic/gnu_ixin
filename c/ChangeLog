@@ -1,5 +1,11 @@
 2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Prettify ‘spit-%dump-meta’ output.
+
+	* spit.el (spit-%dump-meta): ...here.
+
+2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Allow elts of META ... DESCRIPTION to be a renderable sequence.
 
 	* mkixin: Import SRFI 13 ‘string-take’.

@@ -255,23 +255,60 @@ With args (noninteractively), like `message' for the spit area."
 
 (defun spit-%dump-meta ()
   (interactive)
-  "Do ‘(dump-meta)’, save title, and cache some metainfo.
+  "Do ‘(dump-meta)’, prettify, save title, and cache some metainfo.
 The title replaces the filename on the first line."
-  (spit--do nil 'dump-meta)
   (destructuring-bind ((fn lang title invitations)
-                       vars settings &rest etc)
-      (spit--gobble 'peek)
+                       vars settings copying titlepage toc)
+      (spit--do t 'dump-meta)
+    (goto-char (point-min))
+    (kill-sexp 1)
+    (insert ?\( (spit--propertize-kids (if (stringp title)
+                                           (list title)
+                                         title)
+                                       'variable-pitch)
+            ?\))
+    (forward-line 2)
     (save-excursion
-      (goto-char (point-min))
-      (kill-sexp 1)
-      (insert ?\" (spit--propertize-kids (if (stringp title)
-                                             (list title)
-                                           title)
-                                         'variable-pitch)
-              ?\")
-      (spit--cache 'invitations invitations)
-      (spit--cache 'settings settings)
-      (spit--cache))))
+      (flet ((orange (s) (spit--propertize-kids (list s)
+                                                (list :inherit 'variable-pitch
+                                                      :foreground "orange")))
+             (nl () "\n\n"))
+        (let ((standard-output (current-buffer))
+              (face (list :inherit 'variable-pitch
+                          :foreground "red")))
+          (insert
+           (orange "filename:") (format " %S" fn)
+           (nl)
+           (orange "lang:") (format " %S" lang)
+           (nl)
+           (orange (format
+                    "invitations (%d cat / %d ent):\n"
+                    (length invitations)
+                    (length (apply 'append (mapcar 'cdr invitations))))))
+          (flet ((pretty (x) (spit--propertize-kids (if (stringp x)
+                                                        (list x)
+                                                      x)
+                                                    face)))
+            (dolist (inv invitations)
+              (destructuring-bind (name &rest ents) inv
+                (insert "  " (pretty name) "\n")
+                (dolist (ent ents)
+                  (destructuring-bind (title node &rest description) ent
+                    (insert "    " (pretty title) " -- " node)
+                    (when description
+                      (insert " -- " (mapconcat 'pretty description
+                                                "\n      -- ")))
+                    (insert "\n"))))))
+          (flet ((out (x) (let ((blurb (format "%s:" x))
+                                (obj (symbol-value x)))
+                            (insert "\n" (orange blurb) "\n")
+                            (pp obj)
+                            (unless (bolp)
+                              (newline)))))
+            (mapc 'out '(vars settings copying titlepage toc))))
+        (spit--cache 'invitations invitations)
+        (spit--cache 'settings settings)
+        (spit--cache)))))
 
 (defun spit-%dump-index ()
   (interactive)
