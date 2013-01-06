@@ -4,15 +4,19 @@
 @documentencoding UTF-8
 @documentlanguage en
 @include release.texi
-@settitle IXIN Specification @value{VERSION}
+@settitle The IXIN Chronicles
 @defindex jargon
 @synindex jargon cp
 @defindex doubt
 @syncodeindex pg doubt
 @c %**end of header
 
+@macro packageparticulars
+edition @value{VERSION}, @value{UPDATED}
+@end macro
+
 @copying
-This is the IXIN Specification (version @value{VERSION}, @value{UPDATED}).
+This is the IXIN Chronicles (@packageparticulars{}).
 
 Copyright @copyright{} 2012, 2013 Thien-Thi Nguyen
 
@@ -28,12 +32,13 @@ Texts.  A copy of the license is included in the appendix entitled
 
 @dircategory GNU organization
 @direntry
-* IXIN: (ixin).                 Indexed Info file format spec.
+* IXIN: (ixin).         The IXIN Chronicles
+                        (@packageparticulars{})
 @end direntry
 
 @titlepage
-@title IXIN Specification
-@subtitle for version @value{VERSION}, @value{UPDATED}
+@title The IXIN Chronicles
+@subtitle @packageparticulars{}
 @author Thien-Thi Nguyen
 @page
 @vskip 0pt plus 1filll
@@ -50,7 +55,7 @@ Texts.  A copy of the license is included in the appendix entitled
 @c ---------------------------------------------------------------------------
 @ifnottex
 @node Top
-@top IXIN Specification
+@top The IXIN Chronicles
 
 @insertcopying
 @end ifnottex
