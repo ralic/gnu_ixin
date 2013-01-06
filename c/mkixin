@@ -174,7 +174,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
               (let* ((loc (last-pair ls))
                      (kid (car loc)))
                 (if (string? kid)
-                    loc
+                    ls
                     (final kid))))))
 
      (define (trim-ws nf)
@@ -185,13 +185,19 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                   ((positive? bad)))
          (set-car! loc (string-drop s bad)))
        ;; end
-       (and-let* ((loc (final nf))
-                  (s (car loc))
-                  (bad (- (string-length s)
-                          (string-skip-right s char-set:whitespace)
-                          1))
-                  ((positive? bad)))
-         (set-car! loc (string-drop-right s bad))))
+       (and-let* ((ls (final nf))
+                  (loc (last-pair ls))
+                  (s (car loc)))
+         (cond ((string-skip-right s char-set:whitespace)
+                => (lambda (n)
+                     (let ((bad (- (string-length s)
+                                   n
+                                   1)))
+                       (and (positive? bad)
+                            (set-car! loc (string-drop-right s bad))))))
+               (else
+                ;; No non-whitespace chars (i.e., all whitespace) => zonk!
+                (set-cdr! ls (delq s ls))))))
 
      (define s/newline/space/g
        (walker (lambda (nf)

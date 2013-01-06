@@ -1,5 +1,13 @@
 2013-01-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Remove string if ‘trim-ws’ is given a string w/ all whitespace.
+
+	* mkixin (nice-strings! final): Return ‘ls’, not ‘loc’.
+	(nice-strings! trim-ws) <end>: If the resulting
+	string has no non-whitespace chars, remove it entirely.
+
+2013-01-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	a1-nf3-mixp: Fix bug: Respect ‘xml:space’ attribute.
 
 	That is, when it has value "preserve".
