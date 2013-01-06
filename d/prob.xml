@@ -3,17 +3,17 @@
 <texinfo xml:lang="en">
   <setfilename>prob.xml</setfilename>
   <setvalue name="☯">☯</setvalue>
-  <!-- NB: Although U+1ED9 (ộ) is available, we use U+F4 (ô) plus U+0323 ( ̣)
-       to exercise the tools a bit. -->
-  <settitle>một Чёрт μ!</settitle>
+  <!-- NB: The "!̸" is EXCLAMATION MARK (U+21) combined/composed
+       with COMBINING LONG SOLIDUS OVERLAY (U+0338).  -->
+  <settitle>một Чёрт μ!̸</settitle>
   <para>This manual is moot.</para>
   <para>Copyright &copyright; 2012 Thien-Thi Nguyen</para>
   <quotation>
     <para>Permission is granted to bend, spindle and/or mutilate this document.</para>
   </quotation>
-  <dircategory>một Чёрт μ!</dircategory>
+  <dircategory>một Чёрт μ!̸</dircategory>
   <titlepage>
-    <booktitle>một Чёрт μ!</booktitle>
+    <booktitle>một Чёрт μ!̸</booktitle>
     <booksubtitle>zow!</booksubtitle>
     <author>Thien-Thi Nguyen</author>
     <para>This manual is moot.</para>
@@ -25,19 +25,19 @@
   <contents></contents>
   <node>
     <nodename>Top</nodename>
-    <nodenext>một Чёрт μ!</nodenext>
+    <nodenext>một Чёрт μ!̸</nodenext>
     <nodeup>(dir)</nodeup>
     <unnumbered>
       <title>ZOW</title>
     </unnumbered>
-    <anchor name="một Чёрт μ!"></anchor>
+    <anchor name="một Чёрт μ!̸"></anchor>
   </node>
   <node>
-    <nodename>một Чёрт μ!</nodename>
+    <nodename>một Чёрт μ!̸</nodename>
     <nodeprev>Top</nodeprev>
     <nodeup>Top</nodeup>
     <chapter>
-      <title>một Чёрт μ!</title>
+      <title>một Чёрт μ!̸</title>
       <printindex>cp</printindex>
     </chapter>
   </node>

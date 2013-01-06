@@ -1,3 +1,16 @@
+2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Use different combining char sequence in prob.xml.
+
+	Looks like <http://www.w3.org/TR/xml-entity-names/> says:
+	"Note that it is the policy of the W3C and of Unicode that
+	if a single character is already defined for what can be
+	achieved with a combining character, that character must be
+	used instead of the decomposed form."
+
+	* prob.xml: Do ‘s/một/một/g’, using U+1ED9 directly;
+	do ‘s/μ!/μ!̸/g’, adding U+0338 to combine w/ ‘!’.
+
 2013-01-03  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.6
