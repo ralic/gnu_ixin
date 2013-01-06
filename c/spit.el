@@ -105,7 +105,8 @@
                               (maphash (lambda (k v)
                                          (push k acc))
                                        spit--cache)
-                              acc))))))
+                              acc)))
+     (center-line))))
 
 (defun spit--gobble (&optional finish)
   (let ((beg (point)))
@@ -460,9 +461,9 @@ See also variable `spit-retrieve'."
     (when proc
       (delete-process proc)
       (erase-buffer)))
-  (insert (format "(%s)\n%s\n"
-                  filename
-                  (make-string (1- (window-width)) ?-)))
+  (insert "(" filename ")")
+  (center-line)
+  (insert (format "\n%s\n" (make-string (1- (window-width)) ?-)))
   (redisplay)
   (spit-mode)
   (set (make-local-variable 'spit--cache)

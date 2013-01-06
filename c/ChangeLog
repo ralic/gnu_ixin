@@ -1,5 +1,12 @@
 2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Center first line.
+
+	* spit.el (spit--cache): Center line when done.
+	(spit): Center first line.
+
+2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Prettify ‘spit-%dump-meta’ output.
 
 	* spit.el (spit-%dump-meta): ...here.
