@@ -1,5 +1,14 @@
 2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Allow elts of META ... DESCRIPTION to be a renderable sequence.
+
+	* ixin.texi <direntry>: Use ‘@sc’.
+	(xid) <direntry>: Describe precisely the types for
+	TITLE and NODE, including sub-structure for the latter;
+	allow DESCRIPTION to also be a renderable sequence.
+
+2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Rename spec document.
 
 	* ixin.texi <header>: Change title to "The IXIN Chronicles".

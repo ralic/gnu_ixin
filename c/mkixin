@@ -41,6 +41,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            let*-values))
  ((srfi srfi-13) #:select (substring/shared
                            string-every
+                           string-take
                            string-drop
                            string-drop-right
                            string-trim-both
@@ -156,17 +157,17 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (fs s . args)
   (apply simple-format #f s args))
 
+(define (initial nf)
+  (let ((loc (kids nf)))
+    (and (pair? loc)
+         (let ((kid (car loc)))
+           (if (string? kid)
+               loc
+               (initial kid))))))
+
 (define nice-strings!
   (walker
    (lambda (nf)
-
-     (define (initial nf)
-       (let ((loc (kids nf)))
-         (and (pair? loc)
-              (let ((kid (car loc)))
-                (if (string? kid)
-                    loc
-                    (initial kid))))))
 
      (define (final nf)
        (let ((ls (kids nf)))
@@ -301,14 +302,45 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (at-first element nf (lambda (nf)
                                    (car (kids nf)))))
 
+          (define (separate-on-newline kids)
+            (let loop ((ls kids) (acc (list '())))
+
+              (define (more! x)
+                (set-car! acc (cons x (car acc))))
+
+              (define (split! kid pos)
+                (let ((bef (string-take kid pos)))
+                  (or (string-null? bef)
+                      (more! bef))
+                  (loop (cond ((string-skip kid char-set:whitespace pos)
+                               => (lambda (new)
+                                    (cons (string-drop kid new)
+                                          (cdr ls))))
+                              (else
+                               (cdr ls)))
+                        (cons '() acc))))
+
+              (if (pair? ls)
+                  (let ((kid (car ls)))
+                    (or (and-let* (((string? kid))
+                                   (pos (string-index kid #\newline)))
+                          (split! kid pos))
+                        (begin
+                          (more! kid)
+                          (loop (cdr ls) acc))))
+                  ;; rv
+                  (map simplified
+                       (reverse! (map reverse!
+                                      (delq! '() acc)))))))
+
           (cons* (first-kid 'menutitle)
                  (first-kid 'menunode)
                  (at-first 'menudescription nf
                            (lambda (nf)
                              (at-first 'pre nf
                                        (lambda (nf)
-                                         (map string-trim-both
-                                              (kids nf))))))))
+                                         (separate-on-newline
+                                          (kids nf))))))))
 
         (map x!ent (cdr x)))
 

@@ -32,7 +32,7 @@ Texts.  A copy of the license is included in the appendix entitled
 
 @dircategory GNU organization
 @direntry
-* IXIN: (ixin).         The IXIN Chronicles
+* IXIN: (ixin).         The @sc{ixin} Chronicles
                         (@packageparticulars{})
 @end direntry
 
@@ -582,8 +582,25 @@ and each @var{entry} has the form:
 (TITLE NODE [DESCRIPTION...])
 @end example
 
+@table @var
+@item title
+A single-line string.
+
+@item node
+A single-line string of the form:
+
+@example
+(IXIN-FILE-NAME)[NODE-NAME]
+@end example
+
 @noindent
-All elements in @var{entry} are single-line strings.
+That is, open-paren, file name, close-paren and the rest, if any, the
+name of the node.  A space may appear between the close-paren and the
+node name.
+
+@item description
+Either a string or a renderable sequence.
+@end table
 @end table
 
 

@@ -1,3 +1,13 @@
+2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Allow elts of META ... DESCRIPTION to be a renderable sequence.
+
+	* mkixin: Import SRFI 13 ‘string-take’.
+	(initial): New proc, moved to top-level from...
+	(nice-strings! initial): ...here.
+	(rescue grab-xid! nice x!ent separate-on-newline): New proc.
+	(rescue grab-xid! nice x!ent): Use it instead of ‘string-trim-both’.
+
 2013-01-05  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[int] Remove string if ‘trim-ws’ is given a string w/ all whitespace.
