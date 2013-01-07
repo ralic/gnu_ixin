@@ -1,5 +1,15 @@
 2013-01-07  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Move utils description from README to spec document.
+
+	* ixin.texi (Top): Add "Utilities" to menu.
+	(Technique): Replace ‘@pindex’ for mkixin and makeinfo,
+	with a ‘@cindex’ that includes the word "limitation";
+	add ‘@pxref’ to ‘Utilities’.
+	(Utilities): New node/chapter.
+
+2013-01-07  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Use ‘@format’ and ‘@center’ for floats.
 
 	* ixin.texi (associative array): ...here.

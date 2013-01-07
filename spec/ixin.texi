@@ -63,6 +63,7 @@ Texts.  A copy of the license is included in the appendix entitled
 @menu
 * Introduction::            Design criteria, methods, jargon.
 * Specification::           How it's gonna be!
+* Utilities::               Code that tries to conform.
 
 * GNU FDL::                 Copying and sharing this documentation.
 * List of Figures::
@@ -128,9 +129,10 @@ Discussion about the IXIN file format continues (as of end of 2012) on
 the @uref{http://mail.gnu.org/archive/html/help-texinfo/,help-texinfo}
 mailing list.
 
-@pindex mkixin
-@pindex makeinfo
-Every so often, a set of exploratory utils (programs) and example files,
+@cindex @samp{mkixin} limitation
+@cindex @samp{makeinfo} limitation
+Every so often, a set of exploratory utils
+(@pxref{Utilities}) and example files,
 collectively known as ``IXIN tarballs'' are published on its
 @uref{http://www.gnuvola.org/software/ixin/, homepage}.
 Ideally, each feature of the file format would be demonstrated by the
@@ -1258,6 +1260,180 @@ audio) data into its own top-level @code{blobs} (with corresponding
 purely binary if we append it after the node data, but that might give
 some renderers indigestion.  In any case, the advantage of this lifting
 over inlining would be symbolic @code{type} and @code{encoding}.
+
+
+@c ---------------------------------------------------------------------------
+@node    Utilities
+@chapter Utilities
+
+The IXIN tarballs (@pxref{Technique}) contain some utility programs for
+playing with the specified (@pxref{Specification}) file format.  There
+are two primary ways to interact with IXIN files: writing and reading.
+
+@menu
+Writing --- emulating some future @samp{makeinfo}
+* a1-nf3-mixp::    Convert XML to SXML (Guile, Mixp).
+* a1-nf3-guile2::  Likewise (Guile 2).
+* mkixin::         Convert SXML to IXIN (Guile).
+
+Reading --- emulating some future renderers
+* retrieve::       Demonstrate IXIN grokking in various ways (Guile).
+* spit.el::        Render IXIN if possible, complain if not (Emacs).
+@end menu
+
+
+@c ---------------------------------------------------------------------------
+@node          a1-nf3-mixp
+@section @samp{a1-nf3-mixp}
+
+@pindex a1-nf3-mixp
+The first step is to get away from XML, which is ugly, to SXML in
+third-normal form (@pxref{overall}), which is not exactly beautiful, but
+certainly less ugly.  To run it you need to have both
+@uref{http://www.gnu.org/software/guile/, Guile} and
+@uref{http://www.nongnu.org/mixp/, Mixp} installed.
+
+@cindex @samp{a1-nf3-mixp} invocation
+@example
+@r{Usage:} a1-nf3-mixp FILENAME
+@end example
+
+@noindent
+Display the XML file in ``SXML format'' to stdout.
+@var{filename} should be produced by @samp{makeinfo --xml}.
+
+
+@c ---------------------------------------------------------------------------
+@node          a1-nf3-guile2
+@section @samp{a1-nf3-guile2}
+
+@pindex a1-nf3-guile2
+For Guile 2 lovers, this utility is intended to be a replacement for
+@samp{a1-nf3-mixp} that does not rely on Mixp (@pxref{a1-nf3-mixp}).
+Unfortunately, see below.
+
+@cindex @samp{a1-nf3-guile2} invocation
+@example
+@r{Usage:} a1-nf3-guile2 FILENAME
+@end example
+
+@noindent
+Display the XML file in ``SXML format'' to stdout.
+@var{filename} should be produced by @samp{makeinfo --xml}.
+
+@strong{NB}: This program is incomplete and does not work; use
+@samp{a1-nf3-mixp} instead (@pxref{a1-nf3-mixp}).  We include it in the
+distribution, anyway, in hopes that someone will step up to finish/fix it.
+
+
+@c ---------------------------------------------------------------------------
+@node          mkixin
+@section @samp{mkixin}
+
+@pindex mkixin
+After obtaining SXML (@pxref{a1-nf3-mixp}), the next step is to
+transform that to IXIN proper, extracting the various associative arrays
+(@pxref{associative array}) and serializing them to disk.
+
+@cindex @samp{mkixin} invocation
+@example
+@r{Usage:} mkixin FILENAME...
+@end example
+
+@noindent
+For each @var{filename}, assumed to be @file{@var{stem}.sxml},
+create @file{@var{stem}.ixin}.
+
+
+@c ---------------------------------------------------------------------------
+@node          retrieve
+@section @samp{retrieve}
+
+@pindex retrieve
+We have a file on disk, but is it OK?  Can another program handle it?
+
+@cindex @samp{retrieve} invocation
+@example
+@r{Usage:} retrieve IXIN [COMMAND [ARGS...]]
+@end example
+
+@noindent
+@var{ixin} is the name of a file created by @samp{mkixin} (@pxref{mkixin}).
+@var{command} (and @var{args}) is one of the following:
+
+@example
+dump
+dump/abbrev N-BYTES
+dump-meta
+dump-counts
+dump-index
+list-dts
+dump-dts [TYPE]
+dump-s-tree
+dump-node
+show-node WHICH
+show-all-nodes
+repl END-CODE
+@end example
+
+@var{which} can be a name, like ``Top'', or a number, like ``0''.
+If no @var{command} is specified, it is taken as @samp{dump/abbrev 128},
+which is like @code{dump}, but truncates the node data to 128 bytes.
+
+For @code{dump-dts}, if @var{type} is specified, dump that particular DTS.
+Otherwise, dump all DTSes, each preceded by:
+
+@example
+@var{name}: (@var{count} @var{font})
+@end example
+
+For @code{repl}, @var{end-code} is a decimal number that specifies the first
+character in the two character sequence used to terminate a response.
+The second char is always newline (aka @code{\n}).
+For example, use @code{12} for formfeed (aka, @code{\f}).
+
+In @code{repl} mode, @samp{retrieve} maintains a ``current node'',
+initially id 0 (name @code{Top}), and loops reading a form from stdin and
+displaying results to stdout.  Valid forms are:
+
+@example
+(where)           -- display current node information
+(nav)             -- display next/prev/up links (subset of ‘where’)
+(next)            -- move to ‘next’ node, if possible
+(prev)            -- move to ‘prev’ node, if possible
+(forward)         -- move to "1+ current-node"
+(backward)        -- move to "1- current-node"
+(up)              -- move to ‘up’ node, if possible
+(goto WHICH)      -- jump directly to node WHICH
+(show [WHICH])    -- do ‘show-node’ for WHICH or current node
+(raw [WHICH])     -- do ‘dump-node’ for WHICH or current node
+(dump-meta)       -- as from command-line (above)
+(dump-index)      -- likewise
+(list-dts)        -- likewise
+(dump-dts [TYPE]) -- likewise
+(dump-s-tree)     -- likewise
+(quit)            -- exit immediately
+@end example
+
+
+@c ---------------------------------------------------------------------------
+@node          spit.el
+@section @samp{spit.el}
+
+@pindex spit.el
+In Emacs, first load @file{spit.el}, using @code{M-x load-file RET}, for
+example.  Next, run the command @code{spit}, like so:
+
+@cindex @file{spit.el} invocation
+@example
+M-x spit RET FILENAME RET
+@end example
+
+@noindent
+Here, @var{filename} @strong{must} end with @file{.ixin}.  If you have a
+fast computer, try @file{d/coreutils.ixin}, otherwise @file{d/rcs.ixin}.
+This document itself is available as @file{spec/ixin.ixin}.
+After loading, you can @samp{C-h f spit RET}, for more information.
 
 
 @c ---------------------------------------------------------------------------
