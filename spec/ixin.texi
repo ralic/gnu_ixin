@@ -194,9 +194,9 @@ The first in the pair is the @dfn{key}, and the second the @dfn{value}.
 @c  └─────┴───────┘
 @c Maybe someday...
 @float Figure, A Key/Value Association
-@verbatim
-KEY => VALUE
-@end verbatim
+@format
+@center @var{key} @result{} @var{value}
+@end format
 @caption{The association between a @var{key} and a @var{value}.}
 @shortcaption{A @var{key}/@var{value} Association}
 @end float
@@ -205,12 +205,12 @@ A key may appear only once in an array; it is unique.  A value may
 appear any number of times.  For example:
 
 @float Figure, Example Associative Array
-@verbatim
-A => 5
-B => 4
-C => 4
-D => 2
-@end verbatim
+@format
+@center @code{A} @result{} @code{5}
+@center @code{B} @result{} @code{4}
+@center @code{C} @result{} @code{4}
+@center @code{D} @result{} @code{2}
+@end format
 @caption{An example associative array, with four associations,
 showing unique keys (@code{A}, @code{B}, @code{C}, @code{D})
 and non-unique values (@code{5}, @code{4}, @code{2}).}
