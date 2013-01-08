@@ -1,3 +1,11 @@
+2013-01-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spit] Make first-line centering align w/ second line.
+
+	* spit.el (spit-mode): Preserve ‘fill-column’
+	value around call to ‘kill-all-local-variables’.
+	(spit): Set ‘fill-column’.
+
 2013-01-06  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[spit] Center first line.

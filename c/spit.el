@@ -182,7 +182,9 @@
   "Major mode for browsing IXIN files (via \\[spit]).
 
 \\{spit-mode-map}"
-  (kill-all-local-variables)
+  (let ((saved-fill-column fill-column))
+    (kill-all-local-variables)
+    (setq fill-column saved-fill-column))
   (setq mode-name "Spit"
         major-mode 'spit-mode)
   (use-local-map spit-mode-map))
@@ -462,8 +464,9 @@ See also variable `spit-retrieve'."
       (delete-process proc)
       (erase-buffer)))
   (insert "(" filename ")")
+  (setq fill-column (1- (window-width)))
   (center-line)
-  (insert (format "\n%s\n" (make-string (1- (window-width)) ?-)))
+  (insert (format "\n%s\n" (make-string fill-column ?-)))
   (redisplay)
   (spit-mode)
   (set (make-local-variable 'spit--cache)
