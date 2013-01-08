@@ -9,6 +9,7 @@
 @synindex jargon cp
 @defindex doubt
 @syncodeindex pg doubt
+@syncodeindex vr cp
 @c %**end of header
 
 @macro packageparticulars
@@ -108,7 +109,11 @@ Out of these frustrated ramblings, IXIN was born.
 Aside from being able to ``set the background color''
 (@pxref{Introduction}), we would like a file format that supports
 incremental access and runtime (end-user) control of certain display
-parameters.  Basically, late-binding for documentation.  This must be
+parameters.  Basically, late-binding for documentation.
+@cindex renderer
+@cindex processor
+@cindex program, rendering
+This must be
 done in cooperation with the @dfn{rendering program}, also known as the
 @dfn{processor} or the @dfn{renderer}.
 
@@ -407,17 +412,29 @@ not very firm in the author's mind.
 * node data::            (Almost) SXML.
 @end menu
 
+@macro vmore{x}
+@item \x\
+@vindex \x\
+@end macro
+
+@macro vmorex{x}
+@itemx \x\
+@vindex \x\
+@end macro
+
 
 @c ---------------------------------------------------------------------------
 @node    overall
 @section overall
 
 @cindex text overall
+@cindex third-normal form, SXML
 Overall, the format is a series of text blocks.  All SXML trees (none of
 which appear at the top-level, by the way) are @dfn{third-normal form}:
 with abutting character-data sequences coalesced and attributes explicit
-in the tree's second position (i.e., @sc{cadr}).  Valid SXML elements
-and attributes,
+in the tree's second position (i.e., @sc{cadr}).
+@cindex DTD for SXML
+Valid SXML elements and attributes,
 except for attribute @code{ixcc} (@pxref{no ixcc in DTD}),
 are defined in the Texinfo DTDs with ``public id'':
 
@@ -427,6 +444,7 @@ are defined in the Texinfo DTDs with ``public id'':
 @end example
 
 @noindent
+@cindex normalization, whitespace, for SXML
 Additionally, the SXML leaf strings have the following context-sensitive
 properties, all related to ``whitespace normalization''.
 
@@ -450,6 +468,7 @@ flushleft   flushright      cartouche
 Internal newlines, or newlines at the end of other elements are OK.
 
 @item @code{s/newline/space/} in @code{para}
+@cindex @code{xml:space}, SXML attribute
 Leaf strings of the element @code{para}, unless exempted by the
 @code{xml:space} attribute of some interevening parent element having
 value @samp{preserve}, @strong{should} have newline (U+0A) replaced
@@ -493,6 +512,7 @@ The others are protected by the @code{xml:space} attribute of element
 @node    first line
 @section first line
 
+@cindex first line
 The first line looks like:
 
 @example
@@ -500,11 +520,11 @@ ixin VERSION; -*- coding: CODING -*-
 @end example
 
 @table @var
-@item version
+@vmore version
 The format version number as a character string.
 For now: @samp{1} (U+31).
 
-@item coding
+@vmore coding
 The coding system used for this file.
 It should normally be @code{utf-8}.
 @xref{Recognize Coding, how Emacs recognizes file encoding,, emacs,
@@ -519,6 +539,7 @@ tokens, and a @samp{:} (colon) as part of the third token.
 @node    meta
 @section meta
 
+@vindex meta
 The list:
 
 @example
@@ -542,6 +563,7 @@ that comprises all the information prior to the first @code{@@node}.
 @node       xid
 @subsection xid
 
+@vindex xid
 The list:
 
 @example
@@ -555,28 +577,36 @@ commands, respectively.
 ``XID'' stands for ``external identifiers''.
 
 @table @var
-@item filename
+@vmore filename
+@vindex @@setfilename
 A string, or the symbol @code{-} (hyphen).
 
-@item lang
+@vmore lang
+@vindex @@documentlanguage
 A symbol or a list of two symbols.
 If @code{@@documentlanguage} is unspecified, defaults to @code{(en US)}.
 
-@item title
+@vmore title
+@vindex @@settitle
 A string, or a renderable sequence, or the symbol @code{-} (hyphen).
 
-@item invitations
+@vmore invitations
+@vindex @@dircategory
+@vindex @@direntry
 If there are no @code{@@dircategory} or @code{@@direntry}
 commands@footnote{Although @samp{mkixin} detects @code{direntry} just
 fine, @samp{makeinfo} 4.13 and earlier do not propagate this information
-to its XML output.}, the symbol @code{-} (hyphen).  Otherwise, a list of
-the form:
+to its XML output.}, the symbol @code{-} (hyphen).
+@vindex invitation
+Otherwise, a list of the form:
 
 @example
 (CATEGORY [ENTRY...])
 @end example
 
 @noindent
+@vindex category, directory
+@vindex entry, directory
 where @var{category} is a single-line string, or @code{-} (hyphen);
 and each @var{entry} has the form:
 
@@ -585,10 +615,10 @@ and each @var{entry} has the form:
 @end example
 
 @table @var
-@item title
+@vmore title
 A single-line string.
 
-@item node
+@vmore node
 A single-line string of the form:
 
 @example
@@ -596,11 +626,13 @@ A single-line string of the form:
 @end example
 
 @noindent
+@vindex ixin-file-name
+@vindex node-name
 That is, open-paren, file name, close-paren and the rest, if any, the
 name of the node.  A space may appear between the close-paren and the
 node name.
 
-@item description
+@vmore description
 Either a string or a renderable sequence.
 @end table
 @end table
@@ -610,6 +642,7 @@ Either a string or a renderable sequence.
 @node       vars
 @subsection vars
 
+@vindex vars
 The list:
 
 @example
@@ -617,13 +650,18 @@ The list:
 @end example
 
 @table @var
-@item name
+@vmore name
 A symbol.
 
-@item value
+@vmore value
 A string.
 @end table
 
+@vindex @@set
+@vindex @@clear
+@vindex @@codequoteundirected
+@vindex @@codequotebacktick
+@vindex @@deftypefnnewline
 These derive from @code{@@set} commands.  Such variables are for the
 most part opaque to makeinfo, used solely for textual substitution.  The
 exceptions, which influence makeinfo processing, all have names that
@@ -656,6 +694,7 @@ vars to settings (@pxref{settings}), of course.
 @node       settings
 @subsection settings
 
+@vindex settings
 The list@footnote{@samp{mkixin} detects:
 
 @example
@@ -672,6 +711,8 @@ via @code{@@set} commands, only, and only in the pre-node area.}:
 @end example
 
 @noindent
+@vindex name
+@vindex value
 where @var{name} is a symbol and the type of @var{value} depends
 on @var{name}.  In the following table, the first column is the
 @dfn{context} of the setting: @samp{O} means ``once only'' (set in
@@ -808,6 +849,7 @@ on @var{name}.  In the following table, the first column is the
 @node       copying
 @subsection copying
 
+@vindex copying
 The SXML:
 
 @example
@@ -815,6 +857,7 @@ The SXML:
 @end example
 
 @noindent
+@vindex @@copying
 This is the Texinfo @code{@@copying} block.
 If there is no such block, @var{copying}
 defaults to the symbol @code{-} (hyphen).
@@ -824,12 +867,15 @@ defaults to the symbol @code{-} (hyphen).
 @node       titlepage
 @subsection titlepage
 
+@vindex titlepage
 The SXML:
 
 @example
 (titlepage (@@) (title ...) ...)
 @end example
 
+@noindent
+@vindex @@titlepage
 This is the Texinfo @code{@@titlepage} block@footnote{For
 @samp{makeinfo} 4.13 and earlier, the first child may be
 @code{booktitle} instead of @code{title}, and so on.}.
@@ -839,6 +885,10 @@ This is the Texinfo @code{@@titlepage} block@footnote{For
 @node       toc
 @subsection toc
 
+@vindex toc
+@vindex @@contents
+@vindex @@shortcontents
+@vindex @@summarycontents
 A list of zero or more symbols of the set: @code{contents},
 @code{shortcontents}, @code{summarycontents}.
 
@@ -847,6 +897,7 @@ A list of zero or more symbols of the set: @code{contents},
 @node    counts
 @section counts
 
+@vindex counts
 The list:
 
 @example
@@ -854,19 +905,19 @@ The list:
 @end example
 
 @table @var
-@item index-len
+@vmore index-len
 The byte-length of the node index (@pxref{node index}).
 
-@item count
+@vmore count
 The total number of nodes.
 
-@item s-tree-len
+@vmore s-tree-len
 The byte-length of the sectioning tree.
 
-@item labels-len
+@vmore labels-len
 The byte-length of the labels block (@pxref{labels}).
 
-@item dts-index
+@vmore dts-index
 A list of entries, each of the form:
 
 @example
@@ -874,13 +925,14 @@ A list of entries, each of the form:
 @end example
 
 @table @var
-@item name
+@vmore name
 A symbol, such as @code{cp} or @code{fn}.
 
-@item dts-len
+@vmore dts-len
 The byte-length of this DTS.
 
-@item nid
+@vmore nid
+@vindex @@printindex
 A node identifier for each node that contains a @code{@@printindex}
 command for @var{name}.
 @end table
@@ -889,7 +941,7 @@ If @var{dts-len} is zero, then there must be at least
 one @var{nid}.  This is the case when
 there is a @code{printindex} but no entries for it.
 
-@item flosets-index
+@vmore flosets-index
 A list of entries, each of the form:
 
 @example
@@ -897,13 +949,14 @@ A list of entries, each of the form:
 @end example
 
 @table @var
-@item type
+@vmore type
 A symbol, such as @code{Figure}, or @code{-} to indicate ``untyped''.
 
-@item floset-len
+@vmore floset-len
 The byte-length of this set of floats.
 
-@item nid
+@vmore nid
+@vindex @@listoffloats
 A node identifer for each node that contains a @code{@@listoffloats}
 command for @var{type}.
 @end table
@@ -918,6 +971,7 @@ entries for it.
 @node    node index
 @section node index
 
+@vindex node-index
 A series of @var{count} blocks (@pxref{counts}), each of the form:
 
 @example
@@ -925,21 +979,21 @@ A series of @var{count} blocks (@pxref{counts}), each of the form:
 @end example
 
 @table @var
-@item name
+@vmore name
 A string, e.g., @code{"Top"}.
 
-@item length
+@vmore length
 The (integer) number of bytes required to read the
 raw ``node data'' (@pxref{node data}).
 
-@item next
-@itemx prev
-@itemx up
+@vmore next
+@vmorex prev
+@vmorex up
 Integers, pointing to other members of the node index.
 A value of -1 indicates a missing component (e.g.,
 @var{up} and @var{prev} for @code{Top} is typically -1).
 
-@item tweaks
+@vmore tweaks
 The optional@footnote{At present, @samp{mkixin} never produces this.}
 list of settings, each having the form:
 
@@ -948,6 +1002,9 @@ list of settings, each having the form:
 @end example
 
 @noindent
+@vindex name
+@vindex value
+As for the original settings (@pxref{meta}).
 Only those settings with ``arbitrary'' context can appear here
 (@pxref{settings}).
 @end table
@@ -957,6 +1014,7 @@ Only those settings with ``arbitrary'' context can appear here
 @node    sectioning tree
 @section sectioning tree
 
+@vindex sectioning-tree
 The single tree of ``sections'', each ``node'' having the form:
 
 @example
@@ -964,7 +1022,7 @@ The single tree of ``sections'', each ``node'' having the form:
 @end example
 
 @table @var
-@item section-entry
+@vmore section-entry
 The form:
 
 @example
@@ -972,6 +1030,8 @@ The form:
 @end example
 
 @noindent
+@vindex nid
+@vindex type
 where @var{nid} is the node identifier for the
 node ``containing'' that section,
 @var{type} is one of:
@@ -984,9 +1044,10 @@ level 4: subsubsection unnumberedsubsubsec appendixsubsubsec
 @end example
 
 @noindent
+@vindex title
 and @var{title} is a renderable sequence.
 
-@item sub
+@vmore sub
 An optional (zero or more) list with same format as the sectioning tree,
 for subsections.
 @end table
@@ -999,6 +1060,8 @@ children from level 2, and so on.
 @node    labels
 @section labels
 
+@vindex labels
+@cindex references, for external use
 If @var{labels-len} (@pxref{counts}) is non-zero, the list:
 
 @example
@@ -1013,15 +1076,15 @@ followed by a series of @var{non-node-count} lists, each of the form:
 @end example
 
 @table @var
-@item non-node-count
+@vmore non-node-count
 A non-negative integer.  Zero means only nodes have labels.
 
-@item node-label
+@vmore node-label
 A string, the node's label, or a symbol.  If the symbol is @code{-}
 (hyphen), the node has no label.  If the symbol is @code{=} (equal
 sign), the node's label is identical to its name.
 
-@item label
+@vmore label
 @cindex label syntax
 A string whose characters are strictly from the set
 @code{[-_A-Za-z0-9]}, i.e., the ASCII letters and digits plus @code{-}
@@ -1029,13 +1092,14 @@ A string whose characters are strictly from the set
 file's coding (@pxref{first line}) must be compatibile with ASCII.
 @xref{HTML Xref,HTML Xref,,texinfo,The GNU Texinfo Manual}, for details.
 
-@item nid
+@vmore nid
 A node identifier.
 
-@item what
+@vmore what
 A symbol indicating what has this label, e.g., @code{anchor}.
 @end table
 
+@cindex correspondance, order of nodes and labels
 The first form's list of node labels correspond (in order) to nodes in
 the node index (@pxref{node index}).  As a special case, if the
 @code{node-label} values would @strong{all} be @code{-} (hyphen), then
@@ -1047,6 +1111,7 @@ simply lists @var{non-node-count}.
 @node    document-term sets
 @section document-term sets
 
+@vindex document-term-sets
 For each element in @var{dts-index} with non-zero @var{dts-len},
 a list:
 
@@ -1055,6 +1120,8 @@ a list:
 @end example
 
 @noindent
+@vindex count
+@vindex entry, dts
 followed by @var{count} entries, each of the form:
 
 @example
@@ -1062,21 +1129,22 @@ followed by @var{count} entries, each of the form:
 @end example
 
 @table @var
-@item count
+@vmore count
 A positive integer.
 
-@item font
+@vmore font
 A symbol, one of @code{r} or @code{code}, specifying the default font
 for this DTS.  An entry whose first element is the symbol @code{-}
 (hyphen, U+2D) has the ``inverse'' default font.
 
-@item term
+@vmore term
 Either a string or a renderable sequence.
 
-@item nid
+@vmore nid
 A node identifer for each node in which @var{term} appears.
 @end table
 
+@cindex order, dts entries
 The entries in each DTS is sorted alphabetically, case insensitively.
 
 
@@ -1084,6 +1152,7 @@ The entries in each DTS is sorted alphabetically, case insensitively.
 @node    float sets
 @section float sets
 
+@vindex float-sets
 For each element in @var{flosets-index} with non-zero @var{floset-len},
 a list:
 
@@ -1099,17 +1168,17 @@ followed by @var{count} entries, each of the form:
 @end example
 
 @table @var
-@item count
+@vmore count
 A positive integer.
 
-@item name
+@vmore name
 A string.
 
-@item short-caption
+@vmore short-caption
 Either a string, or a renderable sequence, or the symbol
 @code{-} (hyphen) to indicate no short caption.
 
-@item nid
+@vmore nid
 The identifier for the node where this float is found.
 @end table
 
@@ -1118,6 +1187,7 @@ The identifier for the node where this float is found.
 @node    node data
 @section node data
 
+@vindex node-data
 A series of @var{count} blocks (@pxref{counts}), each with form:
 
 @example
@@ -1125,6 +1195,8 @@ A series of @var{count} blocks (@pxref{counts}), each with form:
 @end example
 
 @noindent
+@vindex attrs
+@cindex @var{elements}@dots{} of node data
 In other words, a @code{node} SXML sans the initial symbol
 @code{node}.  The order is the same as in the node index.
 
@@ -1138,6 +1210,7 @@ In other words, a @code{node} SXML sans the initial symbol
 @node       references
 @subsection references
 
+@cindex references, for internal use
 @cindex coordinate, cartesian
 @cindex cartesian coordinate
 @cindex @code{ixcc}
@@ -1152,12 +1225,13 @@ SXML) having the form:
 @end example
 
 @table @var
-@item family
+@vmore family
 A single symbol or a list of symbols.
 Here are the families:
 
 @table @asis
 @item @code{node}
+@cindex @code{node}, @code{ixcc} family
 Refers to the node index (@pxref{node index}).
 @*Found in elements:
 @example
@@ -1167,15 +1241,17 @@ menunode ref xref pxref
 @qqq{} Others?
 
 @item @code{(dts @var{name})}
+@cindex @code{dts} @var{name}, @code{ixcc} family
 Refers to the DTS named @var{name} (@pxref{document-term sets}.
 Found in element @code{indexterm}.
 
 @item @code{(floset @var{type})}
+@cindex @code{floset} @var{type}, @code{ixcc} family
 Refers to the floset of type @var{type} (@pxref{float sets}).
 Found in element @code{float}.
 @end table
 
-@item position
+@vmore position
 A non-negative integer.
 @end table
 
@@ -1216,6 +1292,7 @@ single string, if possible.  The attributes should include:
 
 @table @code
 @item type
+@cindex @code{type}, SXML attribute
 A MIME-style string of the form @var{major}/@var{minor} (TODO: REF),
 where @var{major} is always @samp{image}.  If the actual type is
 unknown, the minor is @code{unknown}@footnote{@samp{mkixin} produces
@@ -1230,6 +1307,7 @@ image/unknown
 based on examining the filename extension.}.
 
 @item encoding
+@cindex @code{encoding}, SXML attribute
 At present, the string @samp{base64}.
 @end table
 
@@ -1266,6 +1344,10 @@ over inlining would be symbolic @code{type} and @code{encoding}.
 @node    Utilities
 @chapter Utilities
 
+@cindex utilities
+@cindex programs, utility
+@cindex writing
+@cindex reading
 The IXIN tarballs (@pxref{Technique}) contain some utility programs for
 playing with the specified (@pxref{Specification}) file format.  There
 are two primary ways to interact with IXIN files: writing and reading.
@@ -1392,6 +1474,7 @@ character in the two character sequence used to terminate a response.
 The second char is always newline (aka @code{\n}).
 For example, use @code{12} for formfeed (aka, @code{\f}).
 
+@anchor{retrieve repl mode}
 In @code{repl} mode, @samp{retrieve} maintains a ``current node'',
 initially id 0 (name @code{Top}), and loops reading a form from stdin and
 displaying results to stdout.  Valid forms are:
@@ -1421,8 +1504,14 @@ displaying results to stdout.  Valid forms are:
 @section @samp{spit.el}
 
 @pindex spit.el
-In Emacs, first load @file{spit.el}, using @code{M-x load-file RET}, for
-example.  Next, run the command @code{spit}, like so:
+@cindex renderer, proof-of-concept
+The distribution includes @file{spit.el}, a proof-of-concept renderer
+for Emacs (implemented in Emacs Lisp) which uses utility @samp{retrieve}
+(@pxref{retrieve repl mode}) to render what it can and complain about
+what it can't.
+
+To play, in Emacs first load @file{spit.el} (with @code{load-file}, for
+example).  Next, run the command @code{spit}, like so:
 
 @cindex @file{spit.el} invocation
 @example
