@@ -83,11 +83,6 @@ See end for copying conditions.
 
 * implementation notes
 
-*** generally
-
-    The temp-file interaction code is quick (to write) and dirty.
-    Kids, laugh all you want, but don't do this in your own code!
-
 *** mkixin
 
     The ‘(node ...)’ form is not identical to the input SXML;

@@ -1,3 +1,16 @@
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] Overhaul temporary-file manglement.
+
+	* mkixin: Import SRFI 13 ‘string-join’.
+	(block-mangler): New proc.
+	(how-to-handle): Return also a block management proc.
+	(floating-environments, document-term-sets, labels):
+	Take ‘mkblk’; rework block management portions; update callers.
+	(do-it! mkblk): New proc.
+	(do-it! fsys): Delete proc.
+	(do-it!): Rework block management.
+
 2013-01-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[spit] Make first-line centering align w/ second line.

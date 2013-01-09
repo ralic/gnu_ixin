@@ -40,6 +40,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
  ((srfi srfi-11) #:select (let-values
                            let*-values))
  ((srfi srfi-13) #:select (substring/shared
+                           string-join
                            string-every
                            string-take
                            string-drop
@@ -223,13 +224,72 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
              verbatim quotation flushleft flushright cartouche)
         (trim-ws nf))))))
 
+(define (block-mangler dir)
+
+  (define (fsys s . args)
+    (zero? (system (apply fs s args))))
+
+  (define (bye)
+    (fsys "rm -rf ~A" dir))
+
+  (and (file-exists? dir)
+       (or (bye)
+           (error "cannot remove old temporary dir:" dir)))
+  (mkdir dir)
+  (let ((filenames '())
+        (all '()))
+
+    (define (one kind)
+      (let* ((filename (in-vicinity dir (fs "W-~A" kind)))
+             (port (open-output-file filename))
+             (pp (ppp port)))
+
+        (define (act proc)
+          (proc pp))
+
+        (define (cur)
+          (force-output)
+          (ftell port))
+
+        (define (bye)
+          (let ((size (cur)))
+            (close-port port)
+            size))
+
+        (define (dispatch command . args)
+          (case command
+            ((act) (act (car args)))
+            ((cur) (cur))
+            ((bye) (bye))))
+
+        (set! filenames (acons kind filename filenames))
+        (set! all (acons kind dispatch all))
+        dispatch))
+
+    (define (finish ixin kinds)
+      (and (fsys "cat ~A >> ~A"
+                 (string-join (map (lambda (kind)
+                                     (assq-ref filenames kind))
+                                   kinds))
+                 ixin)
+           (or (bye)
+               (error "cannot remove dir:" dir))))
+
+    ;; rv
+    (lambda (command . args)
+      (case command
+        ((new) (apply one args))
+        ((finish) (apply finish args))))))
+
 (define (how-to-handle filename)
-  (values (string-drop-right filename (string-length ".sxml"))
-          (lambda ()
-            (let ((tree (call-with-input-file filename
-                          read)))
-              (nice-strings! tree)
-              tree))))
+  (let ((stem (string-drop-right filename (string-length ".sxml"))))
+    (values stem
+            (lambda ()
+              (let ((tree (call-with-input-file filename
+                            read)))
+                (nice-strings! tree)
+                tree))
+            (block-mangler (fs "~A.ixin-blocks" stem)))))
 
 (define (txi-vars-as-settings variables settings)
   (let ((fix '((txicodequoteundirected . codequoteundirected)
@@ -492,7 +552,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                 (car (kids nf))))
       (attribute-ref nf 'name)))
 
-(define (floating-environments cur? nodes)
+(define (floating-environments mkblk cur? nodes)
   (let ((all '()))
 
     (define (plucker id)
@@ -519,15 +579,16 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            id)
                           (cdr slot))))))
 
-    (define (write! pp cur)
-      (lambda (type ents)
-        (let ((count (length ents))
-              (ents (reverse! ents))
-              (bef (cur)))
-          (pp (list count))
-          (FE ents pp)
-          (force-output)
-          (positioned ents type (- (cur) bef)))))
+    (define (write! blk)
+      (lambda (pair)
+        (let-values (((type ents) (car+cdr pair)))
+          (let ((count (length ents))
+                (ents (reverse! ents))
+                (bef (blk 'cur)))
+            (blk 'act (lambda (pp)
+                        (pp (list count))
+                        (FE ents pp)))
+            (positioned ents type (- (blk 'cur) bef))))))
 
     (let ((float? (element? 'float)))
       (FE nodes (lambda (node)
@@ -539,16 +600,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (if (null? all)
         all
-        (let* ((port (open-output-file "TMP-W-FLOSETS"))
-               (pp (ppp port))
-               (counts (map (write! pp (lambda ()
-                                         (ftell port)))
-                            (map car all)
-                            (map cdr all))))
-          (close-port port)
+        (let* ((blk (mkblk))
+               (counts (map (write! blk)
+                            all)))
+          (blk 'bye)
           counts))))
 
-(define (document-term-sets cur? setup nodes)
+(define (document-term-sets mkblk cur? setup nodes)
 
   (define default-font
     (let ((syn (map (lambda (nf)
@@ -618,25 +676,24 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                 (list (1+ n) (cdr ls))))))
                 (values n orig)))))
 
-      (define (write! port)
+      (define (write! blk)
 
         (define (cur)
-          (ftell port))
-
-        (define pp (ppp port))
+          (blk 'cur))
 
         (let-values (((count ls) (merge-duplicate-terms!
                                   (sort ls (lambda (a b)
                                              (string-ci< (key a)
                                                          (key b)))))))
           (let ((before (cur)))
-            (pp (list count default-font))
-            (FE (map (lambda (ent)
-                       (if (eq? default-font (font ent))
-                           ent
-                           (cons '- ent)))
-                     ls)
-                pp)
+            (blk 'act (lambda (pp)
+                        (pp (list count default-font))
+                        (FE (map (lambda (ent)
+                                   (if (eq? default-font (font ent))
+                                       ent
+                                       (cons '- ent)))
+                                 ls)
+                            pp)))
             (positioned ls name (- (cur) before)))))
 
       ;; rv
@@ -691,11 +748,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (FE nodes (collect-indexterm! get-mgr))
     (if (null? all)
         all
-        (let* ((port (open-output-file "TMP-W-DTS"))
+        (let* ((blk (mkblk))
                (counts (map (lambda (mgr)
-                              (mgr #f port))
+                              (mgr #f blk))
                             (map cdr all))))
-          (close-port port)
+          (blk 'bye)
           counts))))
 
 (define (section-tree cur? nodes)
@@ -865,7 +922,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (FE rest prune-attributes)
             (values #t dts-setup meta rest))))))
 
-(define (labels names nodes)
+(define (labels mkblk names nodes)
 
   (define (label name node)
     (or (and-let* ((label (attribute-ref node 'name)))
@@ -902,20 +959,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (if (and (null? acc)
                sorry)
           0
-          (call-with-output-file "TMP-W-LABELS"
-            (lambda (port)
-
-              (define (pp obj)
-                ;; Everything is ASCII, so we can avoid ‘ppp’.
-                (simple-format port "~S~%" obj))
-
-              (pp (cons (length acc)
-                        (if sorry
-                            '()
-                            known)))
-              (FE acc pp)
-              (force-output)
-              (ftell port)))))))
+          (let ((blk (mkblk)))
+            (blk 'act (lambda (pp)
+                        (pp (cons (length acc)
+                                  (if sorry
+                                      '()
+                                      known)))
+                        (FE acc pp)))
+            (blk 'bye))))))
 
 (define (identify nodes)
 
@@ -1017,18 +1068,22 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (else acc)))))
 
 (define (do-it! filename)
-  (let*-values (((stem snarf) (how-to-handle filename))
+  (let*-values (((stem snarf blk) (how-to-handle filename))
                 ((cur? dts-setup meta nodes) (tuck (snarf)))
                 ((count names locs) (identify nodes)))
+
+    (define (mkblk nick)
+      (lambda ()
+        (blk 'new nick)))
+
     (FE nodes (inline-images! cur? (dirname filename)))
     (let* ((coding 'utf-8)              ; TODO
-           (pnodes (open-output-file "TMP-W-NODES"))
-           (pp-nodes (ppp pnodes))
-           (labels-len (labels names nodes))
+           (nblk ((mkblk 'nodes)))
+           (labels-len (labels (mkblk 'labels) names nodes))
            (index (make-vector count #f))
-           (flosets (floating-environments cur? nodes))
+           (flosets (floating-environments (mkblk 'flosets) cur? nodes))
            (lonely-flosets (two-phase-accumulator))
-           (dts (document-term-sets cur? dts-setup nodes))
+           (dts (document-term-sets (mkblk 'dts) cur? dts-setup nodes))
            (lonely-dts (two-phase-accumulator)))
 
       (define (dedup! nf)
@@ -1099,19 +1154,19 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
       (define (grok! name loc node)
 
-        (define (stash!)
+        (define (blk!)
 
           (define (sz)
-            (ftell pnodes))
+            (nblk 'cur))
 
           (let ((bef (sz)))
-            (pp-nodes (cdr node))
-            (force-output)
+            (nblk 'act (lambda (pp)
+                         (pp (cdr node))))
             ;; Subtract 1 to ignore the trailing newline.
             (- (sz) bef 1)))
 
         ((walker dedup!) node)
-        (let ((len (stash!))
+        (let ((len (blk!))
               (id (node-id node)))
 
           (define (note-summary! look known lonely)
@@ -1126,21 +1181,18 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (note-summary! (find-printindex cur?) dts lonely-dts)))
 
       (define (write-index!)
-        (call-with-output-file "TMP-W-INDEX"
-          (lambda (port)
-            (let ((pp-i (ppp port)))
-              (do ((i 0 (1+ i)))
-                  ((= count i))
-                (pp-i (vector-ref index i))))
-            (force-output)
-            (ftell port))))
+        (let ((blk ((mkblk 'node-index))))
+          (blk 'act (lambda (pp)
+                      (do ((i 0 (1+ i)))
+                          ((= count i))
+                        (pp (vector-ref index i)))))
+          (blk 'bye)))
 
       (define (write-section-tree!)
-        (call-with-output-file "TMP-W-S-TREE"
-          (lambda (port)
-            (pretty-print (section-tree cur? nodes) port)
-            (force-output)
-            (ftell port))))
+        (let ((blk ((mkblk 's-tree))))
+          (blk 'act (lambda (pp)
+                      (pp (section-tree cur? nodes))))
+          (blk 'bye)))
 
       (FE names locs nodes grok!)
       (let* ((index-length (write-index!))
@@ -1151,7 +1203,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (define (fso s . args)
           (apply simple-format port s args))
 
-        (close-port pnodes)
+        (nblk 'bye)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
         (pretty-print (rescue cur? meta) port)
         (fso "~S~%" (list index-length count
@@ -1159,22 +1211,18 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                           (append dts (lonely-dts))
                           (append flosets (lonely-flosets))))
         (close-port port)
-        (let ((tail (fs "TMP-W-INDEX TMP-W-S-TREE ~A ~A ~A TMP-W-NODES"
-                        (if (positive? labels-len)
-                            "TMP-W-LABELS"
-                            "")
-                        (if (pair? dts)
-                            "TMP-W-DTS"
-                            "")
-                        (if (pair? flosets)
-                            "TMP-W-FLOSETS"
-                            ""))))
-
-          (define (fsys s . args)
-            (zero? (system (apply fs s args))))
-
-          (and (fsys "cat ~A >> ~A" tail ixin)
-               (fsys "rm  ~A" tail)))))))
+        (blk 'finish ixin `(node-index
+                            s-tree
+                            ,@(if (positive? labels-len)
+                                  '(labels)
+                                  '())
+                            ,@(if (pair? dts)
+                                  '(dts)
+                                  '())
+                            ,@(if (pair? flosets)
+                                  '(flosets)
+                                  '())
+                            nodes))))))
 
 (define (main args)
   (exit (FE (cdr (command-line))
