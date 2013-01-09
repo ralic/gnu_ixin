@@ -1,5 +1,12 @@
 2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Add abstraction: ixcc!
+
+	* mkixin (ixcc!): New proc.
+	(do-it! dedup! zcoord!): Use ‘ixcc!’.
+
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Overhaul temporary-file manglement.
 
 	* mkixin: Import SRFI 13 ‘string-join’.

@@ -1014,6 +1014,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 (define (hang! ls . args)
   (append! ls args))
 
+(define (ixcc! nf family position)
+  (hang! (cadr nf)
+         (list 'ixcc                    ; cartesian coordinate
+               (fs "(~A ~A)"
+                   family
+                   position))))
+
 (define (inline-images! cur? dir)
 
   (define (expand filename ext)
@@ -1107,11 +1114,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (define (zcoord! zonk position . family)
           (and zonk (assq-remove! (cadr nf) zonk))
-          (hang! (cadr nf)
-                 (list 'ixcc            ; cartesian coordinate
-                       (fs "(~A ~A)"
-                           (simplified family)
-                           position))))
+          (ixcc! nf (simplified family) position))
 
         (define (coord! . coord)
           (apply zcoord! #f coord))
