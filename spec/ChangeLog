@@ -1,3 +1,10 @@
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Move implementation notes from README to spec doc.
+
+	* ixin.texi (mkixin, retrieve): Add
+	heading "implementation notes" and text.
+
 2013-01-08  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[spec] Merge ‘vr’ index into ‘cp’; add many index terms.

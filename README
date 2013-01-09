@@ -81,25 +81,6 @@ See end for copying conditions.
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 
-* implementation notes
-
-*** mkixin
-
-    The ‘(node ...)’ form is not identical to the input SXML;
-    [[file:c/mkixin::xnode!][xnode!]] removes the element by side-effect.
-
-    The upshot is to move name, next, prev and up elements (actually,
-    their decoded (and re-encoded, for the links) contents) into the
-    index.
-
-    Other elements and attributes are stripped, too.
-
-*** retrieve
-
-    The many "~Y" in the format strings (instead of simpler "~S") forces
-    control through ‘string-xrep’ ([[file:c/z-fixed-pp.scm]]).  Surprisingly,
-    this is necessary even for Guile 2.  Hmmm.
-
 * producing SXML w/o Guile
 
 *** findings

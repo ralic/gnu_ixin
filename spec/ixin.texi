@@ -1426,6 +1426,17 @@ transform that to IXIN proper, extracting the various associative arrays
 For each @var{filename}, assumed to be @file{@var{stem}.sxml},
 create @file{@var{stem}.ixin}.
 
+@heading implementation notes
+
+The @code{(node ...)} form is not identical to the input SXML;
+@code{xnode!} removes the element by side-effect.
+
+The upshot is to move name, next, prev and up elements (actually,
+their decoded (and re-encoded, for the links) contents) into the
+index.
+
+Other elements and attributes are stripped, too.
+
 
 @c ---------------------------------------------------------------------------
 @node          retrieve
@@ -1497,6 +1508,12 @@ displaying results to stdout.  Valid forms are:
 (dump-s-tree)     -- likewise
 (quit)            -- exit immediately
 @end example
+
+@heading implementation notes
+
+The many @samp{~Y} in the format strings (instead of simpler @samp{~S})
+forces control through @code{string-xrep} (in @file{c/z-fixed-pp.scm}).
+Surprisingly, this is necessary even for Guile 2.  Hmmm.
 
 
 @c ---------------------------------------------------------------------------
