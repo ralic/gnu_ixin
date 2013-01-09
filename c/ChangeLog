@@ -1,5 +1,20 @@
 2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify BLOBS-INDEX and BLOBS blocks.
+
+	* mkinix (block-mangler one out): New proc.
+	(block-mangler one): Expose ‘out’.
+	(blobs): New proc.
+	(inline-images!): Delete proc.
+	(do-it!): Use ‘blobs’, include BLOBS-INDEX-LEN in COUNTS; if there
+	are any, output BLOBS-INDEX before NODES and BLOBS proper, after.
+	* retrieve (blobs-index-size): New proc.
+	(in): Read BLOBS-INDEX if available; return it.
+	(out): Take arg ‘blobs’.
+	(out --dump): Display ‘blobs’ if any.
+
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Add abstraction: ixcc!
 
 	* mkixin (ixcc!): New proc.

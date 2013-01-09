@@ -75,7 +75,7 @@ See end for copying conditions.
     - image snarfing (* is current choice)
       - how? -- binary, *base64
       - when? -- never, optional, *always
-      - where? -- blobs + blobs-index, *inline
+      - where? -- inline, *blobs + blobs-index
     - resolve ‘???’ doubts
   - make spit.el use shr.el
   - fix a1-nf3-guile2

@@ -1,5 +1,18 @@
 2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify BLOBS-INDEX and BLOBS blocks.
+
+	* ixin.texi (Specification): Add "blobs index" and "blobs" to menu.
+	(counts): Add ‘BLOBS-INDEX-LEN’ to form; split form
+	into two lines; add ‘blobs-index-len’ to table.
+	(blobs index): New node/section.
+	(node data): Remove "image inlining" from menu.
+	(references): Add ‘blob’ to table of ‘ixcc’ families.
+	(image inlining): Delete node/subsection.
+	(blobs): New node/section.
+
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Move implementation notes from README to spec doc.
 
 	* ixin.texi (mkixin, retrieve): Add

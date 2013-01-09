@@ -61,6 +61,9 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 (define (flosets-list counts)
   (list-ref counts 5))
 
+(define (blobs-index-size counts)
+  (list-ref counts 6))
+
 (define (in filename)
   (let ((p (open-input-file filename))
         (vers #f)
@@ -72,6 +75,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (flosets #f)
         (dtsi #f)
         (s-tree #f)
+        (blobs #f)
         (base #f))
     (or (eq? 'ixin (read p))
         (error "bad magic:" filename))
@@ -141,6 +145,14 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
                (apply go fl))
              (set! flosets (reverse! acc))))
+       (or (zero? (blobs-index-size counts))
+           (let ((head (read p)))
+             (set! blobs '())
+             (let loop ((count (car head)))
+               (cond ((zero? count))
+                     (else (set! blobs (cons (read p) blobs))
+                           (loop (1- count)))))
+             (set! blobs (reverse! blobs))))
        ;; Adjust w/ ‘1+’ to include trailing newline.
        (set! base (1+ (ftell p))))
       (else
@@ -157,6 +169,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               labels
               dtsi
               flosets
+              blobs
               base
               p))))
 
@@ -192,7 +205,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
 
 (define (out command . args)
   ;; rv
-  (lambda (vers coding meta counts index s-tree labels dtsi flosets base port)
+  (lambda (vers coding meta counts index s-tree labels dtsi flosets blobs base port)
     (let* ((total (cadr counts))
            (alist (vector->list index))
            (plus (list->vector
@@ -236,6 +249,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (map cdr flosets)
             (lambda (details ents)
               (fso "floset: ~A~%~{~Y~}~%" details ents)))
+        (and blobs (fso "blobs:~%~{~Y~}~%" blobs))
         (fso "base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))

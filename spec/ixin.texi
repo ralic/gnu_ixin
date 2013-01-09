@@ -409,7 +409,9 @@ not very firm in the author's mind.
 * labels::               For external reference.
 * document-term sets::   Zero or more.
 * float sets::           Zero or more.
+* blobs index::          Images et al.
 * node data::            (Almost) SXML.
+* blobs::                Opaque octets.
 @end menu
 
 @macro vmore{x}
@@ -901,7 +903,8 @@ A list of zero or more symbols of the set: @code{contents},
 The list:
 
 @example
-(INDEX-LEN COUNT S-TREE-LEN LABELS-LEN DTS-INDEX FLOSETS-INDEX)
+(INDEX-LEN COUNT S-TREE-LEN LABELS-LEN
+ DTS-INDEX FLOSETS-INDEX BLOBS-INDEX-LEN)
 @end example
 
 @table @var
@@ -964,6 +967,9 @@ command for @var{type}.
 If @var{floset-len} is zero, then there must be at least one
 @var{nid}.  This is the case when there is a @code{listoffloats} but no
 entries for it.
+
+@vmore blobs-index-len
+The byte-length of the blobs-index block (@pxref{blobs index}).
 @end table
 
 
@@ -1184,6 +1190,73 @@ The identifier for the node where this float is found.
 
 
 @c ---------------------------------------------------------------------------
+@node    blobs index
+@section blobs index
+
+@vindex blobs-index
+If @var{blobs-index-len} (@pxref{counts}) is non-zero, the list:
+
+@example
+(COUNT)
+@end example
+
+@noindent
+followed by @var{count} entries, each of the form:
+
+@example
+(BLOB-LEN ENCODING TYPE FILENAME)
+@end example
+
+@table @var
+@vmore count
+A positive integer.
+
+@vmore blob-len
+The byte-length of the blob.
+
+@vmore encoding
+A symbol specfiying how the blob is stored on disk.
+
+@table @code
+@item base64
+@cindex @code{base64} blob encoding
+This is the base64 (TODO: XREF RFC3548) encoding, with internal and
+terminating newlines (all of which are counted in @var{blob-len}).
+@strong{NB}: This is @strong{not} a string.
+
+@item binary
+@cindex @code{binary} blob encoding
+This means no encoding whatsoever@footnote{@samp{mkixin} never writes
+@code{binary}.}.
+@doubtindex @code{binary} blob encoding, good idea?
+@* @qqq{} Hmm, maybe this is not a good idea.
+@end table
+
+@vmore type
+A MIME-style (TODO: XREF RFC2045) symbol of the form
+@var{major}/@var{minor}, where @var{major} is @code{image}.
+If the actual type is unknown, the minor is
+@code{unknown}@footnote{@samp{mkixin} produces only:
+
+@example
+image/png
+image/jpeg
+image/unknown
+@end example
+
+based on examining the filename extension.}.
+
+@vmore filename
+A string.
+@end table
+
+@doubtindex other blob @var{major} types
+@qqq{} How about allowing also @code{audio} for @var{major}?  Probably
+@code{video} would be the logical next step, but that's going a little
+too far, no?  We don't want IXIN to be a vector for malware.
+
+
+@c ---------------------------------------------------------------------------
 @node    node data
 @section node data
 
@@ -1202,7 +1275,6 @@ In other words, a @code{node} SXML sans the initial symbol
 
 @menu
 * references::              Avoiding duplication of forms.
-* image inlining::          Embedded image data.
 @end menu
 
 
@@ -1249,6 +1321,11 @@ Found in element @code{indexterm}.
 @cindex @code{floset} @var{type}, @code{ixcc} family
 Refers to the floset of type @var{type} (@pxref{float sets}).
 Found in element @code{float}.
+
+@item @code{blob}
+@cindex @code{blob}, @code{ixcc} family
+Refers to the blob index (@pxref{blobs index}).
+Found in element @code{image}.
 @end table
 
 @vmore position
@@ -1282,62 +1359,12 @@ all the exceptions are fully documented, we should be OK.
 
 
 @c ---------------------------------------------------------------------------
-@node       image inlining
-@subsection image inlining
+@node    blobs
+@section blobs
 
-@cindex image inlining
-@cindex inlining, images
-Each @code{image} SXML should inline its image data, base64-encoded as a
-single string, if possible.  The attributes should include:
-
-@table @code
-@item type
-@cindex @code{type}, SXML attribute
-A MIME-style string of the form @var{major}/@var{minor} (TODO: REF),
-where @var{major} is always @samp{image}.  If the actual type is
-unknown, the minor is @code{unknown}@footnote{@samp{mkixin} produces
-only:
-
-@example
-image/png
-image/jpeg
-image/unknown
-@end example
-
-based on examining the filename extension.}.
-
-@item encoding
-@cindex @code{encoding}, SXML attribute
-At present, the string @samp{base64}.
-@end table
-
-@noindent
-@doubtindex image inlining, when?
-@doubtindex inlining, images, when?
-If the image data cannot inlined (@qqq{} maybe better to require
-inlining unconditionally?), these attributes may be omitted.  For
-example:
-
-@example
-@group
-(image (@@ ...
-          (type "image/png")
-          (encoding "base64"))
-       (alttext (@@))
-       "iVBORw0KGgoAAAAN@dots{}
-@dots{}
-@dots{}OAAAAAElFTkSuQmCC")
-@end group
-@end example
-
-@doubtindex image snarfing, where?
-@doubtindex snarfing, images, where?
-@qqq{} Another idea is to gather all image (and maybe in the future,
-audio) data into its own top-level @code{blobs} (with corresponding
-@code{blobs-index} in @code{counts}).  We can even keep @code{blobs}
-purely binary if we append it after the node data, but that might give
-some renderers indigestion.  In any case, the advantage of this lifting
-over inlining would be symbolic @code{type} and @code{encoding}.
+@vindex blobs
+If @var{blobs-index-len} (@pxref{counts}) is non-zero, a series of
+contiguous bytes described in @var{blobs-index} (@pxref{blobs index}).
 
 
 @c ---------------------------------------------------------------------------

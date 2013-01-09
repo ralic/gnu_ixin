@@ -247,6 +247,9 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (define (act proc)
           (proc pp))
 
+        (define (out proc)
+          (proc port))
+
         (define (cur)
           (force-output)
           (ftell port))
@@ -259,6 +262,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (define (dispatch command . args)
           (case command
             ((act) (act (car args)))
+            ((out) (out (car args)))
             ((cur) (cur))
             ((bye) (bye))))
 
@@ -1021,7 +1025,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    family
                    position))))
 
-(define (inline-images! cur? dir)
+(define (blobs blk cur? dir nodes)
 
   (define (expand filename ext)
 
@@ -1036,6 +1040,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (try ".png")
         (try ".jpg")))
 
+  (define (find-filename/cur nf)
+    (expand (car (kids (assq 'imagefile (cdr nf))))
+            ""))
+
+  (define (find-filename/old nf)
+    (expand (attribute-ref nf 'name)
+            (attribute-ref nf 'extension)))
+
   (define (guess-mime-type filename)
     (fs "image/~A"
         (cond ((string-suffix-ci? ".png" filename) 'png)
@@ -1043,27 +1055,45 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
               ((string-suffix-ci? ".jpeg" filename) 'jpeg)
               (else 'unknown))))
 
-  (define (inline! nf)
-    (and=> (if cur?
-               (expand (car (kids (assq 'imagefile (cdr nf))))
-                       "")
-               (expand (attribute-ref nf 'name)
-                       (attribute-ref nf 'extension)))
-           (lambda (filename)
-             (hang! (cadr nf)           ; DWR! attributes
-                    `(type ,(guess-mime-type filename))
-                    '(encoding "base64"))
-             (hang! (kids nf)           ; DWR! children
-                    (string-drop-right
-                     (string<-shell-command "base64 ~A" filename)
-                     ;; omit final newline
-                     1)))))
+  (let* ((image? (element? 'image))
+         (find-filename (if cur?
+                            find-filename/cur
+                            find-filename/old))
+         (all '())
+         (blobs #f))
 
-  ;; rv
-  (walker (let ((image? (element? 'image)))
-            (lambda (nf)
-              (and (image? nf)
-                   (inline! nf))))))
+    (define serial
+      (let ((n -1))
+        (lambda ()
+          (set! n (1+ n))
+          n)))
+
+    (define (write! filename)
+      (or blobs (set! blobs (blk 'new 'blobs)))
+      (blobs 'out (lambda (port)
+                    (display (string<-shell-command
+                              "base64 ~A" filename)
+                             port)))
+      (values 'base64                   ; todo
+              (blobs 'cur)))
+
+    (define (scan nf)
+      (and-let* (((image? nf))
+                 (filename (find-filename nf))
+                 (type (string->symbol (guess-mime-type filename))))
+        (ixcc! nf 'blob (serial))
+        (let-values (((encoding size) (write! filename)))
+          (set! all (cons (list size encoding type (basename filename))
+                          all)))))
+
+    (FE nodes (walker scan))
+    (if (null? all)
+        0
+        (let ((bidx (blk 'new 'blob-index)))
+          (bidx 'act (lambda (pp)
+                       (pp (list (length all)))
+                       (FE (reverse! all) pp)))
+          (bidx 'bye)))))
 
 (define (two-phase-accumulator)
   (let ((acc '()))
@@ -1083,8 +1113,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (lambda ()
         (blk 'new nick)))
 
-    (FE nodes (inline-images! cur? (dirname filename)))
     (let* ((coding 'utf-8)              ; TODO
+           (blobs-len (blobs blk cur? (dirname filename) nodes))
            (nblk ((mkblk 'nodes)))
            (labels-len (labels (mkblk 'labels) names nodes))
            (index (make-vector count #f))
@@ -1212,7 +1242,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (fso "~S~%" (list index-length count
                           s-tree-length labels-len
                           (append dts (lonely-dts))
-                          (append flosets (lonely-flosets))))
+                          (append flosets (lonely-flosets))
+                          blobs-len))
         (close-port port)
         (blk 'finish ixin `(node-index
                             s-tree
@@ -1225,7 +1256,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                             ,@(if (pair? flosets)
                                   '(flosets)
                                   '())
-                            nodes))))))
+                            ,@(if (positive? blobs-len)
+                                  '(blob-index)
+                                  '())
+                            nodes
+                            ,@(if (positive? blobs-len)
+                                  '(blobs)
+                                  '())
+                            ))))))
 
 (define (main args)
   (exit (FE (cdr (command-line))
