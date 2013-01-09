@@ -1274,8 +1274,32 @@ In other words, a @code{node} SXML sans the initial symbol
 @code{node}.  The order is the same as in the node index.
 
 @menu
+* node base::               Where node data starts.
 * references::              Avoiding duplication of forms.
 @end menu
+
+
+@c ---------------------------------------------------------------------------
+@node       node base
+@subsection node base
+
+@cindex node base file position
+@cindex file position, node base
+The @dfn{node base} is the file position where the block representing
+node 0 begins.  It is calculated as follows:
+
+@display
+file position after reading @var{counts} (including trailing newline)
++ @var{index-len}
++ @var{s-tree-len}
++ @var{labels-len}
++ sum of all @var{dts-len} in @var{dts-index}
++ sum of all @var{floset-len} in @var{flosets-index}
++ @var{blobs-index-len}
+@end display
+
+@noindent
+All of these values are in @code{counts} (@pxref{counts}).
 
 
 @c ---------------------------------------------------------------------------
@@ -1365,6 +1389,20 @@ all the exceptions are fully documented, we should be OK.
 @vindex blobs
 If @var{blobs-index-len} (@pxref{counts}) is non-zero, a series of
 contiguous bytes described in @var{blobs-index} (@pxref{blobs index}).
+
+@cindex blob base file position
+@cindex file position, blob base
+The @dfn{blob base} is the file position where the first blob begins.
+It is calculated as follows:
+
+@display
+node base (@pxref{node base})
++ sum of all @var{length} in @var{node-index} (@pxref{node index})
+@end display
+
+@doubtindex precompute ``nodes len''?
+@qqq{} Hmmm, the second term could be precomputed and added to
+@var{counts} when there are blobs in the file (it has no use sans blobs).
 
 
 @c ---------------------------------------------------------------------------

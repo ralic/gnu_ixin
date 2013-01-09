@@ -49,22 +49,6 @@ See end for copying conditions.
   environment variables MAKEINFO and TEXI2PDF and invoke make
   with the ‘--environment-overrides’ (short form ‘-e’) option.
 
-* possible access patterns
-
-  The retrieve program illustrates one access pattern: read up
-  and through the sectioning tree, and then use COUNTS and INDEX
-  information to dig out node data on demand.
-
-  Another, more incremental, approach is to read up through COUNTS,
-  and then subsequently access index, dts and node data on demand.
-  This is supported by design; the file position for the start of
-  the node data is the sum of (always including trailing newline):
-  - file position after reading COUNTS
-  - INDEX-LENGTH
-  - S-TREE-LENGTH
-  - DTS-LENGTH...
-  - FLOSET-LENGTH...
-
 * What needs to be done, still?
 
   - w/ upstream (Texinfo) hackers:

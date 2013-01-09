@@ -1,5 +1,13 @@
 2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Move node base from README to spec doc; add blob base, too.
+
+	* ixin.texi (node data): Add "node base" to menu.
+	(node base): New node/subsection.
+	(blobs): Describe how to calcuate "blob base".
+
+2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify BLOBS-INDEX and BLOBS blocks.
 
 	* ixin.texi (Specification): Add "blobs index" and "blobs" to menu.
