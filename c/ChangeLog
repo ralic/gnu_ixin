@@ -1,5 +1,13 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	retrieve: Also display blobs for ‘dump’, ‘dump/abbrev’.
+
+	* retrieve (out): Compute blobs base.
+	(out blob-data): New proc.
+	(out --dump): Also display blobs.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Fix bug: Include trailing newline in NODE-INDEX entry LENGTH.
 
 	This is a long-standing OBOE brought to light by 2013-01-09,

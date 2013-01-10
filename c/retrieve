@@ -214,7 +214,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                            (cons (+ (car so-far) n)
                                  so-far))
                          (list base)
-                         (map cadr alist))))))
+                         (map cadr alist)))))
+           (blobs-base (vector-ref plus total)))
 
       (define (by-name name)
         (assoc name alist))
@@ -226,6 +227,17 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
         (let ((s (make-string len #\z)))
           (read-string!/partial/never-fewer
            s port (vector-ref plus id) len 0)
+          s))
+
+      (define (blob-data id len)
+        (let ((s (make-string len #\z))
+              (fpos (let loop ((n 0) (id id) (ls blobs))
+                      (if (zero? id)
+                          (+ blobs-base n)
+                          (loop (+ n (caar ls))
+                                (1- id)
+                                (cdr ls))))))
+          (read-string!/partial/never-fewer s port fpos len 0)
           s))
 
       (define (--dump abbrev)
@@ -248,8 +260,8 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
             (map cdr flosets)
             (lambda (details ents)
               (fso "floset: ~A~%~{~Y~}~%" details ents)))
-        (and blobs (fso "blobs:~%~{~Y~}~%" blobs))
-        (fso "base: ~A~%" base)
+        (and blobs (fso "blobs-index:~%~{~Y~}~%" blobs))
+        (fso "nodes-base: ~A~%" base)
         (do ((i 0 (1+ i)))
             ((= total i))
           (let* ((len (cadr (by-id i)))
@@ -270,7 +282,21 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                      ""))
             (and short?
                  (fso " [+ ~A]" (- len get)))
-            (newline))))
+            (newline)))
+        (and-let* ((blobs))
+          (fso "blobs-base: ~A~%" blobs-base)
+          (FE (iota (length blobs)) blobs
+              (lambda (i bix)
+                (let* ((len (car bix))
+                       (get (if abbrev
+                                (min abbrev len)
+                                len))
+                       (short? (< get len))
+                       (data (blob-data i get)))
+                  (fso "~A:~%~A" i data)
+                  (and short?
+                       (fso " [+ ~A]" (- len get))))
+                (newline)))))
 
       (define (dump)
         (--dump #f))
