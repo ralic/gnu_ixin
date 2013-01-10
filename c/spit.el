@@ -318,8 +318,7 @@ The title replaces the filename on the first line."
   "Do ‘(dump-index)’, prettify, and cache some metainfo."
   (spit--do nil 'dump-index)
   (save-excursion
-    (let ((nid<-name (make-hash-table :test 'equal))
-          (name<-nid (unless (spit--cache 'name<-nid)
+    (let ((node-name (unless (spit--cache 'node-name)
                        (make-hash-table :test 'eq)))
           nid)
       (while (progn (skip-syntax-forward "-")
@@ -334,12 +333,10 @@ The title replaces the filename on the first line."
                                (list n p u)
                                '(?n ?p ?u)))
                   (spit--vp name))
-          (puthash name nid nid<-name)
-          (when name<-nid
-            (puthash nid (spit--vp name) name<-nid))))
-      (spit--cache 'nid<-name nid<-name)
-      (when name<-nid
-        (spit--cache 'name<-nid name<-nid))
+          (when node-name
+            (puthash nid (spit--vp name) node-name))))
+      (when node-name
+        (spit--cache 'node-name node-name))
       (spit--cache))))
 
 (defun spit-%show-labels ()
@@ -357,7 +354,7 @@ The title replaces the filename on the first line."
   "Do ‘(dump-dts)’ and prettify.
 Report unhandled elements."
   (spit--do nil 'dump-dts)
-  (let ((cache (spit--cache 'name<-nid)))
+  (let ((cache (spit--cache 'node-name)))
     (save-excursion
       (while (< (point) (point-max))
         (re-search-forward "\\(.+\\): ")
@@ -415,7 +412,7 @@ Report unhandled elements."
   "Do ‘(dump-s-tree)’, prettify and cache some metainfo.
 Report unhandled elements."
   (spit--do nil 'dump-s-tree)
-  (let ((name<-nid (or (spit--cache 'name<-nid)
+  (let ((node-name (or (spit--cache 'node-name)
                        (make-hash-table :test 'eq)))
         (p (point))
         fmt)
@@ -433,12 +430,12 @@ Report unhandled elements."
               (pretty (spit--propertize-kids
                        rs '(:inherit variable-pitch :foreground "red"))))
           (delete-region (line-beginning-position) (point))
-          (puthash nid pretty name<-nid)
+          (puthash nid pretty node-name)
           (insert (format fmt nid what prefix) pretty)))
       (delete-region (point) (line-end-position)))
     (spit--check-unhandled)
     (goto-char p)
-    (spit--cache 'name<-nid name<-nid)
+    (spit--cache 'node-name node-name)
     (save-excursion
       (spit--cache))))
 
