@@ -1,5 +1,14 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	retrieve: Fix bug: Handle EOF to repl as ‘(quit)’.
+
+	Regression introduced 2013-01-02,
+	"Make "retrieve repl" read forms, not lines".
+
+	* retrieve (out repl loop): Use ‘and-let*’; don't proceed if EOF.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Add "retrieve repl" command: blob
 
 	* retrieve (out repl blob): New proc, shunted.

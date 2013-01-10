@@ -470,9 +470,10 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
               (display (blob-data n (car ent)))))
 
           (define (loop)
-            (let* ((form (read (current-input-port)))
-                   (cmd (car form))
-                   (args (cdr form)))
+            (and-let* ((form (read (current-input-port)))
+                       ((not (eof-object? form)))
+                       (cmd (car form))
+                       (args (cdr form)))
               (apply (shunt (quit
                              where
                              nav
