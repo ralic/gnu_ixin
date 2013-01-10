@@ -378,11 +378,6 @@ The title replaces the filename on the first line."
   "Do ‘(show-labels)’."
   (spit--do nil 'show-labels))
 
-(defun spit-%list-dts ()
-  (interactive)
-  "Do ‘(list-dts)’."
-  (spit--do nil 'list-dts))
-
 (defun spit-%dump-dts ()
   (interactive)
   "Do ‘(dump-dts)’ and prettify.
@@ -539,7 +534,6 @@ See also variable `spit-retrieve'."
                        "\M-m"    spit-%dump-meta
                        "\M-i"    spit-%dump-index
                        "l"       spit-%show-labels
-                       "\C-\M-d" spit-%list-dts
                        "\M-d"    spit-%dump-dts
                        "\M-s"    spit-%dump-s-tree)))
           (suppress-keymap m)
