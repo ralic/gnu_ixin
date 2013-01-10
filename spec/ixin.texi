@@ -433,7 +433,15 @@ not very firm in the author's mind.
 @cindex third-normal form, SXML
 Overall, the format is a series of text blocks.  All SXML trees (none of
 which appear at the top-level, by the way) are @dfn{third-normal form}:
-with abutting character-data sequences coalesced and attributes explicit
+with abutting character-data sequences@footnote{Character entities
+should conform to the W3C policy of using XML ``Normal Form C'',
+as per @uref{http://www.w3.org/TR/xml-entity-names/}.
+For example, this text: ``một Чёрт μ!̸'' should be OK.
+(The @samp{!̸} is @sc{exclamation mark} (U+21) combined/composed with
+@sc{combining long solidus overlay} (U+0338).)
+If you are reading this in a PDF file, you might very well see
+only ``mt !'' --- hopefully that can be fixed in Texinfo sooner or later.}
+coalesced and attributes explicit
 in the tree's second position (i.e., @sc{cadr}).
 @cindex DTD for SXML
 Valid SXML elements and attributes,

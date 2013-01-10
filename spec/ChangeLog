@@ -1,3 +1,13 @@
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spec] Mention "Normal Form C"; add stuff from prob.xml.
+
+	This is so we can eventually zonk the hand-rolled prob.xml
+	in a future release, giving the distribution the property of
+	"all XML generated via makeinfo".
+
+	* ixin.texi (overall): ...here, in a footnote.
+
 2013-01-09  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Move node base from README to spec doc; add blob base, too.
