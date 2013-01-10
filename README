@@ -8,6 +8,17 @@ See end for copying conditions.
 
   All code is under GPLv3+.  All (.xml) docs are under GFDL.
 
+  [[file:spec/ixin.texi]] is The IXIN Chronicles, a document that
+  defines the file format and provides related info.  There are
+  various output formats, including .info, .pdf and .ixin.
+
+  [[file:c/]] contains some simple command-line utilities to write and
+  read the file format, and a proof-of-concept rendering program.
+
+  [[file:d/]] contains the some pre-built .sxml and .ixin files.
+  [[file:d/GNUmakefile]] supports "make demo" and "make demo-zow",
+  among other commands.
+
 * Who is it for?
 
   The intended audience is Texinfo hackers and others who wish to
@@ -20,20 +31,6 @@ See end for copying conditions.
   See also:
   http://mail.gnu.org/archive/html/gnu-system-discuss/
   http://mail.gnu.org/archive/html/help-texinfo/
-
-* What does it do?
-
-  It defines a documentation file format and provides two simple
-  tools to write and read, respectively, files in that format.
-  The file format definition is described in a document under [[file:spec/][spec/]].
-
-* What does it NOT do?
-
-  This package does not include a program to view documents in the
-  new format.  You can do "make demo" to see some of the potential,
-  though.
-
-  See also [[file:c/spit.el]] (if you use Emacs).
 
 * dependencies
 
@@ -48,6 +45,9 @@ See end for copying conditions.
   (for example, from the Texinfo pretest releases) you can set
   environment variables MAKEINFO and TEXI2PDF and invoke make
   with the ‘--environment-overrides’ (short form ‘-e’) option.
+
+  Lastly, the proof-of-concept rendering program requires a
+  relatively modern version of Emacs.
 
 * What needs to be done, still?
 
