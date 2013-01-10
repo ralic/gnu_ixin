@@ -211,8 +211,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
            (plus (list->vector
                   (reverse!
                    (fold (lambda (n so-far)
-                           ;; Adjust by 1 for trailing newline.
-                           (cons (+ (car so-far) 1 n)
+                           (cons (+ (car so-far) n)
                                  so-far))
                          (list base)
                          (map cadr alist))))))

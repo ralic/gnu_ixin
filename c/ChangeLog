@@ -1,5 +1,15 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Fix bug: Include trailing newline in NODE-INDEX entry LENGTH.
+
+	This is a long-standing OBOE brought to light by 2013-01-09,
+	"Move node base from README to spec doc; add blob base, too".
+
+	* mkixin (do-it! grok! blk!): Don't subtract one from rv.
+	* retrieve (out): Don't add one for each entry for computing ‘plus’.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Make ‘s’ decorate ‘ixcc’ forms.
 
 	* spit.el: Require ‘button’.

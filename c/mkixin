@@ -1195,8 +1195,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (let ((bef (sz)))
             (nblk 'act (lambda (pp)
                          (pp (cdr node))))
-            ;; Subtract 1 to ignore the trailing newline.
-            (- (sz) bef 1)))
+            (- (sz) bef)))
 
         ((walker dedup!) node)
         (let ((len (blk!))
