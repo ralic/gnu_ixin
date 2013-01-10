@@ -464,6 +464,11 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                            (car which)
                            cur)))
 
+          (define (blob n)
+            (let ((ent (list-ref blobs n)))
+              (fso "~Y" ent)
+              (display (blob-data n (car ent)))))
+
           (define (loop)
             (let* ((form (read (current-input-port)))
                    (cmd (car form))
@@ -479,6 +484,7 @@ exec ${GUILE-guile} -e '(retrieve)' -s $0 "$@" # -*- scheme -*-
                              goto
                              show
                              raw
+                             blob
                              dump-meta
                              dump-index
                              show-labels

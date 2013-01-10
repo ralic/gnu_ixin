@@ -1,5 +1,11 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add "retrieve repl" command: blob
+
+	* ixin.texi (receive): Add ‘(blob N)’ to table.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Mention "Normal Form C"; add stuff from prob.xml.
 
 	This is so we can eventually zonk the hand-rolled prob.xml

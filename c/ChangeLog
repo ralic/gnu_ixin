@@ -1,5 +1,11 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Add "retrieve repl" command: blob
+
+	* retrieve (out repl blob): New proc, shunted.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Remove uninteresting command ‘spit-%list-dts’.
 
 	* spit.el (spit-%list-dts): Delete command.

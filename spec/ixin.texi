@@ -1574,6 +1574,7 @@ displaying results to stdout.  Valid forms are:
 (goto WHICH)      -- jump directly to node WHICH
 (show [WHICH])    -- do ‘show-node’ for WHICH or current node
 (raw [WHICH])     -- do ‘dump-node’ for WHICH or current node
+(blob N)          -- display blob-index entry N, newline, blob data
 (dump-meta)       -- as from command-line (above)
 (dump-index)      -- likewise
 (list-dts)        -- likewise
