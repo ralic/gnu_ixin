@@ -367,6 +367,8 @@ Report unhandled elements."
                (invert (case default-font
                          ((code) '(:inherit variable-pitch :foreground "green"))
                          ((r) '(:foreground "yellow"))))
+               (ht (make-hash-table :test 'eq))
+               (pos -1)
                col)
           (delete-region (line-beginning-position) (point))
           (insert (spit--vp "DTS: %s / entries: %d / " name (car details))
@@ -388,6 +390,7 @@ Report unhandled elements."
                                                     (list term)
                                                   term)
                                                 face))
+              (puthash (incf pos) term ht)
               (if cache
                   (flet ((pretty (nid) (gethash nid cache)))
                     (insert " " term)
@@ -403,9 +406,11 @@ Report unhandled elements."
                 (insert " " term
                         " -- " (mapconcat 'number-to-string
                                           (cons nid more)
-                                          ", "))))))
+                                          ", ")))))
+          (spit--cache (intern (concat "dts:" name)) ht))
         (newline))
-      (spit--check-unhandled))))
+      (spit--check-unhandled)
+      (spit--cache))))
 
 (defun spit-%dump-s-tree ()
   (interactive)

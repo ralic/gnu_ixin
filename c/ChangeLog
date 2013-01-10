@@ -1,5 +1,12 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Cache DTS position/term pairs.
+
+	* spit.el (spit-%dump-dts): For each DTS NAME,
+	cache position/term pairs in ‘spit--cache’ as dts:NAME.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit int] Don't cache ‘nid<-name’; rename other to simply ‘node-name’.
 
 	* spit.el: Do ‘s/name<-nid/node-name/g’.
