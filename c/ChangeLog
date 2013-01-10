@@ -1,5 +1,17 @@
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Make ‘s’ decorate ‘ixcc’ forms.
+
+	* spit.el: Require ‘button’.
+	(spit--ixcc-explanation): New func.
+	(spit-%show): After display, search for ‘(ixcc ...)’ forms,
+	and make them buttons, replacing the double-quoted coordinate
+	with a cached rendering, if available.
+	(spit-mode-map): Bind ‘tab’ to ‘forward-button’
+	and ‘backtab’ to ‘backward-button’.
+
+2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Cache DTS position/term pairs.
 
 	* spit.el (spit-%dump-dts): For each DTS NAME,

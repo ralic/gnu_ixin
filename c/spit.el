@@ -31,6 +31,7 @@
 
 (require 'cl)
 (require 'regexp-opt)
+(require 'button)
 
 ;;;---------------------------------------------------------------------------
 ;;; variables for the uninquisitive programmer
@@ -250,10 +251,43 @@ With args (noninteractively), like `message' for the spit area."
   "Do ‘(up)’."
   (spit--do nil 'up))
 
+(defun spit--ixcc-explanation (fam pos)
+  (let (ht)
+    (case fam
+      ((node) (when (setq ht (spit--cache 'node-name))
+                (gethash pos ht)))
+      (t (when (consp fam)
+           (case (car fam)
+             ((dts) (when (setq ht (spit--cache
+                                    (intern (format "dts:%s" (cadr fam)))))
+                      (gethash pos ht)))
+             (t nil)))))))
+
 (defun spit-%show ()
   (interactive)
   "Do ‘(show)’."
   (spit--do nil 'show)
+  (save-excursion
+    (while (re-search-forward "\\(ixcc\\) \"\\((\\(.+\\) \\([0-9]+\\))\\)\""
+                              nil t)
+      (let* ((fam (read (match-string 3)))
+             (pos (read (match-string 4)))
+             (ixcc (cons fam pos))
+             (s (spit--ixcc-explanation fam pos)))
+        (cond ((stringp s)
+               (replace-match s nil t nil 2)
+               (make-text-button (match-beginning 1)
+                                 (match-end 1)
+                                 'ixcc ixcc
+                                 'help-echo (format "%S" ixcc)))
+              (t
+               (make-text-button (match-beginning 1) (match-end 1)
+                                 'ixcc ixcc
+                                 'help-echo nil)
+               (add-text-properties (match-beginning 3) (match-end 3)
+                                    '(face (:foreground "red")))
+               (add-text-properties (match-beginning 4) (match-end 4)
+                                    '(face (:foreground "yellow"))))))))
   (spit-spit-spit "hey ttn, why not use shr.el? (hint hint)"))
 
 (defun spit-%dump-meta ()
@@ -490,6 +524,8 @@ See also variable `spit-retrieve'."
         (let ((m (make-sparse-keymap))
               (plist '(" "           scroll-up-command
                        [(backspace)] scroll-down-command
+                       [(tab)]       forward-button
+                       [(backtab)]    backward-button
                        "\C-l"    spit-spit-spit
                        "\C-q"    spit-%quit
                        "w"       spit-%where
