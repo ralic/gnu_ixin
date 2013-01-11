@@ -73,6 +73,34 @@
     (delete-char -2)
     (setq spit--got t)))
 
+(defun spit--get-blob (n)
+  (let ((orig (point))
+        (beg (goto-char (point-max)))
+        (proc (get-buffer-process (current-buffer))))
+    (setq spit--got nil)
+    (process-send-string proc (format "(blob %d)\n" n))
+    (while (and (eq 'run (process-status proc))
+                (not spit--got))
+      (accept-process-output proc))
+    (goto-char beg)
+    (let ((ent (cdr (spit--gobble)))
+          (blob (progn (delete-char 1)  ; newline
+                       (delete-and-extract-region (point) (point-max)))))
+      (goto-char orig)
+      (with-temp-buffer
+        (set-buffer-multibyte nil)
+        (insert blob)
+        (case (pop ent)
+          ((base64) (shell-command-on-region
+                     (point-min) (point-max)
+                     "base64 -d" (current-buffer) t)))
+        (destructuring-bind (major minor)
+            (mapcar 'intern (split-string (symbol-name (pop ent)) "/"))
+          (case major
+            ((image) (create-image (buffer-string) minor t
+                                   :originally (pop ent)))
+            (t nil)))))))
+
 (defun spit--do (disposition command &rest args)
   (goto-char (point-min))
   (forward-line 2)
@@ -256,6 +284,11 @@ With args (noninteractively), like `message' for the spit area."
     (case fam
       ((node) (when (setq ht (spit--cache 'node-name))
                 (gethash pos ht)))
+      ((blob) (let ((blob (spit--get-blob pos)))
+                (case (when (consp blob)
+                        (car blob))
+                  ((image) (propertize " " 'display blob))
+                  (t nil))))
       (t (when (consp fam)
            (case (car fam)
              ((dts) (when (setq ht (spit--cache
@@ -273,7 +306,7 @@ With args (noninteractively), like `message' for the spit area."
       (let* ((fam (read (match-string 3)))
              (pos (read (match-string 4)))
              (ixcc (cons fam pos))
-             (s (spit--ixcc-explanation fam pos)))
+             (s (save-match-data (spit--ixcc-explanation fam pos))))
         (cond ((stringp s)
                (replace-match s nil t nil 2)
                (make-text-button (match-beginning 1)

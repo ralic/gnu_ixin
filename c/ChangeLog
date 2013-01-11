@@ -1,3 +1,11 @@
+2013-01-11  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spit] Display ‘image’ blobs inline.
+
+	* spit.el (spit--get-blob): New func.
+	(spit--ixcc-explanation): Handle family ‘blob’.
+	(spit-%show): Save match data around call to ‘spit--ixcc-explanation’.
+
 2013-01-10  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	retrieve: Fix bug: Handle EOF to repl as ‘(quit)’.
