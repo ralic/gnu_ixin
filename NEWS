@@ -2,6 +2,138 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.7 | 2013-01-11
+
+  - bugfix: a1-nf3-mixp now respects attribute ‘xml:space’
+
+	That is, when this attribute has value "preserve", a1-nf3-mixp
+	no longer touches the whitespace in an element's immediate
+	children.
+
+  - bugfix: NODE-INDEX entries' LENGTH includes trailing newline
+
+	This brings the utils in line w/ the specification, which DOES
+	count the trailing newline.  Previously, mkixin ignored it and
+	retrieve added it back in.
+
+  - bugfix: retrieve repl takes EOF as ‘(quit)’
+
+	Regression introduced w/ IXIN 1.6 (2013-01-03); used to work
+	fine w/ IXIN 1.5 (2012-12-30).  Blech, progress...
+
+  - META ... DESCRIPTION can be a renderable sequence
+
+	This used to be specified as a single-line string, which is too
+	restrictive.  See d/spec.ixin, for example.
+
+  - images no longer inline; new blocks BLOBS-INDEX, BLOBS
+
+	Placing the images inline is counter to the goal of supporting
+	incremental access.  Oops, sorry about that.
+
+	Another advantage (arguably) w/ blobs is that it is easier to
+	expand the set of allowed (MIME) types in the future.  At the
+	moment, only image/* is specified, but it's not difficult to
+	imagine audio/* also.  On the other hand, probably video/* is
+	out of the question.  Feedback in this area most welcome.
+
+  - new "retrieve repl" commands: backward, forward, blob
+
+	The first two change the "current node" numerically, ignoring
+	the ‘next’, and ‘prev’ pointers.
+
+	The latter displays BLOB-INDEX entry and BLOB-DATA for the
+	specified ID.
+
+  - "retrieve dump" displays blobs, too
+
+	The ‘dump’ and ‘dump/abbrev’ commands now also display blob
+	index and blob data, analogously to the node data.
+
+  - changes to spit.el
+
+    - new commands: ‘[’, ‘]’
+
+	These are ‘spit-%backward’ and ‘spit-%forward’, respectively,
+	which in turn run the ‘backward’ and ‘forward’ repl commands.
+
+    - prettier node names after ‘M-s’
+
+	Node names are cached by both ‘M-i’ and ‘M-s’, the latter more
+	fully and w/ precedence.  To see this in action, do:
+
+	 M-x spit RET d/coreutils.ixin RET
+
+	then:
+
+	 M-d    ; node identifiers (not pretty)
+	 M-i    ; names w/ ‘variable-pitch’ face cached
+	 M-d    ; pretty
+	 M-s    ; names w/ fully-propertized face cached
+	 M-d    ; even more pretty
+	 M-i    ; no cache update
+	 M-d    ; still OK
+
+	On a slow computer (like the author's), try d/rcs.ixin instead.
+
+	Note that this caching conflates node names with sectioning tree
+	names, which loses if these do not correspond "well enough", or
+	if there are multiple sectioning elements "in" a node.  The
+	latter causes Texinfo 4.13.93 to issue a warning; a rigorous
+	renderer should do likewise, or compensate accordingly.
+
+    - ‘M-m’ output prettier
+
+	The INVITATIONS are now displayed w/ pretty face, etc.  This is
+	quite dramatic for d/coreutils.ixin, for example.
+
+    - ‘s’ decorates ‘(ixcc ...)’
+
+	The ‘(ixcc ...)’ forms are displayed as buttons (that have no
+	action) with the coordinate replaced with a cached rendering
+	(from ‘M-d’, ‘M-i’ or ‘M-s’), if available.  For example:
+
+	 (ixcc "(node 0)")
+
+	will be replaced with
+
+	 (ixcc "Top")
+
+	where the "ixcc" part is a button.  There is at this time
+	support for families ‘node’, ‘blob’ (see below) and ‘(dts NAME)’
+	only.  When there is no cached rendering available, i.e., for
+	family ‘(floatset TYPE)’, the coordinate is anyway decorated
+	with the family in red, the position yellow.
+
+	Relatedly, typing ‘tab’ or ‘backtab’ now runs command
+	‘forward-button’ or ‘backward-button’, respectively.
+
+    - ‘C-M-d’ (aka ‘spit-%list-dts’) deleted
+
+	The output for this command is largely redundant w/ that of
+	‘M-d’ (aka ‘spit-%dump-dts’).
+
+    - image blobs displayed inline
+
+	E.g., spec/ixin.ixin node 1 (Introduction) shows the logo.
+
+  - spec document renamed: The IXIN Chronicles
+
+	Its scope is now expanded beyond the spec proper to include
+	other stuff (i.e., opportunities to exercise the utils), such as
+	invocation (usage) and implementation notes for the utilities,
+	interesting character sequences from d/prob.xml, how to compute
+	the node base and blob base, etc.
+
+	Relatedly, there are now many more terms in the indices.
+
+  - mkixin uses temporary dir for temporary files
+
+	This means you can use "make -j" in d/, now.  Previously, the
+	temporary filenames were hardcoded, confusing peer processes,
+	and resulting in corrupted output.
+
+
 - 1.6 | 2013-01-03
 
   - bugfix: detect ‘code’ DTS entries again

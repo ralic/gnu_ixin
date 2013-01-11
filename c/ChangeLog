@@ -1,5 +1,9 @@
 2013-01-11  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Release: 1.7
+
+2013-01-11  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Display ‘image’ blobs inline.
 
 	* spit.el (spit--get-blob): New func.
