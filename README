@@ -38,7 +38,8 @@ See end for copying conditions.
   write tool is not necessary unless you modify the source .xml, in
   which case you will need to install Mixp (http://www.nongnu.org/mixp/)
   (Guile 1.8), or fix a1-nf3-guile2 (Guile 2.x), to proceed.  Of course,
-  you need to have one of those Guile versions installed, too.
+  you need to have one of those Guile versions installed, too.  Writing
+  also uses utility base64 to encode image data.
 
   You may also need the programs makeinfo and texi2pdf if you
   plan to rebuild the spec document.  To use alternate versions
@@ -47,7 +48,7 @@ See end for copying conditions.
   with the ‘--environment-overrides’ (short form ‘-e’) option.
 
   Lastly, the proof-of-concept rendering program requires a
-  relatively modern version of Emacs.
+  relatively modern version of Emacs, as well as utility base64.
 
 * What needs to be done, still?
 
