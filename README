@@ -61,6 +61,14 @@ See end for copying conditions.
       - how? -- binary, *base64
       - when? -- never, optional, *always
       - where? -- inline, *blobs + blobs-index
+    - add SETTINGS block
+      - s/TWEAKS/FINISH-POS/
+      - add ixcc ‘(settings POS)’
+    - define "optional blocks" syntax/protocol
+      - rationale
+        - upward compat (new blocks)
+	- reduced bloat (not every doc has these)
+      - convert: settings / dts / flosets / blobs
     - resolve ‘???’ doubts
   - make spit.el use shr.el
   - fix a1-nf3-guile2
