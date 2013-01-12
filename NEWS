@@ -24,7 +24,7 @@ See end for copying conditions.
   - META ... DESCRIPTION can be a renderable sequence
 
 	This used to be specified as a single-line string, which is too
-	restrictive.  See d/spec.ixin, for example.
+	restrictive.  See spec/ixin.ixin, for example.
 
   - images no longer inline; new blocks BLOBS-INDEX, BLOBS
 
