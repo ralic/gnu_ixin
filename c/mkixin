@@ -1049,11 +1049,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (attribute-ref nf 'extension)))
 
   (define (guess-mime-type filename)
-    (fs "image/~A"
-        (cond ((string-suffix-ci? ".png" filename) 'png)
-              ((string-suffix-ci? ".jpg" filename) jpeg)
-              ((string-suffix-ci? ".jpeg" filename) 'jpeg)
-              (else 'unknown))))
+    (list 'image
+          (cond ((string-suffix-ci? ".png" filename) 'png)
+                ((string-suffix-ci? ".jpg" filename) jpeg)
+                ((string-suffix-ci? ".jpeg" filename) 'jpeg)
+                (else '-))))
 
   (let* ((image? (element? 'image))
          (find-filename (if cur?
@@ -1080,7 +1080,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
     (define (scan nf)
       (and-let* (((image? nf))
                  (filename (find-filename nf))
-                 (type (string->symbol (guess-mime-type filename))))
+                 (type (guess-mime-type filename)))
         (ixcc! nf 'blob (serial))
         (let-values (((encoding size) (write! filename)))
           (set! all (cons (list size encoding type (basename filename))

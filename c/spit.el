@@ -94,8 +94,7 @@
           ((base64) (shell-command-on-region
                      (point-min) (point-max)
                      "base64 -d" (current-buffer) t)))
-        (destructuring-bind (major minor)
-            (mapcar 'intern (split-string (symbol-name (pop ent)) "/"))
+        (destructuring-bind (major minor &rest attrs) (pop ent)
           (case major
             ((image) (create-image (buffer-string) minor t
                                    :originally (pop ent)))

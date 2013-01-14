@@ -1,5 +1,13 @@
 2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Change TYPE in BLOBS-INDEX entry to a list.
+
+	* mkixin (blobs guess-mime-type): Return a list.
+	(blobs): Use ‘guess-mime-type’ rv directly.
+	* spit.el (spit--get-blob): Destructure TYPE directly.
+
+2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Drop "producing SXML w/o Guile" explorations.
 
 	* SxprWriter.pm.patch: Delete file.

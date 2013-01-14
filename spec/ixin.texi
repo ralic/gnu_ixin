@@ -1241,18 +1241,35 @@ This means no encoding whatsoever@footnote{@samp{mkixin} never writes
 @end table
 
 @vmore type
-A MIME-style (TODO: XREF RFC2045) symbol of the form
-@var{major}/@var{minor}, where @var{major} is @code{image}.
-If the actual type is unknown, the minor is
-@code{unknown}@footnote{@samp{mkixin} produces only:
+@cindex @sc{mime} type
+The ``@sc{mime} type'' (TODO: XREF RFC2045)
+of the blob, as a list of the form:
 
 @example
-image/png
-image/jpeg
-image/unknown
+(MAJOR MINOR [ATTRIBUTES])
+@end example
+
+@table @var
+@vmore major
+The symbol @code{image}.
+
+@vmore minor
+A symbol, or @code{-} (hyphen), if
+unknown@footnote{@samp{mkixin} produces only:
+
+@example
+(image png)
+(image jpeg)
+(image -)
 @end example
 
 based on examining the filename extension.}.
+
+@vmore attributes
+@vindex name
+@vindex value
+A sequence of alternating symbol @var{name} and string @var{value} pairs.
+@end table
 
 @vmore filename
 A string.
