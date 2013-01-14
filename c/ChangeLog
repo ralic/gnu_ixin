@@ -1,5 +1,12 @@
 2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit int] Add abstraction: spit--orange
+
+	* spit.el (spit--orange): New func.
+	(spit-%dump-meta): Use ‘spit--orange’.
+
+2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Change TYPE in BLOBS-INDEX entry to a list.
 
 	* mkixin (blobs guess-mime-type): Return a list.

@@ -193,6 +193,10 @@
   (propertize (apply 'format s args) 'face
               'variable-pitch))
 
+(defun spit--orange (&rest kids)
+  (spit--propertize-kids
+   kids '(:inherit variable-pitch :foreground "orange")))
+
 (defun spit--check-unhandled ()
   (let (ugh)
     (while (re-search-backward "(\\(\\w+\\) (@" nil t)
@@ -338,22 +342,21 @@ The title replaces the filename on the first line."
             ?\))
     (forward-line 2)
     (save-excursion
-      (flet ((orange (s) (spit--propertize-kids (list s)
-                                                (list :inherit 'variable-pitch
-                                                      :foreground "orange")))
+      (flet ((orange (s) (spit--orange (concat s ":")))
              (nl () "\n\n"))
         (let ((standard-output (current-buffer))
               (face (list :inherit 'variable-pitch
                           :foreground "red")))
           (insert
-           (orange "filename:") (format " %S" fn)
+           (orange "filename") (format " %S" fn)
            (nl)
-           (orange "lang:") (format " %S" lang)
+           (orange "lang") (format " %S" lang)
            (nl)
            (orange (format
-                    "invitations (%d cat / %d ent):\n"
+                    "invitations (%d cat / %d ent)"
                     (length invitations)
-                    (length (apply 'append (mapcar 'cdr invitations))))))
+                    (length (apply 'append (mapcar 'cdr invitations)))))
+           "\n")
           (flet ((pretty (x) (spit--propertize-kids (if (stringp x)
                                                         (list x)
                                                       x)
@@ -368,7 +371,7 @@ The title replaces the filename on the first line."
                       (insert " -- " (mapconcat 'pretty description
                                                 "\n      -- ")))
                     (insert "\n"))))))
-          (flet ((out (x) (let ((blurb (format "%s:" x))
+          (flet ((out (x) (let ((blurb (format "%s" x))
                                 (obj (symbol-value x)))
                             (insert "\n" (orange blurb) "\n")
                             (pp obj)
