@@ -52,6 +52,14 @@ Texts.  A copy of the license is included in the appendix entitled
 @strong{@t{???}}
 @end macro
 
+@macro hyphen
+@code{-} (hyphen)
+@end macro
+
+@macro thesymhy
+the symbol @hyphen{}
+@end macro
+
 
 @c ---------------------------------------------------------------------------
 @ifnottex
@@ -589,7 +597,7 @@ commands, respectively.
 @table @var
 @vmore filename
 @vindex @@setfilename
-A string, or the symbol @code{-} (hyphen).
+A string, or @thesymhy{}.
 
 @vmore lang
 @vindex @@documentlanguage
@@ -598,7 +606,7 @@ If @code{@@documentlanguage} is unspecified, defaults to @code{(en US)}.
 
 @vmore title
 @vindex @@settitle
-A string, or a renderable sequence, or the symbol @code{-} (hyphen).
+A string, or a renderable sequence, or @thesymhy{}.
 
 @vmore invitations
 @vindex @@dircategory
@@ -606,7 +614,7 @@ A string, or a renderable sequence, or the symbol @code{-} (hyphen).
 If there are no @code{@@dircategory} or @code{@@direntry}
 commands@footnote{Although @samp{mkixin} detects @code{direntry} just
 fine, @samp{makeinfo} 4.13 and earlier do not propagate this information
-to its XML output.}, the symbol @code{-} (hyphen).
+to its XML output.}, @thesymhy{}.
 @vindex invitation
 Otherwise, a list of the form:
 
@@ -617,7 +625,7 @@ Otherwise, a list of the form:
 @noindent
 @vindex category, directory
 @vindex entry, directory
-where @var{category} is a single-line string, or @code{-} (hyphen);
+where @var{category} is a single-line string, or @hyphen{};
 and each @var{entry} has the form:
 
 @example
@@ -870,7 +878,7 @@ The SXML:
 @vindex @@copying
 This is the Texinfo @code{@@copying} block.
 If there is no such block, @var{copying}
-defaults to the symbol @code{-} (hyphen).
+defaults to @thesymhy{}.
 
 
 @c ---------------------------------------------------------------------------
@@ -961,7 +969,7 @@ A list of entries, each of the form:
 
 @table @var
 @vmore type
-A symbol, such as @code{Figure}, or @code{-} to indicate ``untyped''.
+A symbol, such as @code{Figure}, or @hyphen{} to indicate ``untyped''.
 
 @vmore floset-len
 The byte-length of this set of floats.
@@ -1094,15 +1102,15 @@ followed by a series of @var{non-node-count} lists, each of the form:
 A non-negative integer.  Zero means only nodes have labels.
 
 @vmore node-label
-A string, the node's label, or a symbol.  If the symbol is @code{-}
-(hyphen), the node has no label.  If the symbol is @code{=} (equal
+A string, the node's label, or a symbol.  If the symbol is
+@hyphen{}, the node has no label.  If the symbol is @code{=} (equal
 sign), the node's label is identical to its name.
 
 @vmore label
 @cindex label syntax
 A string whose characters are strictly from the set
-@code{[-_A-Za-z0-9]}, i.e., the ASCII letters and digits plus @code{-}
-(hyphen) and @code{_} (underscore).  Note that this means that the
+@code{[-_A-Za-z0-9]}, i.e., the ASCII letters and digits plus
+@hyphen{} and @code{_} (underscore).  Note that this means that the
 file's coding (@pxref{first line}) must be compatibile with ASCII.
 @xref{HTML Xref,HTML Xref,,texinfo,The GNU Texinfo Manual}, for details.
 
@@ -1116,7 +1124,7 @@ A symbol indicating what has this label, e.g., @code{anchor}.
 @cindex correspondance, order of nodes and labels
 The first form's list of node labels correspond (in order) to nodes in
 the node index (@pxref{node index}).  As a special case, if the
-@code{node-label} values would @strong{all} be @code{-} (hyphen), then
+@code{node-label} values would @strong{all} be @hyphen{}, then
 @code{node-label} information is omitted entirely; the first form then
 simply lists @var{non-node-count}.
 
@@ -1148,8 +1156,8 @@ A positive integer.
 
 @vmore font
 A symbol, one of @code{r} or @code{code}, specifying the default font
-for this DTS.  An entry whose first element is the symbol @code{-}
-(hyphen, U+2D) has the ``inverse'' default font.
+for this DTS.  An entry whose first element is @thesymhy{}
+has the ``inverse'' default font.
 
 @vmore term
 Either a string or a renderable sequence.
@@ -1189,8 +1197,8 @@ A positive integer.
 A string.
 
 @vmore short-caption
-Either a string, or a renderable sequence, or the symbol
-@code{-} (hyphen) to indicate no short caption.
+Either a string, or a renderable sequence,
+or @thesymhy{} to indicate no short caption.
 
 @vmore nid
 The identifier for the node where this float is found.
@@ -1254,7 +1262,7 @@ of the blob, as a list of the form:
 The symbol @code{image}.
 
 @vmore minor
-A symbol, or @code{-} (hyphen), if
+A symbol, or @hyphen{}, if
 unknown@footnote{@samp{mkixin} produces only:
 
 @example

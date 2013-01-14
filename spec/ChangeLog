@@ -1,5 +1,13 @@
 2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec int] Add macros: hyphen, thesymhy
+
+	* ixin.texi (hyphen, thesymhy): New macros;
+	use them throughout to replace "@code{-} (hyphen)"
+	and "the symbol @code{-} (hyphen)", respectively.
+
+2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Change TYPE in BLOBS-INDEX entry to a list.
 
 	* ixin.texi (blobs index): ...here, in table.
