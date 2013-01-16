@@ -629,7 +629,7 @@ See also variable `spit-retrieve'."
               (plist '(" "           scroll-up-command
                        [(backspace)] scroll-down-command
                        [(tab)]       forward-button
-                       [(backtab)]    backward-button
+                       [(backtab)]   backward-button
                        "\C-l"    spit-spit-spit
                        "\C-q"    spit-%quit
                        "w"       spit-%where
