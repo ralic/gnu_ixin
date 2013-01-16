@@ -19,7 +19,7 @@
 
 include common.mk
 
-hmm := hello alive prob rcs serveez coreutils
+hmm := hello alive rcs serveez coreutils
 ixin := $(addsuffix .ixin, $(hmm))
 
 all: $(ixin)

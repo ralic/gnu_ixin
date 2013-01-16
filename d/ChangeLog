@@ -1,3 +1,10 @@
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Drop prob.{xml,sxml,ixin}.
+
+	* GNUmakefile (hmm): Remove prob.
+	* prob.xml: Delete file.
+
 2013-01-11  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.7
