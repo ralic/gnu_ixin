@@ -197,6 +197,23 @@
   (spit--propertize-kids
    kids '(:inherit variable-pitch :foreground "orange")))
 
+(defun spit--ixcc-explanation (fam pos)
+  (let (ht)
+    (case fam
+      ((node) (when (setq ht (spit--cache 'node-name))
+                (gethash pos ht)))
+      ((blob) (let ((blob (spit--get-blob pos)))
+                (case (when (consp blob)
+                        (car blob))
+                  ((image) (propertize " " 'display blob))
+                  (t nil))))
+      (t (when (consp fam)
+           (case (car fam)
+             ((dts) (when (setq ht (spit--cache
+                                    (intern (format "dts:%s" (cadr fam)))))
+                      (gethash pos ht)))
+             (t nil)))))))
+
 (defun spit--check-unhandled ()
   (let (ugh)
     (while (re-search-backward "(\\(\\w+\\) (@" nil t)
@@ -281,23 +298,6 @@ With args (noninteractively), like `message' for the spit area."
   (interactive)
   "Do ‘(up)’."
   (spit--do nil 'up))
-
-(defun spit--ixcc-explanation (fam pos)
-  (let (ht)
-    (case fam
-      ((node) (when (setq ht (spit--cache 'node-name))
-                (gethash pos ht)))
-      ((blob) (let ((blob (spit--get-blob pos)))
-                (case (when (consp blob)
-                        (car blob))
-                  ((image) (propertize " " 'display blob))
-                  (t nil))))
-      (t (when (consp fam)
-           (case (car fam)
-             ((dts) (when (setq ht (spit--cache
-                                    (intern (format "dts:%s" (cadr fam)))))
-                      (gethash pos ht)))
-             (t nil)))))))
 
 (defun spit-%show ()
   (interactive)
