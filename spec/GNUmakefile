@@ -49,8 +49,4 @@ check: all ixin.sxml try-ixin
 ixin.pdf: $(input)
 	$(TEXI2PDF) -o $@ $< --clean --batch
 
-z4.xml: $(input)
-	test 4.13 = $(shell $(MAKEINFO) --version | sed 's/.* //;1q')
-	$(MAKEINFO) -o $@ --xml --no-split $<
-
 # GNUmakefile ends here
