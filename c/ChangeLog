@@ -1,5 +1,15 @@
 2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Fix bug: Also remove only-kid all-whitespace "final" string.
+
+	This completes 2013-01-05, "Remove string if
+	‘trim-ws’ is given a string w/ all whitespace".
+
+	* mkixin (nice-strings! final): Return the nf tail, not kids.
+	(nice-strings! trim-ws): Omit attributes in ‘delq’ call.
+
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Bind ‘t’ to ‘toggle-truncate-lines’.
 
 	* spit.el (spit-mode-map): ...here.
