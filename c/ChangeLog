@@ -1,5 +1,11 @@
 2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Bind ‘t’ to ‘toggle-truncate-lines’.
+
+	* spit.el (spit-mode-map): ...here.
+
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Highlight structure and diminish parens.
 
 	Do this for each ‘node’ as well as for the
