@@ -46,6 +46,12 @@
 (defvar spit-mode-map nil
   "Keymap for `spit-mode'.")
 
+(defvar spit-mode-syntax-table (let ((st (copy-syntax-table
+                                          emacs-lisp-mode-syntax-table)))
+                                 (modify-syntax-entry ?\n "-" st)
+                                 st)
+  "Syntax table for `spit-mode'.")
+
 ;;;---------------------------------------------------------------------------
 ;;; variables for the inquisitive programmer
 
@@ -214,6 +220,77 @@
                       (gethash pos ht)))
              (t nil)))))))
 
+(defun spit--decorate-ixcc ()
+  (let* ((fam (read (match-string 3)))
+         (pos (read (match-string 4)))
+         (ixcc (cons fam pos))
+         (s (save-match-data (spit--ixcc-explanation fam pos))))
+    (cond ((stringp s)
+           (replace-match s nil t nil 2)
+           (make-text-button (match-beginning 1)
+                             (match-end 1)
+                             'ixcc ixcc
+                             'help-echo (format "%S" ixcc))
+           (goto-char (match-beginning 0)))
+          (t
+           (make-text-button (match-beginning 1) (match-end 1)
+                             'ixcc ixcc
+                             'help-echo nil)
+           (add-text-properties (match-beginning 3) (match-end 3)
+                                '(face (:foreground "red")))
+           (add-text-properties (match-beginning 4) (match-end 4)
+                                '(face (:foreground "yellow")))))))
+
+(defun spit--hsdp ()                ; highlight structure / diminish parens
+  (save-restriction
+    (let (p aft dq att)
+      (skip-syntax-forward "-")
+      (setq p (point)
+            aft (char-after))
+      (when aft
+        (setq dq (= ?\" aft))
+        (forward-sexp 1)
+        (unless dq
+          (narrow-to-region p (point))
+          (goto-char p)
+          (delete-pair)
+          (forward-sexp 1)
+          (add-text-properties p (point) '(face font-lock-builtin-face))
+          (when (looking-at "\\s-+")
+            (delete-region (match-beginning 0)
+                           (match-end 0)))
+          (insert " ")
+          (let ((nattr (length (cdr (spit--gobble 'peek)))))
+            (cond ((zerop nattr)
+                   (kill-sexp 1)
+                   (if (eolp)
+                       (delete-char -1)
+                     (insert (propertize "-" 'face 'font-lock-comment-face))))
+                  (t
+                   (down-list 1)
+                   (when (looking-at "@\\s-+")
+                     (delete-region (match-beginning 0)
+                                    (match-end 0)))
+                   (while (not (zerop nattr))
+                     (down-list 1)
+                     (if (looking-at "\\(ixcc\\) \"\\((\\(.+\\) \\([0-9]+\\))\\)\"")
+                         (spit--decorate-ixcc)
+                       (add-text-properties
+                        (point) (progn (forward-sexp 1) (point))
+                        '(face font-lock-comment-face))
+                       (insert " \"" (spit--orange (spit--gobble))
+                               "\""))
+                     (backward-up-list)
+                     (forward-sexp 1)
+                     (decf nattr))
+                   (backward-up-list)
+                   (forward-sexp 1)
+                   (save-excursion
+                     (forward-sexp -1)
+                     (delete-pair)))))
+          (while (spit--hsdp)))
+        t))))
+
 (defun spit--check-unhandled ()
   (let (ugh)
     (while (re-search-backward "(\\(\\w+\\) (@" nil t)
@@ -236,6 +313,7 @@
     (setq fill-column saved-fill-column))
   (setq mode-name "Spit"
         major-mode 'spit-mode)
+  (set-syntax-table spit-mode-syntax-table)
   (use-local-map spit-mode-map))
 
 (defun spit-spit-spit (&optional s &rest args)
@@ -301,29 +379,13 @@ With args (noninteractively), like `message' for the spit area."
 
 (defun spit-%show ()
   (interactive)
-  "Do ‘(show)’."
-  (spit--do nil 'show)
-  (save-excursion
-    (while (re-search-forward "\\(ixcc\\) \"\\((\\(.+\\) \\([0-9]+\\))\\)\""
-                              nil t)
-      (let* ((fam (read (match-string 3)))
-             (pos (read (match-string 4)))
-             (ixcc (cons fam pos))
-             (s (save-match-data (spit--ixcc-explanation fam pos))))
-        (cond ((stringp s)
-               (replace-match s nil t nil 2)
-               (make-text-button (match-beginning 1)
-                                 (match-end 1)
-                                 'ixcc ixcc
-                                 'help-echo (format "%S" ixcc)))
-              (t
-               (make-text-button (match-beginning 1) (match-end 1)
-                                 'ixcc ixcc
-                                 'help-echo nil)
-               (add-text-properties (match-beginning 3) (match-end 3)
-                                    '(face (:foreground "red")))
-               (add-text-properties (match-beginning 4) (match-end 4)
-                                    '(face (:foreground "yellow"))))))))
+  "Do ‘(show)’ and prettify."
+  (let ((form (spit--do t 'show))
+        (p (point)))
+    (pp form (current-buffer))
+    (goto-char p)
+    (spit--hsdp)
+    (goto-char p))
   (spit-spit-spit "hey ttn, why not use shr.el? (hint hint)"))
 
 (defun spit-%dump-meta ()
@@ -376,8 +438,20 @@ The title replaces the filename on the first line."
                             (insert "\n" (orange blurb) "\n")
                             (pp obj)
                             (unless (bolp)
-                              (newline)))))
-            (mapc 'out '(vars settings copying titlepage toc))))
+                              (newline))))
+                 (hsdp-maybe (h) (when (search-forward
+                                        (format "\n%s:\n(" h)
+                                        nil t)
+                                   (forward-char -1)
+                                   (save-excursion
+                                     (spit--hsdp))
+                                   (kill-sexp 1)
+                                   (when (eolp)
+                                     (delete-char 1)))))
+            (mapc 'out '(vars settings copying titlepage toc))
+            (goto-char (point-min))
+            (hsdp-maybe 'copying)
+            (hsdp-maybe 'titlepage)))
         (spit--cache 'invitations invitations)
         (spit--cache 'settings settings)
         (spit--cache)))))

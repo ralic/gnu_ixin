@@ -1,3 +1,17 @@
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spit] Highlight structure and diminish parens.
+
+	Do this for each ‘node’ as well as for the
+	‘meta’ elements ‘copying’ and ‘titlepage’.
+
+	* spit.el (spit-mode-syntax-table): New defvar.
+	(spit--decorate-ixcc, spit--hsdp): New funcs.
+	(spit-mode): Set the syntax table.
+	(spit-%show): Use ‘spit--hsdp’; also, ‘pp’ before.
+	(spit-%dump-meta hsdp-maybe): New ‘flet’ func.
+	(spit-%dump-meta): Use ‘hsdp-maybe’ on ‘copying’ and ‘titlepage’.
+
 2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[spit int] Add abstraction: spit--orange
