@@ -1,5 +1,14 @@
 2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Drop support for makeinfo 4.13 and earlier.
+
+	* ixin.texi (Technique): Don't mention old versions of makeinfo.
+	(overall): Remove 4.13 DTD from example; update blurb.
+	(xid): Don't mention makeinfo 4.13 deficiency.
+	(titlepage): Don't mention makeinfo 4.13 ‘booktitle’.
+
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Drop z4.
 
 	* GNUmakefile (z4.xml): Delete target.

@@ -1,3 +1,9 @@
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Drop support for makeinfo 4.13 and earlier.
+
+	* dtd/4.13.dtd: Delete file.
+
 2013-01-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Drop "producing SXML w/o Guile" explorations.

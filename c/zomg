@@ -24,9 +24,6 @@
 
 ;;; Data:
 
-("-//GNU//DTD TexinfoML V4.13//EN"
- . "../dtd/4.13.dtd")
-
 ("-//GNU//DTD TexinfoML V5.0//EN"
  . "../dtd/5.0.dtd")
 

@@ -1,5 +1,36 @@
 2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Drop support for makeinfo 4.13 and earlier.
+
+	* mkixin (find-printindex): Rewrite.
+	(rescue): Don't take ‘cur?’.
+	(rescue grab-variables): Look for ‘set’ unconditionally.
+	(rescue grab/dedup-copying!): Delete proc.
+	(rescue): Call ‘grab-copying!’ unconditionally.
+	(float-name): Rewrite.
+	(floating-environments): Don't take ‘cur?’.
+	(floating-environments plucker): Update call to ‘float-name’.
+	(document-term-sets): Don't take ‘cur?’.
+	(document-term-sets collect-indexterm! pluck type!):
+	Rename from ‘type!/cur’.
+	(document-term-sets collect-indexterm! pluck type!/old): Delete proc.
+	(document-term-sets collect-indexterm! pluck): Call ‘type!’ directly.
+	(section-tree): Don't take ‘cur?’; use ‘sectiontitle’ directly.
+	(tuck): Error out if SXML lacks interleaved
+	node/section elements; omit ‘cur?’ from return values.
+	(blobs): Don't take ‘cur?’.
+	(blobs find-filename): Rename from ‘find-filename/cur’.
+	(blobs find-filename/old): Delete proc.
+	(do-it!): Update handling of ‘tuck’ return values; update
+	calls to ‘blobs’, ‘floating-environments’, ‘document-term-sets’.
+	(do-it! dedup!): Update call to ‘float-name’.
+	(do-it! grok!): Update call to ‘find-printindex’.
+	(do-it! write-section-tree!): Update call to ‘section-tree’.
+	(do-it!): Update call to ‘rescue’.
+	* zomg (V4.13): Delete.
+
+2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Fix bug: Also remove only-kid all-whitespace "final" string.
 
 	This completes 2013-01-05, "Remove string if

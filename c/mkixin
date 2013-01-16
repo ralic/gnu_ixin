@@ -128,18 +128,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
               (symbol/hyphen<-string
                (attribute-ref nf 'type)))))
 
-(define (find-printindex cur?)
-
-  (define get (if cur?
-                  (lambda (nf)
-                    (attribute-ref nf 'value))
-                  (lambda (nf)
-                    (car (kids nf)))))
-
-  (lambda (node)
-    (at-first 'printindex node
-              (lambda (nf)
-                (string->symbol (get nf))))))
+(define (find-printindex node)
+  (at-first 'printindex node
+            (lambda (nf)
+              (symbol<-attribute-ref  nf 'value))))
 
 ;; Express "0-based index", yet avoid the word "index"!
 (define position (make-object-property))
@@ -315,7 +307,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (reverse! acc)
            settings)))))
 
-(define (rescue cur? meta)              ; from (S)XML, well, partially
+(define (rescue meta)                   ; from (S)XML, well, partially
                                         ;   obviously, Someone needs
                                         ;     to learn (S)XLST  :-/
 
@@ -439,7 +431,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (define (grab-variables!)
       (let loop ((acc '()))
-        (cond ((assq (if cur? 'set 'setvalue) rest)
+        (cond ((assq 'set rest)
                => (lambda (sub)
                     (set! rest (delq! sub rest)) ; DWR!
                     (loop (acons (symbol<-attribute-ref sub 'name)
@@ -452,31 +444,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (let ((copying (assq 'copying rest)))
         (set! rest (delq! copying rest)) ; DWR!
         copying))
-
-    (define (grab/dedup-copying!)
-      (let-values (((copying new-rest) (break! (element? 'titlepage)
-                                               rest)))
-        (set! rest new-rest)            ; DWR!
-        (or (null? rest)
-            (let* ((len (length copying))
-                   (tp (car rest))      ; titlepage
-                   (body (kids tp))
-                   (blen (length body)))
-              (let loop ((left blen)
-                         (ls body))
-                (cond ((> len left))
-                      ((and (equal? (car copying) (car ls))
-                            (equal? copying (take ls len)))
-                       (let ((tp-rest (drop ls len)))
-                         (set-cdr! (cdr tp)
-                                   (append (take body (- blen left))
-                                           (list '(insertcopying (@)))
-                                           tp-rest))))
-                      (else
-                       (loop (1- left)
-                             (cdr ls)))))))
-        (and (pair? copying)
-             `(copying (@) ,@copying))))
 
     (define (grab-titlepage!)
       (let ((nf (assq 'titlepage rest)))
@@ -503,9 +470,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (variables (grab-variables!))
            (settings (cond (lang `((documentlanguage ,lang)))
                            (else '()))) ; TODO
-           (copying ((if cur?
-                         grab-copying!
-                         grab/dedup-copying!)))
+           (copying (grab-copying!))
            (titlepage (grab-titlepage!))
            (toc (grab-toc!)))
 
@@ -550,13 +515,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                     (symbol/hyphen<-string (car ls))
                     '-)))))
 
-(define (float-name cur? nf)
-  (if cur?
-      (at-first 'floatname nf (lambda (nf)
-                                (car (kids nf))))
-      (attribute-ref nf 'name)))
+(define (float-name nf)
+  (at-first 'floatname nf (lambda (nf)
+                            (car (kids nf)))))
 
-(define (floating-environments mkblk cur? nodes)
+(define (floating-environments mkblk nodes)
   (let ((all '()))
 
     (define (plucker id)
@@ -574,7 +537,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (set-cdr! slot
                     (cons (list
                            ;; name
-                           (float-name cur? nf)
+                           (float-name nf)
                            ;; short-caption
                            (or (w/ 'shortcaption
                                    (lambda (nf)
@@ -610,7 +573,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (blk 'bye)
           counts))))
 
-(define (document-term-sets mkblk cur? setup nodes)
+(define (document-term-sets mkblk setup nodes)
 
   (define default-font
     (let ((syn (map (lambda (nf)
@@ -713,7 +676,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (let ((it? (element? 'indexterm)))
         (lambda (parent nf)
 
-          (define (type!/cur)
+          (define (type!)
 
             (define (attry name proc)
               (attribute-try nf name proc))
@@ -723,15 +686,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
               (or (attry 'mergedindex string->symbol)
                   orig)))
 
-          (define (type!/old)
-            (and (eq? 'definitionterm parent)
-                 (set! (font nf) 'code))
-            (symbol<-attribute-ref nf 'index))
-
           (cond ((it? nf)
-                 ((get-mgr ((if cur?
-                                type!/cur
-                                type!/old)))
+                 ((get-mgr (type!))
                   nf
                   (node-id node)))))))
 
@@ -759,8 +715,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (blk 'bye)
           counts))))
 
-(define (section-tree cur? nodes)
-  (let* ((title? (element? (if cur? 'sectiontitle 'title)))
+(define (section-tree nodes)
+  (let* ((title? (element? 'sectiontitle))
          (lev-1 '(top chapter unnumbered appendix))
          (lev-2 '(section unnumberedsec appendixsec))
          (lev-3 '(subsection unnumberedsubsec appendixsubsec))
@@ -917,14 +873,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
   ;; do it!
   ((walker neglecting-some-kids) nf)
   (let-values (((meta rest) (bef+aft (cdr nf))))
-    (if (every node? rest)
-        (values #f '(()) meta rest)
-        (let*-values (((meta rest) (normalize meta rest))
-                      ((dts-setup meta) (extract-dts-setup meta)))
-          (let ((prune-attributes (walker w/o-useless-attributes)))
-            (prune-attributes (cons #f meta))
-            (FE rest prune-attributes)
-            (values #t dts-setup meta rest))))))
+    (and (every node? rest)
+         (error "SXML from makeinfo 4.13 no longer supported (sorry)"))
+    (let*-values (((meta rest) (normalize meta rest))
+                  ((dts-setup meta) (extract-dts-setup meta)))
+      (let ((prune-attributes (walker w/o-useless-attributes)))
+        (prune-attributes (cons #f meta))
+        (FE rest prune-attributes)
+        (values dts-setup meta rest)))))
 
 (define (labels mkblk names nodes)
 
@@ -1025,7 +981,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    family
                    position))))
 
-(define (blobs blk cur? dir nodes)
+(define (blobs blk dir nodes)
 
   (define (expand filename ext)
 
@@ -1040,13 +996,9 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (try ".png")
         (try ".jpg")))
 
-  (define (find-filename/cur nf)
+  (define (find-filename nf)
     (expand (car (kids (assq 'imagefile (cdr nf))))
             ""))
-
-  (define (find-filename/old nf)
-    (expand (attribute-ref nf 'name)
-            (attribute-ref nf 'extension)))
 
   (define (guess-mime-type filename)
     (list 'image
@@ -1056,9 +1008,6 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                 (else '-))))
 
   (let* ((image? (element? 'image))
-         (find-filename (if cur?
-                            find-filename/cur
-                            find-filename/old))
          (all '())
          (blobs #f))
 
@@ -1106,7 +1055,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
 (define (do-it! filename)
   (let*-values (((stem snarf blk) (how-to-handle filename))
-                ((cur? dts-setup meta nodes) (tuck (snarf)))
+                ((dts-setup meta nodes) (tuck (snarf)))
                 ((count names locs) (identify nodes)))
 
     (define (mkblk nick)
@@ -1114,13 +1063,13 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (blk 'new nick)))
 
     (let* ((coding 'utf-8)              ; TODO
-           (blobs-len (blobs blk cur? (dirname filename) nodes))
+           (blobs-len (blobs blk (dirname filename) nodes))
            (nblk ((mkblk 'nodes)))
            (labels-len (labels (mkblk 'labels) names nodes))
            (index (make-vector count #f))
-           (flosets (floating-environments (mkblk 'flosets) cur? nodes))
+           (flosets (floating-environments (mkblk 'flosets) nodes))
            (lonely-flosets (two-phase-accumulator))
-           (dts (document-term-sets (mkblk 'dts) cur? dts-setup nodes))
+           (dts (document-term-sets (mkblk 'dts) dts-setup nodes))
            (lonely-dts (two-phase-accumulator)))
 
       (define (dedup! nf)
@@ -1170,7 +1119,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
           ((float)
            (let ((type (float-type nf)))
-             (zcoord! 'name (id<-float type (float-name cur? nf))
+             (zcoord! 'name (id<-float type (float-name nf))
                       'floset type)
              (FE '(floattype floatpos shortcaption)
                  (let ((rest (cdr nf)))
@@ -1210,7 +1159,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
           (vector-set! index id (cons* name len loc))
           (note-summary! find-listoffloats flosets lonely-flosets)
-          (note-summary! (find-printindex cur?) dts lonely-dts)))
+          (note-summary! find-printindex dts lonely-dts)))
 
       (define (write-index!)
         (let ((blk ((mkblk 'node-index))))
@@ -1223,7 +1172,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (define (write-section-tree!)
         (let ((blk ((mkblk 's-tree))))
           (blk 'act (lambda (pp)
-                      (pp (section-tree cur? nodes))))
+                      (pp (section-tree nodes))))
           (blk 'bye)))
 
       (FE names locs nodes grok!)
@@ -1237,7 +1186,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (nblk 'bye)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
-        (pretty-print (rescue cur? meta) port)
+        (pretty-print (rescue meta) port)
         (fso "~S~%" (list index-length count
                           s-tree-length labels-len
                           (append dts (lonely-dts))
