@@ -1,3 +1,9 @@
+2013-01-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify uniqueness of blobs.
+
+	* ixin.texi (blobs index): ...here.
+
 2013-01-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Drop support for makeinfo 4.13 and earlier.

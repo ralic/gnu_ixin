@@ -1283,6 +1283,8 @@ A string.
 @code{video} would be the logical next step, but that's going a little
 too far, no?  We don't want IXIN to be a vector for malware.
 
+Blobs must be unique over @var{type} @strong{and} @var{filename}.
+
 
 @c ---------------------------------------------------------------------------
 @node    node data
