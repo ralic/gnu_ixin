@@ -880,7 +880,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
       (let ((prune-attributes (walker w/o-useless-attributes)))
         (prune-attributes (cons #f meta))
         (FE rest prune-attributes)
-        (values dts-setup meta rest)))))
+        (values dts-setup (rescue meta) rest)))))
 
 (define (labels mkblk names nodes)
 
@@ -981,7 +981,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                    family
                    position))))
 
-(define (blobs blk dir nodes)
+(define (blobs blk dir meta nodes)
 
   (define (expand filename ext)
 
@@ -1037,7 +1037,11 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
           (set! all (cons (list size encoding type (basename filename))
                           all)))))
 
-    (FE nodes (walker scan))
+    (let ((scan! (walker scan)))
+      (FE '(copying titlepage) (lambda (element)
+                                 (and-let* ((nf (sloppy-assq element meta)))
+                                   (scan! nf))))
+      (FE nodes scan!))
     (if (null? all)
         0
         (let ((bidx (blk 'new 'blob-index)))
@@ -1065,7 +1069,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
         (blk 'new nick)))
 
     (let* ((coding 'utf-8)              ; TODO
-           (blobs-len (blobs blk (dirname filename) nodes))
+           (blobs-len (blobs blk (dirname filename) meta nodes))
            (nblk ((mkblk 'nodes)))
            (labels-len (labels (mkblk 'labels) names nodes))
            (index (make-vector count #f))
@@ -1188,7 +1192,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
         (nblk 'bye)
         (fso "ixin 1; -*- coding: ~A -*-~%" coding)
-        (pretty-print (rescue meta) port)
+        (pretty-print meta port)
         (fso "~S~%" (list index-length count
                           s-tree-length labels-len
                           (append dts (lonely-dts))
