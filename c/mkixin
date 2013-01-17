@@ -1019,12 +1019,14 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (define (write! filename)
       (or blobs (set! blobs (blk 'new 'blobs)))
-      (blobs 'out (lambda (port)
-                    (display (string<-shell-command
-                              "base64 ~A" filename)
-                             port)))
-      (values 'base64                   ; todo
-              (blobs 'cur)))
+      (let ((bef (blobs 'cur)))
+        (blobs 'out (lambda (port)
+                      (display (string<-shell-command
+                                "base64 ~A" filename)
+                               port)))
+        (values 'base64                 ; todo
+                (- (blobs 'cur)
+                   bef))))
 
     (define (scan nf)
       (and-let* (((image? nf))
