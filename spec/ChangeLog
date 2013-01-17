@@ -1,5 +1,13 @@
 2013-01-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Add some images to @copying, @titlepage.
+
+	* logo-o3.png: New file.
+	* ixin.texi <copying>: Add three ‘@image’s, in ‘@ifnotinfo’.
+	<titlepage>: Add ‘@image’ between ‘@subtitle’ and ‘@author’.
+
+2013-01-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	Specify uniqueness of blobs.
 
 	* ixin.texi (blobs index): ...here.

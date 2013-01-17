@@ -29,6 +29,12 @@ Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the appendix entitled
 ``GNU Free Documentation License''.
 @end quotation
+@c This noise is to test the utilities.  We omit it from Info output
+@c because ttn's Emacs fails to correctly center the series (ugly).
+@ifnotinfo
+@vskip 1cm
+@center @image{logo-o3} @image{logo} @image{logo-o3}
+@end ifnotinfo
 @end copying
 
 @dircategory GNU organization
@@ -40,6 +46,9 @@ Texts.  A copy of the license is included in the appendix entitled
 @titlepage
 @title The IXIN Chronicles
 @subtitle @packageparticulars{}
+@c This noise is to test the utilities, but it looks nice, anyway.
+@vskip 0pt plus 1filll
+@center @image{logo}
 @author Thien-Thi Nguyen
 @page
 @vskip 0pt plus 1filll
