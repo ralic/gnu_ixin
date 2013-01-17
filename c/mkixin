@@ -1033,6 +1033,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                  (filename (find-filename nf))
                  (base (basename filename))
                  (type (guess-mime-type filename)))
+        (assq-remove! (cdr nf) 'imagefile)
         (cond ((member (list type base) (map cddr all))
                => (lambda (ls)
                     (ixcc! nf 'blob (length (cdr ls)))))
@@ -1124,6 +1125,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (let ((name (string->symbol
                         (or (attribute-ref nf 'mergedindex)
                             (attribute-ref nf 'index)))))
+             (assq-remove! (cadr nf) 'mergedindex)
              (zcoord! 'index (id<-document-term name (kids nf))
                       'dts name)
              (kids! '())))
