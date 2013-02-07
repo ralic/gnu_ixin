@@ -1,4 +1,4 @@
-<!-- $Id: texinfo.dtd,v 1.35 2012/12/21 00:30:46 pertusus Exp $
+<!-- $Id: texinfo.dtd,v 1.36 2013/01/19 21:12:08 pertusus Exp $
   Document Type Definition for Texinfo XML output (the '-'-xml option).
 
   Copyright 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
@@ -17,18 +17,18 @@
 <!-- copying | titlepage could be there too -->
 <!ENTITY % metainformation "setfilename | settitle | dircategory | direntry
                             | hyphenation
-                            | documentdescription 
+                            | documentdescription
                             | shorttitlepage">
 <!ENTITY % variable.cmds "set | clear">
 
 <!-- Unique options -->
-<!ENTITY % unique.option.cmds "novalidate | setcontentsaftertitlepage 
-   | setshortcontentsaftertitlepage | documentencoding 
+<!ENTITY % unique.option.cmds "novalidate | setcontentsaftertitlepage
+   | setshortcontentsaftertitlepage | documentencoding
    | everyheadingmarks | everyfootingmarks | evenheadingmarks | oddheadingmarks
    | evenfootingmarks | oddfootingmarks | fonttextsize | pagesizes
    | setchapternewpage | footnotestyle | finalout
 
-   | allowcodebreaks | exampleindent | afourpaper 
+   | allowcodebreaks | exampleindent | afourpaper
    | afivepaper | afourlatex | afourwide | headings
    | everyheading | everyfooting | evenheading | evenfooting | oddheading
    | oddfooting | smallbook | cropmarks">
@@ -38,14 +38,14 @@
   | defindex | defcodeindex | definfoenclose | alias">
 
 <!-- Options -->
-<!ENTITY % multiple.option.cmds "frenchspacing | documentlanguage 
-    | %variable.cmds; | kbdinputstyle | paragraphindent 
+<!ENTITY % multiple.option.cmds "frenchspacing | documentlanguage
+    | %variable.cmds; | kbdinputstyle | paragraphindent
     | firstparagraphindent | urefbreakstyle | xrefautomaticsectiontitle
     | deftypefnnewline
     | codequoteundirected | codequotebacktick | raisesections
     | lowersections | clickstyle">
 
-<!ENTITY % option.cmds "%unique.option.cmds; | %global.option.cmds; 
+<!ENTITY % option.cmds "%unique.option.cmds; | %global.option.cmds;
                | %multiple.option.cmds;">
 
 <!-- ToC -->
@@ -60,8 +60,8 @@
 
 <!-- API definition commands -->
 <!ENTITY % def.cmds "deffn | defvr | deftypefn | deftypeop | deftypevr
-      | defcv | deftypecv | defop | deftp | defun | defmac 
-      | defspec | defvar | defopt | deftypefun | deftypevar 
+      | defcv | deftypecv | defop | deftp | defun | defmac
+      | defspec | defvar | defopt | deftypefun | deftypevar
       | defivar | deftypeivar | defmethod | deftypemethod">
 
 <!ENTITY % raw.cmds "html | tex | docbook | xml | macro | rmacro | ignore">
@@ -69,7 +69,7 @@
 <!-- Commands that appear everywhere, both with block and in paragraphs -->
 <!-- include is in general absent, since it is replaced, but it is
      present if the file was not found -->
-<!ENTITY % ubiquitous.cmds "sp | anchor | indent | noindent | %raw.cmds; 
+<!ENTITY % ubiquitous.cmds "sp | anchor | indent | noindent | %raw.cmds;
                  | %option.cmds; | errormsg | unmacro | include
                  | %indexentry.cmds; | refill | quote-arg | allow-recursion">
 
@@ -80,9 +80,9 @@
                   | display | smalldisplay | copying | titlepage
                   | raggedright | flushleft | flushright
                   | itemize | enumerate | titlefont | center | group
-                  | table | vtable | ftable | multitable | definition 
+                  | table | vtable | ftable | multitable | definition
                   | image
-                  | %def.cmds; 
+                  | %def.cmds;
                   | %ubiquitous.cmds;
                   | verbatim | verbatiminclude | insertcopying | page | need
                   | vskip
@@ -107,7 +107,7 @@
 
 <!ENTITY % section.level3 "subsection | unnumberedsubsec | appendixsubsec">
 
-<!ENTITY % section.level4 "subsubsection | unnumberedsubsubsec 
+<!ENTITY % section.level4 "subsubsection | unnumberedsubsubsec
                            | appendixsubsubsec">
 
 <!ENTITY % section.all "%section.level1; | %section.level2; | %section.level3;
@@ -115,7 +115,7 @@
 
 
 <!-- toplevel content, not in copying nor footnote -->
-<!ENTITY % main.content "%block; | %toc; | node | %heading.cmds; 
+<!ENTITY % main.content "%block; | %toc; | node | %heading.cmds;
                          | printindex">
 
 <!ENTITY % section.level0.content "(%main.content;
@@ -146,11 +146,11 @@
 <!ENTITY % Inline.footnote "footnote">
 <!ENTITY % Inline.markup "code | command | env | file | option | samp | verb
                           | dfn | cite | key | kbd | var | acronym | abbr
-                          | indicateurl | w | asis"> 
+                          | indicateurl | w | asis">
 <!ENTITY % Inline.math "math | dmn">
 <!ENTITY % Inline.reference "xref | ref | pxref | inforef | email | uref | url">
 <!ENTITY % Inline.misc "click | clicksequence | logo | punct | spacecmd | today
-                        | linebreak | accent | dotless | ctrl | inlineraw 
+                        | linebreak | accent | dotless | ctrl | inlineraw
                         | inlinefmt | infoenclose">
 
 <!-- on lines -->
@@ -165,8 +165,8 @@
            "%Inline.line; | %ubiquitous.cmds;">
 
 <!-- in raw (everything except sectioning commands) -->
-<!ENTITY % Raw.content "#PCDATA | %titlepage.cmds; | %block; | %heading.cmds; 
-           | %Inline.linetext; | exdent | %toc; | printindex 
+<!ENTITY % Raw.content "#PCDATA | %titlepage.cmds; | %block; | %heading.cmds;
+           | %Inline.linetext; | exdent | %toc; | printindex
            | %metainformation;">
 
 <!-- arguments/attribute values. Many are missing -->
@@ -183,10 +183,10 @@
 <!ENTITY % bracketedattr
   "bracketed (%onoff;) #IMPLIED">
 <!-- block commands that have spaces also have endspaces -->
-<!-- this is also used for commands without arguments 
+<!-- this is also used for commands without arguments
      when they have a @comment on their line -->
-<!ENTITY % spacesblockattr 
-          "%spacesattr; 
+<!ENTITY % spacesblockattr
+          "%spacesattr;
            endspaces CDATA #IMPLIED">
 
 <!-- ELEMENTS -->
@@ -227,7 +227,7 @@
           %lineattr;
           name CDATA #REQUIRED>
 <!ELEMENT definfoenclose EMPTY>
-<!ATTLIST definfoenclose 
+<!ATTLIST definfoenclose
           %lineattr;
           command  NMTOKEN #REQUIRED
           open     CDATA   #IMPLIED
@@ -357,11 +357,11 @@
 
 <!-- Global options -->
 <!ELEMENT documentlanguage (#PCDATA)>
-<!ATTLIST documentlanguage 
+<!ATTLIST documentlanguage
           %spacesattr;
           xml:lang (%languagecodes;) 'en'>
 <!ELEMENT frenchspacing (#PCDATA)> <!-- must be on or off -->
-<!ATTLIST frenchspacing 
+<!ATTLIST frenchspacing
           %lineattr;
           value (%onoff;) 'off'>
 <!ELEMENT kbdinputstyle   EMPTY>
@@ -618,7 +618,7 @@
 
 <!-- Whitespace in these elements are always preserved -->
 <!ELEMENT verbatim     (#PCDATA)>
-<!ATTLIST verbatim 
+<!ATTLIST verbatim
           %spacesattr;
           xml:space (preserve) #FIXED 'preserve'>
 
@@ -699,6 +699,7 @@
                 (caption | shortcaption)*)>
 <!ATTLIST float
           %spacesblockattr;
+          number CDATA #IMPLIED
           name CDATA #IMPLIED
           type CDATA #IMPLIED>
 <!ELEMENT floattype (#PCDATA | %Inline.line;)*>
@@ -715,7 +716,7 @@
           type CDATA #IMPLIED>
 
 <!-- Lists -->
-<!ELEMENT itemize (itemprepend?, beforefirstitem?, 
+<!ELEMENT itemize (itemprepend?, beforefirstitem?,
                    (listitem | %indexentry.cmds;)*)>
 <!ATTLIST itemize
           %spacesblockattr;
@@ -773,7 +774,7 @@
           end CDATA #IMPLIED>
 <!ELEMENT tableitem (%block;)*>
 
-<!ELEMENT multitable ((columnfractions | columnprototypes), beforefirstitem?, 
+<!ELEMENT multitable ((columnfractions | columnprototypes), beforefirstitem?,
                       thead?, tbody)>
 <!ATTLIST multitable
           %blocktablearg;>
@@ -1063,7 +1064,7 @@
 <!ENTITY % xref.args "xrefnodename?, xrefinfoname?, xrefprinteddesc?,
                 xrefinfofile?, xrefprintedname?">
 <!ENTITY % xref.attr
-          "%spacesattr; 
+          "%spacesattr;
            label CDATA #IMPLIED
            manual CDATA #IMPLIED">
 
@@ -1161,28 +1162,29 @@
 <!ATTLIST indexterm
           index         CDATA #IMPLIED
           mergedindex   CDATA #IMPLIED
+          number        CDATA #REQUIRED
           incode    (%zeroone;) #IMPLIED>
 <!ELEMENT indexcommand (indexterm)>
 <!ATTLIST indexcommand
           %indexcmdattr;
           command   CDATA #REQUIRED>
 <!ELEMENT cindex (indexterm)>
-<!ATTLIST cindex 
+<!ATTLIST cindex
           %indexcmdattr;>
 <!ELEMENT findex (indexterm)>
-<!ATTLIST findex 
+<!ATTLIST findex
           %indexcmdattr;>
 <!ELEMENT kindex (indexterm)>
-<!ATTLIST kindex 
+<!ATTLIST kindex
           %indexcmdattr;>
 <!ELEMENT pindex (indexterm)>
-<!ATTLIST pindex 
+<!ATTLIST pindex
           %indexcmdattr;>
 <!ELEMENT tindex (indexterm)>
-<!ATTLIST tindex 
+<!ATTLIST tindex
           %indexcmdattr;>
 <!ELEMENT vindex (indexterm)>
-<!ATTLIST vindex 
+<!ATTLIST vindex
           %indexcmdattr;>
 <!ELEMENT printindex EMPTY>
 <!ATTLIST printindex
