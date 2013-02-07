@@ -1399,18 +1399,19 @@ A non-negative integer.
 All @code{ixcc} references are @dfn{internal} (pointing to targets
 defined in ``this'' file), allowing the element hosting them to be
 abbreviated accordingly.  External references are more verbose.  For
-example, here is how @code{@@pxref@{Top@}} (@pxref{Top}) appears:
+example, here is how @code{@@pxref@{Introduction@}}
+(@pxref{Introduction}) appears:
 
 @example
-(pxref (@@ (ixcc "(node 0)")))
+(pxref (@@ (ixcc "(node 1)")))
 @end example
 
 @noindent
-whereas @code{@@pxref@{Top,,,emacs@}} (@pxref{Top,,,emacs}) is:
+whereas @code{@@pxref@{Intro,,,emacs@}} (@pxref{Intro,,,emacs}) is:
 
 @example
 (pxref (@@)
-       (xrefnodename (@@) "Top")
+       (xrefnodename (@@) "Intro")
        (xrefinfofile (@@) "emacs"))
 @end example
 
