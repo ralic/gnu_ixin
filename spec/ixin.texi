@@ -271,6 +271,11 @@ A whole number, possibly negative.  Some examples: -1, 0, 42.
 A @dfn{hex integer} is an integer represented using the hexadecimal
 digits @samp{0} through @samp{9} and @samp{A} through @samp{F}.
 
+@more real
+A floating-point number, possibly negative.  Valid characters are minus
+(@samp{-}), decimal point (@samp{.}), and the digits @samp{0} through
+@samp{9}.
+
 @more node identifier
 An integer.  A negative number means ``no such node''.
 
