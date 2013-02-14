@@ -1,5 +1,12 @@
 2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Use ‘real’ for ‘pagesizes’.
+
+	* ixin.texi (settings): ...here, in table;
+	remove ‘doubtindex’ entry and related ‘qqq’.
+
+2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Add jargon: real
 
 	* ixin.texi (reprensentations): ...here, in table.

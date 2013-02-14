@@ -763,9 +763,7 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{end separate}
 @item O
 @tab @t{pagesizes}
-@tab
-@doubtindex @samp{pagesizes} setting, non-integral quantities?
-@qqq{} list of @t{(}integer symbol@t{)}
+@tab list of @t{(}real symbol@t{)}
 
 @item O
 @tab @t{setchapternewpage}
