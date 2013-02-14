@@ -1,5 +1,17 @@
 2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Specify / handle tweaks, tweakrefs.
+
+	* ixin.texi (settings): Update footnote; allow for zero or
+	more VALUE in example; update ‘doubtindex’ and related ‘qqq’
+	entries in table; move ‘@*’ to end of preceeding line.
+	(node index): Remove footnote; allow for zero or more VALUE
+	in example; reword NAME and VALUE blurb slightly.
+	(node data): Add "tweakrefs" to menu.
+	(tweakrefs): New node / subsection.
+
+2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Use ‘real’ for ‘pagesizes’.
 
 	* ixin.texi (settings): ...here, in table;

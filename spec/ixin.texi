@@ -724,19 +724,14 @@ vars to settings (@pxref{settings}), of course.
 @subsection settings
 
 @vindex settings
-The list@footnote{@samp{mkixin} detects:
+The list@footnote{@samp{mkixin} detects
+@code{codequoteundirected},
+@code{codequotebacktick},
+and @code{deftypefnnewline}
+via @code{@@set} commands only in the pre-node area.}:
 
 @example
-documentlanguage
-codequoteundirected
-codequotebacktick
-deftypefnnewline
-@end example
-
-via @code{@@set} commands, only, and only in the pre-node area.}:
-
-@example
-((NAME VALUE)...)
+((NAME [VALUE...]) ...)
 @end example
 
 @noindent
@@ -751,10 +746,8 @@ on @var{name}.  In the following table, the first column is the
 @multitable {c} {@t{setshortcontentsaftertitlepage}} {sym: @t{US-ASCII UTF-8 koi8-r koi8-u}}
 @headitem c @tab setting @tab type
 @item O
-@tab
-@doubtindex @samp{novalidate} setting, necessity
- @t{novalidate}
-@tab none --- @qqq{} can we omit this?
+@tab @t{novalidate}
+@tab none
 @item O
 @tab @t{fonttextsize}
 @tab integer: @t{10 11}
@@ -763,7 +756,7 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{end separate}
 @item O
 @tab @t{pagesizes}
-@tab list of @t{(}real symbol@t{)}
+@tab one or two @t{(}real symbol@t{)}
 
 @item O
 @tab @t{setchapternewpage}
@@ -777,9 +770,8 @@ on @var{name}.  In the following table, the first column is the
 
 @item O
 @tab @t{everyheading}
-@tab
-@doubtindex @samp{everyheading} setting, OK?
-@qqq{} list of 3 renderable sequences
+@tab 3 values: each a renderable@*
+     sequence or @thesymhy{}
 @item O
 @tab @t{everyheadingmarks}
 @tab sym: @t{top bottom}
@@ -792,9 +784,8 @@ on @var{name}.  In the following table, the first column is the
 
 @item O
 @tab @t{everyfooting}
-@tab
-@doubtindex @samp{everyfooting} setting, OK?
-@qqq{} list of 3 renderable sequences
+@tab 3 values: each a renderable@*
+     sequence or @thesymhy{}
 @item O
 @tab @t{everyfootingmarks}
 @tab sym: @t{top bottom}
@@ -807,8 +798,8 @@ on @var{name}.  In the following table, the first column is the
 
 @item A
 @tab @t{documentencoding}
-@tab sym: @t{US-ASCII UTF-8 koi8-r koi8-u}
-@*        @t{ISO-8859-1 ISO-8859-15 ISO-8859-2}
+@tab sym: @t{US-ASCII UTF-8 koi8-r koi8-u}@*
+          @t{ISO-8859-1 ISO-8859-15 ISO-8859-2}
 
 @item A
 @tab @t{codequoteundirected}
@@ -835,9 +826,7 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{false true}
 @item A
 @tab @t{clickstyle}
-@tab
-@doubtindex @samp{clickstyle} setting, macros?
-@qqq{} renderable sequence
+@tab renderable sequence
 
 @item A
 @tab @t{documentlanguage}
@@ -850,8 +839,8 @@ on @var{name}.  In the following table, the first column is the
 @tab sym: @t{on off}
 @item A
 @tab @t{headings}
-@tab sym: @t{on off single@ double}
-@*        @t{singleafter doubleafter}
+@tab sym: @t{on off single@ double}@*
+          @t{singleafter doubleafter}
 
 @item A
 @tab @t{kbdinputstyle}
@@ -1023,17 +1012,17 @@ A value of -1 indicates a missing component (e.g.,
 @var{up} and @var{prev} for @code{Top} is typically -1).
 
 @vmore tweaks
-The optional@footnote{At present, @samp{mkixin} never produces this.}
-list of settings, each having the form:
+The optional list of settings, each having the form:
 
 @example
-(NAME VALUE)
+(NAME [VALUE...])
 @end example
 
 @noindent
 @vindex name
 @vindex value
-As for the original settings (@pxref{meta}).
+The @var{name} and @var{value} are as for the original settings
+(prior to the first node, @pxref{meta}).
 Only those settings with ``arbitrary'' context can appear here
 (@pxref{settings}).
 @end table
@@ -1318,6 +1307,7 @@ In other words, a @code{node} SXML sans the initial symbol
 @menu
 * node base::               Where node data starts.
 * references::              Avoiding duplication of forms.
+* tweakrefs::               Similarly, for settings.
 @end menu
 
 
@@ -1423,6 +1413,33 @@ whereas @code{@@pxref@{Intro,,,emacs@}} (@pxref{Intro,,,emacs}) is:
 DTD?  @anchor{no ixcc in DTD}If not, some validators might complain.  On
 the other hand, there really is no point aside from that.  As long as
 all the exceptions are fully documented, we should be OK.
+
+
+@c ---------------------------------------------------------------------------
+@node       tweakrefs
+@subsection tweakrefs
+
+@vindex tweakrefs
+@cindex referencing @code{tweaks} in node data
+@cindex @code{ixset} element
+@cindex @code{serial} attribute of @code{ixset}
+A setting may appear in @code{meta} (@pxref{settings}) or in
+@code{node-index} (in the form of @code{tweaks}, @pxref{node index}).
+In the latter case, the exact position of the setting in the node data
+is marked by the special element @code{ixset}, which has the attribute
+@code{serial}.
+
+@example
+(ixset (@@ (serial "@var{n}")))
+@end example
+
+@noindent
+The attribute value @var{n} is a zero-based index into the corresponding
+node-index entry's @code{tweaks}.
+
+@doubtindex element @code{ixset} not in DTD
+@doubtindex attribute @code{serial} not in DTD
+@qqq{} Probably @code{ixset} and @code{serial} should be added to the DTD.
 
 
 @c ---------------------------------------------------------------------------

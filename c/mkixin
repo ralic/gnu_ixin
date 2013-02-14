@@ -35,6 +35,7 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                           partition!
                           remove!
                           every
+                          any
                           take drop))
  ((srfi srfi-2) #:select (and-let*))
  ((srfi srfi-11) #:select (let-values
@@ -49,11 +50,15 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                            string-index
                            string-skip
                            string-skip-right
+                           string-contains
                            string-suffix-ci?))
  ((srfi srfi-14) #:select (char-set:whitespace
+                           char-set:digit
                            char-set:letter+digit
                            char-set:ascii
+                           char-set
                            char-set-intersection
+                           char-set-adjoin
                            char-set-adjoin!))
  ((ice-9 pretty-print) #:select (pretty-print))
  ((ice-9 popen) #:select (open-input-pipe close-pipe))
@@ -287,6 +292,232 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                 tree))
             (block-mangler (fs "~A.ixin-blocks" stem)))))
 
+(define +O-settings+
+  '((novalidate -)
+    (fonttextsize value (integer 10 11))
+    (footnotestyle value (symbol end separate))
+    (pagesizes + pagesizes)
+    (setchapternewpage value (symbol off on odd))
+    (setcontentsaftertitlepage -)
+    (setshortcontentsaftertitlepage -)
+    (everyheading + three-renseq)
+    (everyheadingmarks value (symbol top bottom))
+    (evenheadingmarks value (symbol top bottom))
+    (oddheadingmarks value (symbol top bottom))
+    (everyfooting + three-renseq)
+    (everyfootingmarks value (symbol top bottom))
+    (evenfootingmarks value (symbol top bottom))
+    (oddfootingmarks value (symbol top bottom))))
+
+(define +A-settings+
+  '((documentencoding encoding (symbol US-ASCII UTF-8 koi8-r koi8-u
+                                       ISO-8859-1 ISO-8859-15 ISO-8859-2))
+    (codequoteundirected value (symbol on off))
+    (codequotebacktick value (symbol on off))
+    (deftypefnnewline value (symbol on off))
+    (exampleindent value (or integer (symbol asis)))
+    (paragraphindent value (or integer (symbol asis)))
+    (firstparagraphindent value (symbol none insert))
+    (allowcodebreaks value (symbol false true))
+    (clickstyle + renseq)
+    (documentlanguage + lang)
+    (frenchspacing value (symbol on off))
+    (headings value (symbol on off single double singleafter doubleafter))
+    (kbdinputstyle value (symbol code example distinct))
+    (urefbreakstyle value (symbol after before none))
+    (xrefautomaticsectiontitle value (symbol on off))))
+
+(define (renseq<-texinfo s)
+
+  (define len (string-length s))
+
+  (define /top #\@)
+  (define /mid (char-set #\@ #\}))
+
+  (define (subs b . e)
+    (apply substring/shared s b e))
+
+  (define (rv new-beginning acc)
+    (cons new-beginning (reverse! acc)))
+
+  (define (trundle dispatch beg)
+    (let loop ((acc '()) (beg beg))
+
+      (define (acc-maybe end)
+        (if (= beg end)
+            acc
+            (cons (subs beg end) acc)))
+
+      (cond ((string-index s dispatch beg)
+             => (lambda (pos)
+                  (if (char=? #\@ (string-ref s pos))
+                      (let* ((left-curly (string-index s #\{ pos))
+                             (cmd-start (1+ pos))
+                             (cmd (subs cmd-start (or left-curly len))))
+
+                        (define (continue where . kids)
+                          (loop (cons `(,(string->symbol cmd) (@)
+                                        ,@kids)
+                                      (acc-maybe pos))
+                                where))
+
+                        (if left-curly
+                            (apply continue (trundle /mid (1+ left-curly)))
+                            (continue (+ cmd-start (string-length cmd)))))
+                      (rv (1+ pos) (acc-maybe pos)))))
+            (else
+             (rv len (acc-maybe len))))))
+
+  (let ((rs (cdr (trundle /top 0))))
+    (if (null? rs)
+        '-
+        rs)))
+
+(define (lang<-string s)
+
+  (define (subsym beg end)
+    (string->symbol (substring s beg end)))
+
+  ;; Obligingly unfubar makeinfo 4.13 output.
+  (case (string-length s)
+    ((8) (list (subsym 3 5)
+               (subsym 6 8)))
+    ((5) (list (subsym 0 2)
+               (subsym 3 5)))
+    ((2) (subsym 0 2))
+    (else (error "unhandled lang:" s))))
+
+(define (normalized-setting nf name ent)
+
+  (define warn
+    (let ((cep (current-error-port)))
+      ;; warn
+      (lambda (s . args)
+        (display "WARNING: " cep)
+        (apply simple-format cep s args)
+        (newline cep))))
+
+  (define (bad-value x)
+    (warn "bad ‘~A’ value: ~S" name x))
+
+  (define (ok . value)
+    (cons name value))
+
+  (define (validate level sel spec attrs ls)
+
+    (define (raw)
+      (if (eq? '+ sel)
+          ls
+          (assq-ref attrs sel)))
+
+    (define (s-raw proc)
+      (and-let* ((ls (raw))
+                 ((pair? ls))
+                 (s (car ls))
+                 ((string? s)))
+        (proc s)))
+
+    (define (first proc)
+      (proc (car (raw))))
+
+    (define (three-renseq)
+      (let* ((s (first identity))
+             (lm (string-contains s "@|"))
+             (mr (string-contains s "@|" (+ 2 lm))))
+
+        (define (renseq beg end)
+          (renseq<-texinfo (string-trim-both (substring/shared s beg end))))
+
+        (list (renseq 0 lm)
+              (renseq (+ 2 lm) mr)
+              (renseq (+ 2 mr) (string-length s)))))
+
+    (case spec
+      ((-) (ok))
+      ((renseq) (ok (car (renseq<-texinfo (first identity)))))
+      ((integer) (and=> (first string->number)
+                        ok))
+      ((three-renseq) (apply ok (three-renseq)))
+      ((lang) (or (s-raw
+                   (lambda (s)
+                     (ok (lang<-string s))))
+                  (bad-value (raw))))
+      ((pagesizes) (or (s-raw
+                        (lambda (s)
+                          (let ((nc (char-set-adjoin char-set:digit #\.))
+                                (len (string-length s)))
+
+                            (define (ss b e)
+                              (substring/shared s b e))
+
+                            (define (measure b e)
+                              (let* ((s (string-trim-both (ss b e)))
+                                     (upos (string-skip s nc)))
+
+                                (define (part transform extract)
+                                  (transform (extract s upos)))
+
+                                (list (part string->number string-take)
+                                      (part string->symbol string-drop))))
+
+                            (cond ((string-index s #\,)
+                                   => (lambda (comma)
+                                        (ok (measure 0 comma)
+                                            (measure (1+ comma) len))))
+                                  (else
+                                   (ok (measure 0 len)))))))
+                       (bad-value (raw))))
+      (else
+       (case (car spec)
+         ((integer)
+          (let ((exp (cdr spec))
+                (got (first string->number)))
+            (or (memq got exp)
+                (warn "unexpected (not in set ~S) integer: ~S"
+                      exp got))
+            (ok got)))
+         ((symbol)
+          (let ((exp (cdr spec))
+                (got (first string->symbol)))
+            (or (memq got exp)
+                (warn "unexpected (not in set ~S) symbol: ~S"
+                      exp got))
+            (ok got)))
+         ((or)
+          (any (lambda (sub)
+                 (validate (1+ level) sel sub attrs ls))
+               (cdr spec)))
+         (else
+          (cond ((zero? level)
+                 (warn "TODO: handle ‘~A’ spec: ~S" name spec)
+                 (ok (raw)))
+                (else #f)))))))
+
+  (let ((sel (car ent)))
+    (validate 0 sel (if (eq? '- sel)
+                        sel
+                        (cadr ent))
+              (cdadr nf) (kids nf))))
+
+(define (scan-settings! nf)
+  (let* ((serial 0)
+         (acc '())
+         (id (node-id nf)))             ; NB: ‘#f’ if scanning META
+
+    (define (one nf)
+      (and-let* ((name (car nf))
+                 (ent (or (assq-ref +O-settings+ name)
+                          (assq-ref +A-settings+ name)))
+                 (norm (normalized-setting nf name ent)))
+        (cond (id
+               (set-car! nf 'ixset)
+               (set-cdr! nf `((@ (serial ,(number->string serial)))))))
+        (set! serial (1+ serial))
+        (set! acc (cons norm acc))))
+
+    ((walker one) nf)
+    (reverse! acc)))
+
 (define (txi-vars-as-settings variables settings)
   (let ((fix '((txicodequoteundirected . codequoteundirected)
                (txicodequotebacktick   . codequotebacktick)
@@ -315,21 +546,9 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
 
     (define (grab-lang! nf)
       (set! rest (delq! nf rest))       ; DWR!
-      (let ((s (if (pair? (kids nf))
+      (lang<-string (if (pair? (kids nf))
                    (car (kids nf))
                    (attribute-ref nf 'xml:lang))))
-
-        (define (subsym beg end)
-          (string->symbol (substring s beg end)))
-
-        ;; Obligingly unfubar makeinfo 4.13 output.
-        (case (string-length s)
-          ((8) (list (subsym 3 5)
-                     (subsym 6 8)))
-          ((5) (list (subsym 0 2)
-                     (subsym 3 5)))
-          ((2) (subsym 0 2))
-          (else (error "unhandled lang:" s)))))
 
     (define (grab-xid! lang)            ; external identifiers
 
@@ -473,6 +692,12 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
            (copying (grab-copying!))
            (titlepage (grab-titlepage!))
            (toc (grab-toc!)))
+
+      (let ((actually (scan-settings! `(dummy (@) ,@rest))))
+        (set! settings (append settings actually))
+        (FE (map car actually)
+            (lambda (name)
+              (set! rest (assq-remove! rest name)))))
 
       (and (pair? rest)
            (let ((cep (current-error-port)))
@@ -1160,7 +1385,8 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
             (- (sz) bef)))
 
         ((walker dedup!) node)
-        (let ((len (blk!))
+        (let ((tweaks (scan-settings! node))
+              (len (blk!))
               (id (node-id node)))
 
           (define (note-summary! look known lonely)
@@ -1170,7 +1396,10 @@ exec ${GUILE-guile} -e '(mkixin)' -s $0 "$@" # -*- scheme -*-
                                               (lonely key 0)))))
                        (set-cdr! lp (cons id (cdr lp)))))))
 
-          (vector-set! index id (cons* name len loc))
+          (vector-set! index id `(,name
+                                  ,len
+                                  ,@loc
+                                  ,@tweaks))
           (note-summary! find-listoffloats flosets lonely-flosets)
           (note-summary! find-printindex dts lonely-dts)))
 

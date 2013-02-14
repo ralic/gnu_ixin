@@ -1,3 +1,16 @@
+2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Specify / handle tweaks, tweakrefs.
+
+	* mkixin: Import SRFI-1 ‘any’; SRFI 13 ‘string-contains’;
+	SRFI 14 ‘char-set:digit’, ‘char-set’, ‘char-set-adjoin’.
+	(+O-settings+, +A-settings+): New data structures.
+	(renseq<-texinfo, lang<-string, normalized-setting)
+	(scan-settings!): New procs.
+	(rescue grab-lang!): Use ‘lang<-string’.
+	(rescue): Scan for settings, removing them from ‘rest’.
+	(do-it! grok!): Scan for tweaks; include them index entry.
+
 2013-01-17  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[int] mkixin: Remove some redudant SXML attributes.
