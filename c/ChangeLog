@@ -1,5 +1,21 @@
 2013-02-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Also display effective settings/tweaks for ‘s’.
+
+	* spit.el (spit--cur): New defvar.
+	(spit--do): If DISPOSITION is ‘cur’, read current node id
+	from the current buffer and stash it in ‘spit--cur’.
+	(spit-%where, spit-%next, spit-%prev, spit-%backward)
+	(spit-%forward, spit-%up): Specify ‘cur’ in ‘spit--do’ call.
+	(spit-%show): Consult cached ‘settings’ and ‘tweaks’;
+	if there are any, display the latest of each, one per line,
+	immediately after spit area; leave point on "node".
+	(spit-%dump-index): Cache ‘tweaks’; display a count of
+	each node's tweaks, if nonzero, as " [+N]" at end of line.
+	(spit): Make ‘spit--cur’ a local variable; init it.
+
+2013-02-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spit] Fix bug: Place docstring before ‘interactive’ form.
 
 	* spit.el (spit-spit-spit, spit-%quit, spit-%where, spit-%nav)

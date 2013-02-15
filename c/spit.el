@@ -55,6 +55,8 @@
 ;;;---------------------------------------------------------------------------
 ;;; variables for the inquisitive programmer
 
+(defvar spit--cur nil)
+
 (defvar spit--got nil)
 
 (defvar spit--cache nil)
@@ -122,6 +124,9 @@
     (goto-char start)
     (setq spit--got
           (case disposition
+            ((cur) (save-excursion
+                     (down-list)
+                     (setq spit--cur (read (current-buffer)))))
             ((nil) t)
             (t (spit--gobble))))
     spit--got))
@@ -345,7 +350,7 @@ With args (noninteractively), like `message' for the spit area."
 (defun spit-%where ()
   "Do ‘(where)’."
   (interactive)
-  (spit--do nil 'where))
+  (spit--do 'cur 'where))
 
 (defun spit-%nav ()
   "Do ‘(nav)’."
@@ -355,37 +360,66 @@ With args (noninteractively), like `message' for the spit area."
 (defun spit-%next ()
   "Do ‘(next)’."
   (interactive)
-  (spit--do nil 'next))
+  (spit--do 'cur 'next))
 
 (defun spit-%prev ()
   "Do ‘(prev)’."
   (interactive)
-  (spit--do nil 'prev))
+  (spit--do 'cur 'prev))
 
 (defun spit-%backward ()
   "Do ‘(backward)’."
   (interactive)
-  (spit--do nil 'backward))
+  (spit--do 'cur 'backward))
 
 (defun spit-%forward ()
   "Do ‘(forward)’."
   (interactive)
-  (spit--do nil 'forward))
+  (spit--do 'cur 'forward))
 
 (defun spit-%up ()
   "Do ‘(up)’."
   (interactive)
-  (spit--do nil 'up))
+  (spit--do 'cur 'up))
 
 (defun spit-%show ()
-  "Do ‘(show)’ and prettify."
+  "Do ‘(show)’ and prettify.
+If there are any settings (cached via \\[spit-%dump-meta]) or
+tweaks (cached via \\[spit-%dump-index]) in effect at the start
+of the node, show them, too.
+
+The settings and tweaks are ordered most recent to most past,
+with same-NAMEd past entries suppressed, one per line:
+
+  NAME (N) [VALUE...]
+
+N, usually 1 but not always, is the count of VALUEs.
+The type of each VALUE depends on NAME."
   (interactive)
   (let ((form (spit--do t 'show))
         (p (point)))
     (pp form (current-buffer))
     (goto-char p)
     (spit--hsdp)
-    (goto-char p))
+    (goto-char p)
+    (let* ((tweaks (spit--cache 'tweaks))
+           (infl (append (when tweaks
+                           (gethash (1- spit--cur) tweaks))
+                         (spit--cache 'settings))))
+      (when infl
+        (goto-char p)
+        (while infl
+          (let* ((x (pop infl))
+                 (name (car x))
+                 (vals (cdr x)))
+            (insert (format "%S (%S) %s\n"
+                            name (length vals)
+                            (mapconcat (lambda (v)
+                                         (format "%S" v))
+                                       vals
+                                       " ")))
+            (setq infl (assq-delete-all name infl))))
+        (insert "\n"))))
   (spit-spit-spit "hey ttn, why not use shr.el? (hint hint)"))
 
 (defun spit-%dump-meta ()
@@ -463,7 +497,9 @@ The title replaces the filename on the first line."
   (save-excursion
     (let ((node-name (unless (spit--cache 'node-name)
                        (make-hash-table :test 'eq)))
-          nid)
+          (tweaks (or (spit--cache 'tweaks)
+                      (make-hash-table :test 'eq)))
+          t-acc nid)
       (while (progn (skip-syntax-forward "-")
                     (< (point) (point-max)))
         (setq nid (spit--gobble 'past))
@@ -475,9 +511,14 @@ The title replaces the filename on the first line."
                                            c))
                                (list n p u)
                                '(?n ?p ?u)))
-                  (spit--vp name))
+                  (spit--vp name)
+                  (cond (etc (format " [+%d]" (length etc)))
+                        (t "")))
+          (setq t-acc (append (reverse etc) t-acc))
+          (puthash nid t-acc tweaks)
           (when node-name
             (puthash nid (spit--vp name) node-name))))
+      (spit--cache 'tweaks tweaks)
       (when node-name
         (spit--cache 'node-name node-name))
       (spit--cache))))
@@ -609,6 +650,7 @@ See also variable `spit-retrieve'."
   (insert (format "\n%s\n" (make-string fill-column ?-)))
   (redisplay)
   (spit-mode)
+  (set (make-local-variable 'spit--cur) 0)
   (set (make-local-variable 'spit--cache)
        (make-hash-table :test 'eq))
   (setq filename (expand-file-name filename))
