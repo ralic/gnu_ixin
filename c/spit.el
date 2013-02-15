@@ -317,9 +317,9 @@
   (use-local-map spit-mode-map))
 
 (defun spit-spit-spit (&optional s &rest args)
-  (interactive)
   "With no args, clear the spit area.
 With args (noninteractively), like `message' for the spit area."
+  (interactive)
   (let* ((blurb (apply 'format (concat "[ " s " ]") args))
          (len (length blurb))
          (col (ash (- (window-width) len) -1))
@@ -337,49 +337,49 @@ With args (noninteractively), like `message' for the spit area."
 ;;; repl commands
 
 (defun spit-%quit ()
-  (interactive)
   "Close connection and kill the buffer."
+  (interactive)
   (spit--do nil 'quit)
   (kill-buffer nil))
 
 (defun spit-%where ()
-  (interactive)
   "Do ‘(where)’."
+  (interactive)
   (spit--do nil 'where))
 
 (defun spit-%nav ()
-  (interactive)
   "Do ‘(nav)’."
+  (interactive)
   (spit--do nil 'nav))
 
 (defun spit-%next ()
-  (interactive)
   "Do ‘(next)’."
+  (interactive)
   (spit--do nil 'next))
 
 (defun spit-%prev ()
-  (interactive)
   "Do ‘(prev)’."
+  (interactive)
   (spit--do nil 'prev))
 
 (defun spit-%backward ()
-  (interactive)
   "Do ‘(backward)’."
+  (interactive)
   (spit--do nil 'backward))
 
 (defun spit-%forward ()
-  (interactive)
   "Do ‘(forward)’."
+  (interactive)
   (spit--do nil 'forward))
 
 (defun spit-%up ()
-  (interactive)
   "Do ‘(up)’."
+  (interactive)
   (spit--do nil 'up))
 
 (defun spit-%show ()
-  (interactive)
   "Do ‘(show)’ and prettify."
+  (interactive)
   (let ((form (spit--do t 'show))
         (p (point)))
     (pp form (current-buffer))
@@ -389,9 +389,9 @@ With args (noninteractively), like `message' for the spit area."
   (spit-spit-spit "hey ttn, why not use shr.el? (hint hint)"))
 
 (defun spit-%dump-meta ()
-  (interactive)
   "Do ‘(dump-meta)’, prettify, save title, and cache some metainfo.
 The title replaces the filename on the first line."
+  (interactive)
   (destructuring-bind ((fn lang title invitations)
                        vars settings copying titlepage toc)
       (spit--do t 'dump-meta)
@@ -457,8 +457,8 @@ The title replaces the filename on the first line."
         (spit--cache)))))
 
 (defun spit-%dump-index ()
-  (interactive)
   "Do ‘(dump-index)’, prettify, and cache some metainfo."
+  (interactive)
   (spit--do nil 'dump-index)
   (save-excursion
     (let ((node-name (unless (spit--cache 'node-name)
@@ -483,14 +483,14 @@ The title replaces the filename on the first line."
       (spit--cache))))
 
 (defun spit-%show-labels ()
-  (interactive)
   "Do ‘(show-labels)’."
+  (interactive)
   (spit--do nil 'show-labels))
 
 (defun spit-%dump-dts ()
-  (interactive)
   "Do ‘(dump-dts)’ and prettify.
 Report unhandled elements."
+  (interactive)
   (spit--do nil 'dump-dts)
   (let ((cache (spit--cache 'node-name)))
     (save-excursion
@@ -551,9 +551,9 @@ Report unhandled elements."
       (spit--cache))))
 
 (defun spit-%dump-s-tree ()
-  (interactive)
   "Do ‘(dump-s-tree)’, prettify and cache some metainfo.
 Report unhandled elements."
+  (interactive)
   (spit--do nil 'dump-s-tree)
   (let ((node-name (or (spit--cache 'node-name)
                        (make-hash-table :test 'eq)))
