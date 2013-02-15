@@ -53,17 +53,13 @@ See end for copying conditions.
 * What needs to be done, still?
 
   - w/ upstream (Texinfo) hackers:
-    - still missing
-      - settings support in mkixin
-        - detection
-        - tracking
     - image snarfing (* is current choice)
       - how? -- binary, *base64
       - when? -- never, optional, *always
       - where? -- inline, *blobs + blobs-index
-    - add SETTINGS block
+    - add SETTINGS block (??? maybe)
       - s/TWEAKS/FINISH-POS/
-      - add ixcc ‘(settings POS)’
+      - change ‘ixset’ to use POS
     - define "optional blocks" syntax/protocol
       - rationale
         - upward compat (new blocks)
