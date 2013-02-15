@@ -85,6 +85,7 @@ the symbol @hyphen{}
 
 * GNU FDL::                 Copying and sharing this documentation.
 * List of Figures::
+* Release Notes::
 * Program and Doubt Index::
 * Index::
 @end menu
@@ -1680,6 +1681,663 @@ After loading, you can @samp{C-h f spit RET}, for more information.
 @unnumbered List of Figures
 
 @listoffloats Figure
+
+
+@c ---------------------------------------------------------------------------
+@node       Release Notes
+@unnumbered Release Notes
+
+Here are the various release announcements.
+
+@paragraphindent 0
+
+@menu
+* version 1.0::          2012-11-29.
+* version 1.1::          2012-12-01.
+* version 1.2::          2012-12-03.
+* version 1.3::          2012-12-11.
+* version 1.4::          2012-12-22.
+* version 1.5::          2012-12-30.
+* version 1.6::          2013-01-03.
+* version 1.7::          2013-01-11.
+@end menu
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.0
+@unnumberedsec version 1.0 (2012-11-29)
+
+Will there ever be a successor to the venerable @file{.info} format produced
+by @t{makeinfo} (GNU Texinfo)?  Will @code{@@paragraphindent} ever be a runtime
+tweakable slider?  Well, maybe if we kick some ideas around, backed by
+some experience, prospects will improve.
+
+Guile 2 lovers, please see in particular @file{a1-nf3-guile2}.
+
+@heading (news)
+@verbatim
+- initial release
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.1
+@page
+@unnumberedsec version 1.1 (2012-12-01)
+
+Write path (@t{a2ixin} et al) tested w/ Guile 1.8.7.@*
+Read path (@t{retrieve}) tested w/ Guile 1.4.1.127, 1.8.7, 2.0.6.
+
+@heading (news)
+@verbatim
+- included in dist: .sxml, .ixin files
+
+    This is for the benefit of Guile 2-only users, and those who
+    choose not to install Mixp.  If you modify foo.xml, however, you
+    will still need Mixp (or a fixed a1-nf3-guile2) to update the
+    foo.sxml (optionally) and foo.ixin (certainly) files.
+
+- bugfix: ‘(ice-9 pretty-print)’ fix applied more/less deeply
+
+    Previously, the ‘string-xrep’ fix was applied only when the
+    object to be output was directly a string.  Now, we intervene
+    for any object (subverting ‘object->string’), to be able to
+    handle two compound types, list and vector, which themselves may
+    contain strings (and thus must be walked).  So much for the
+    "more deeply" side.
+
+    The "less deeply" comes from the incomplete (application
+    specific) coverage of compound types.  Everything besides
+    string, list or vector is still shunted to ‘object->string’.
+    This imposes a maintenance burden: should programs one day wish
+    to pretty-print other compound types that involve ‘write’ or
+    ‘object->string’ on strings internally, the subversion needs
+    to be appropriately updated.
+
+    Anyway, this bug manifested in the improper output of:
+
+      (punct (@ (end-of-sentence "no")) "…")
+
+    under Guile 1.8.7 (mangled ‘U+2026 HORIZONTAL ELLIPSES’), and
+    possibly other places, where the form's xrep fits on one line.
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.2
+@page
+@unnumberedsec version 1.2 (2012-12-03)
+
+One bugfix, some new features, and more detailed ‘@t{meta}’ spec.
+BTW, ‘@t{a2ixin foo.sxml}’ works fine under Guile 2.
+Getting the @file{.sxml} in the first place is the problem, there.
+
+@heading (news)
+@verbatim
+- bugfix: use ‘pretty-print’ also for index
+
+    Previously, a node name could be incorrectly written in the index
+    due to the lameness of ‘object->string’ (mentioned in release 1.1).
+    You can see this by copying new file prob.xml into the previous
+    release and running "make prob.ixin".  Contrast to the prob.ixin
+    distributed in this release.
+
+- new retrieve command: dump-node
+
+    This displays the raw node data for a selected node to stdout.
+    To get the tree, do: ‘./retrieve ... | base64 -d | gzip -d’.
+
+- new retrieve command: repl
+
+    This runs a simple command loop that reads from stdin and writes to
+    stdout.  The program maintains a "current node", and recognizes
+    some simple navigation and display commands.  Type ‘quit’ to quit.
+
+    To see this in action, try "make demo-zow".  Add ‘ZOW=rcs’, e.g.,
+    to choose rcs.ixin (defaults to alive.ixin if not specified).
+
+- ‘meta’ format defined
+
+    Previously, it was simply the portion of the (input) SXML prior to
+    the first ‘node’ element.  Now, it has the form:
+
+    (ATTRS XID VARS SETTINGS COPYING TITLEPAGE ELEMENT...)
+
+    This change is a move from underspecified to specified, so the
+    version number of the format remains at 1.  See README.
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.3
+@page
+@unnumberedsec version 1.3 (2012-12-11)
+
+It has section tree and two-letter indices (NB: non-duplicated),
+but not tweaks (yet).  Plus some other stuff.
+
+@heading (news)
+@verbatim
+- changes to the distribution
+
+  - ChangeLog files included
+
+    Previous omission was an oversight.
+
+  - programs now in c/ (control), documents in d/ (data)
+
+    Things were getting difficult to see on one dired screen.
+
+- mkixin renamed from a2ixin, handles only .sxml
+
+    Handling both .xml and .sxml was a feature not central to the
+    purpose of IXIN (the project).  Distractions be gone!
+
+- mkixin processes all files
+
+    Instead of ‘for f in F1 F2... ; do ./mkixin $f ; done’,
+    you can simply do ‘./mkixin F1 F2...’.
+
+- node data now almost-SXML (text)
+
+    Node data is no longer written gzipped and base64-encoded.
+    Now it is simply text (ATTRS ELEMENT...), plus trailing newline.
+
+    To get a valid SXML element, ‘read’ it and cons ‘node’ to it.
+    This what retrieve commands ‘show-node’ and (repl) ‘show’ do.
+    In contrast, ‘dump’, ‘dump/abbrev’ and ‘dump-node’ do not.
+
+    Relatedly, ‘dump/abbrev’ now takes N-BYTES instead of COLUMNS.
+
+- new top-level block: "two-letter" indices
+
+    Zero or more of these may appear between INDEX and NODES.
+    Correspondingly, the TLI in COUNTS now has additional
+    byte-length and entry-count info.  See README.
+
+- new top-level block: section tree
+
+    This is a single, recursively self-similar expression describing
+    the "chapter structuring".  Correspondingly, COUNTS now includes
+    the byte-length.  See README.
+
+- new doc: serveez.{xml,sxml,ixin}
+
+    This is from GNU Serveez 0.2.0 (not yet released), which makes
+    use of ‘@set txideftypefnnl’, in particular.  In serveez.ixin,
+    this appears in the VARS section of META, somewhat weirdly,
+    considering its semantics, but not entirely unexpected, given
+    its syntax.  Sigh, bugward comp[au]tability issues...  :-/
+
+- new explorations re producing SXML w/o Guile
+
+    See new header "producing SXML w/o Guile" in README.
+
+- META-divvying work-in-progress
+
+    See new header "groupings" in README.
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.4
+@page
+@unnumberedsec version 1.4 (2012-12-22)
+
+Big news is the spec moved from @file{README} to @file{spec/ixin.texi} (w/ logo!);
+please consider sending suggested changes as a diff against that.
+
+@heading (news)
+@verbatim
+- retrieve reads ‘coding’, as well
+
+    Previously, this was ignored.  Now it is read and displayed
+    (but otherwise still ignored, thereafter :-D).
+
+- specification moved from README into its own document
+
+    Sometimes it's impossible to resist the urge to bloviate...
+    Relatedly, you can "make check" there, too.  See subdir spec/.
+
+    Probably, over time, more of README will follow.
+
+    The spec document includes a new section "Terminology", not in
+    the original README, for general terms.  It also doesn't mention
+    anymore the "input SXML", as mkixin design/implementation has
+    nothing to do w/ the file format proper.  On the other hand,
+    "vetting gaps" (where mkixin is lacking) are now footnoted.
+
+- META ‘xid’ includes LANG
+
+    Derived from ‘@documentlanguage’, this is either a symbol, such
+    as ‘en’ or a list of two symbols, such as ‘(en US)’, which also
+    happens to be the default value if unspecified.
+
+- automagic processing specified for three old-style txi* vars
+
+    These ‘@set/@clear VAR’ are converted to ‘@SETTING on/off’:
+
+    txicodequoteundirected     codequoteundirected
+    txicodequotebacktick       codequotebacktick
+    txideftypefnnl             deftypefnnewline
+
+    For example, see d/serveez.ixin META.
+
+- new table in SETTINGS
+
+    This used to be README "groupings", refined a bit.  The group
+    designation is now called the "context", one of ‘O’ or ‘A’.
+    There are new entries: ‘everyheading’, ‘everyfooting’.
+
+- META ‘titlepage’ now uses SXML ‘insertcopying’
+
+    Previously, the "link" was the string "@insertcopying".
+    Now, it is the SXML ‘(insertcopying (@))’.
+
+- META last element now TOC
+
+    This used to be the "remaining SXML after ‘titlepage’".  Now it
+    is a list of symbols in the set: ‘contents’, ‘shortcontents’,
+    ‘summarycontents’.
+
+- out w/ "two-letter indices", in w/ "document-term sets"
+
+    This de-emphasizes the two-letter nature, and bumps out the word
+    "index" (already very heavily used), to reduce confusion.  As a
+    bonus, the string length of both old and new terms and their
+    acronyms remain the same (18 and 3, respectively) -- woo hoo!
+
+- DTS "default font" and "inverse default font" specifiable
+
+    Each (non-empty) DTS now has an initial form that includes
+    "default font" (a symbol, ‘r’ or ‘code’).  An entry now may
+    specify "inverse default font" with the symbol ‘-’ (hyphen)
+    in its first position.
+
+    Concurrently, DTS-INDEX now omits DTS-COUNT, as that has moved
+    into the DTS initial form.
+
+- new specification / support for "float sets"
+
+    The new "floset" (‘float’ and ‘listoffloat’) handling is
+    analogous to that of "dts" (‘indexterm’ and ‘printindex’).
+
+- TWEAKS specified for NODE-INDEX elements
+
+    The form is now: (NAME LENGTH NEXT PREV UP [TWEAKS]),
+    where TWEAKS is a list of (NAME VALUE), like SETTINGS.
+
+- S-TREE moved forward, immediately after NODE-INDEX
+
+    We want to move the optional portions (DTS) later, such that
+    future addition of new portions can be more uniform (via "tail
+    stretching").  This is a design-aesthetic, upward-compatability,
+    hand-wavy, out-of-our-gourd reason, admittedly...
+
+    Also, this block is now called the "sectioning tree".
+
+- new specification / support for "image inlining"
+
+    The specification allows for any detectable image type, using
+    MIME ‘image/TYPE’.  The tools support, however, is limited to
+    mkixin guessing ‘image/png’ or ‘image/jpeg’, based on file
+    extension.  Since the data is inlined into node data, retrieve
+    does nothing special w/ it.
+
+- doc d/prob.xml includes combining chars and cyrillic
+
+    Hmmm, is it valid XML to use combining chars when there are
+    alternatives?  (See comment in doc.)
+@end verbatim
+@c ---------------------------------------------------------------------------
+@node          version 1.5
+@page
+@unnumberedsec version 1.5 (2012-12-30)
+
+Big news is TexinfoML V5.00 support.  Lots of other goodies, too.
+Settings detection/tracking will have to wait for next year@dots{}
+
+@heading (news)
+@verbatim
+- default now ‘-’ (hyphen)
+
+    The following now default, if unspecified or unavailable, to ‘-’
+    (hyphen).  In the first case (XID element), the previous default
+    was the symbol ‘none’.  For the rest, no default was specified
+    previously.
+
+    XID element
+    META COPYING
+
+- DIRCATEGORY (in META XID) replaced by INVITATIONS
+
+    INVITATIONS is derived from all ‘@dircategory’ and ‘@direntry’
+    commands.  If there are none, this is ‘-’ (hyphen).  Otherwise,
+    it is a list that combines the (possbily zero) entries for each
+    category.  An unspecified category is represented by ‘-’ (hyphen).
+
+- dropped POSITION in ‘float’ entry
+
+    Form is now the minimal needed for ‘@listoffloats’ rendering:
+
+    (NAME SHORT-CAPTION NID)
+
+- whitespace normalization specified
+
+    Yes, that invisible yet strangely ugly topic.  Sigh.
+
+  - trimmed
+
+    These elements should not "begin" with newline and
+    should not "end" with whitespace.
+
+    example     smallexample    verbatim
+    lisp        smalllisp       quotation
+    display     smalldisplay    para
+    format      smallformat     pre
+    flushleft   flushright      cartouche
+
+  - s/newline/space/ for ‘para’
+
+    Internal newlines not protected by ‘xml:space’ "preserve"
+    should be changed to space.
+
+- new support for TexinfoML V5.00
+
+    The DTDs from both Texinfo 4.13 and 4.13.92 are now in subdir
+    dtd/, as 4.13.dtd and 5.00.dtd, respectively, and mkixin can
+    handle either version, unifying handling (and thus output) for
+    the most part.  Some unavoidable differences remain, due to
+    fundamental changes in the DTD.  For example, in element ‘node’,
+    V4.13 uses child element ‘title’, and V5.00 ‘sectiontitle’.
+
+    Except for d/prob.xml and (new file) spec/z4.xml, the .xml files
+    are now in V5.00 format.  In a future release, support for V4.13
+    will be dropped.
+
+- META TITLEPAGE no longer specifes attribute ‘copying’
+
+    It used to require ‘(@ (copying "copying"))’ to signal presence
+    of child element ‘insertcopying’.  Redundant, noisy, bye-bye!
+
+- miscellaneous improvements in the spec document
+
+  - expanded index
+
+    The largely superfluous Program Index is now the Program and
+    Doubt Index.  This is mostly to exercise ‘@syncodeindex’.
+
+  - "image inlining" moved to its own subsection
+
+    It used to be part of "node data".
+
+  - say "byte-length" instead of "length"
+
+    Relatedly, the blocks are named foo-LEN, to save space.
+
+- internal references specified
+
+    The SXML attribute ‘ixcc’ (IXIN cartesian coordinate) is used in
+    various contexts to reduce duplication of forms in the nodes.
+    This attribute is not in the DTD, but perhaps should be added.
+
+- "make check" in spec builds files in same dir
+
+    Previously, ixin.ixin was built in ../d, but that's lame.
+
+- COUNTS TOP dropped
+
+    The ‘Top’ node always has node identifier 0.
+
+- META ATTRS dropped
+
+    The ‘xml:lang’ attribute is captured in META XID LANG, so META
+    ATTRS is redundant.  Good-bye!
+
+- doc d/prob.xml includes element ‘anchor’
+
+    This is in the (broken) style of makeinfo 4.13 and earlier,
+    i.e., the value of attribute ‘name’ contains characters outside
+    of [-_a-zA-Z0-9], the set for valid labels.
+
+    See: (info "(texinfo) HTML Xref Node Name Expansion")
+
+- external reference targets (aka normalized labels)  specified
+
+    If there are any labels (info "(texinfo) HTML Xref")
+    then this new block appears after the sectioning tree.
+    COUNTS now includes LABELS-LEN.
+
+    Relatedly, util program retrieve has new command ‘show-labels’
+    (also available via command ‘repl’, btw).  This displays a line:
+
+    LABEL NID [WHAT]
+
+    for each label, where WHAT, if omitted, implies ‘node’.  Try
+    "make demo-zow" in d/ and "../c/retrieve ixin.ixin show-labels"
+    in spec/.
+
+- support for "make try-STEM TRY=COMMAND"
+
+    For example: "cd d && make try-rcs TRY=show-labels".
+
+- new doc: coreutils.{xml,sxml,ixin}
+
+    This is from GNU coreutils Git repo, circa January 2012.  It
+    features heavy @dircatalog / @direntry usage and general heft.
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.6
+@page
+@unnumberedsec version 1.6 (2013-01-03)
+
+Two bugfixes, a new geegaw, still no settings detection/tracking@dots{}
+
+@heading (news)
+@verbatim
+- bugfix: detect ‘code’ DTS entries again
+
+    IXIN 1.5 introduced a regression whereby V5.00 ‘indexterm’ was
+    incorrectly assigned font ‘r’ instead of ‘code’.  This was
+    evident in d/serveez.ixin, for example -- most of the entries in
+    DTS ‘cp’ should be inverted (due to ‘@syncodeindex’).
+
+- bugfix: consider ‘@synindex’ / ‘@syncodeindex’ for default font
+
+    These commands now influence the default font for any particular
+    DTS entry, instead of only ‘@defindex’ / ‘@defcodeindex’.  For
+    example, the sequence:
+
+    @synindex pg fn
+    @pindex mkixin
+
+    now results in predefined DTS ‘fn’ having the default font
+    ‘code’ and entry:
+
+    (- "mkixin" NID)
+
+    in the IXIN file, indicating that "mkixin" should be rendered
+    with the inverse (i.e., ‘r’) font.  Previously, the entry would
+    lack the leading ‘-’ (hyphen) because the default font for ‘pg’
+    is ‘code’.
+
+- DTD upgraded to V5.0
+
+    This is from Texinfo 4.13.93.  Incidentally, the coreutils doc
+    is also updated to a snapshot from the repository, 2012-12-30.
+    The d/{alive,coreutils,hello,rcs,serveez}.xml and spec/ixin.xml
+    files have been regenerated accordingly.
+
+- "retrieve repl" now reads forms, not lines
+
+    We've regained our senses.  See d/zow, for example.
+
+- XID TITLE can also be a renderable sequence
+
+    Previously, XID TITLE could only be a string or ‘-’ (hyphen).
+    For example, coreutils uses ‘@settitle @sc{gnu} Coreutils’.
+
+- new elisp lib for visual vetting: spit.el
+
+    This is a first cut, very rough.  You can use it to check the
+    bugfixes described above, and perhaps find others.  Obviously,
+    you lose if you don't use Emacs, but that goes w/o saying...
+@end verbatim
+
+
+@c ---------------------------------------------------------------------------
+@node          version 1.7
+@page
+@unnumberedsec version 1.7 (2013-01-11)
+
+OK, w/ this release, we've fully explored the "incremental access"
+side of IXIN purpose; now to turn to the "runtime-tweakable" side.
+It looks more and more like @t{TWEAKS} in each @t{NODE-INDEX} entry is not
+going to be sufficient.  For example, what if, within a node, some
+setting is changed many times?  The current thinking (hinted to in
+@file{README}) is to move settings out of @t{NODE-DATA} completely, such that
+rendering programs need not support two forms of settings, the one
+used in @file{META}, and the one expressed (balkily) in SXML.
+
+This release is the last to support Texinfo 4.13.  If you haven't
+already, please try using 4.13.93 (or later) for playing w/ IXIN.
+
+@heading (news)
+@verbatim
+- bugfix: a1-nf3-mixp now respects attribute ‘xml:space’
+
+    That is, when this attribute has value "preserve", a1-nf3-mixp
+    no longer touches the whitespace in an element's immediate
+    children.
+
+- bugfix: NODE-INDEX entries' LENGTH includes trailing newline
+
+    This brings the utils in line w/ the specification, which DOES
+    count the trailing newline.  Previously, mkixin ignored it and
+    retrieve added it back in.
+
+- bugfix: retrieve repl takes EOF as ‘(quit)’
+
+    Regression introduced w/ IXIN 1.6 (2013-01-03); used to work
+    fine w/ IXIN 1.5 (2012-12-30).  Blech, progress...
+
+- META ... DESCRIPTION can be a renderable sequence
+
+    This used to be specified as a single-line string, which is too
+    restrictive.  See spec/ixin.ixin, for example.
+
+- images no longer inline; new blocks BLOBS-INDEX, BLOBS
+
+    Placing the images inline is counter to the goal of supporting
+    incremental access.  Oops, sorry about that.
+
+    Another advantage (arguably) w/ blobs is that it is easier to
+    expand the set of allowed (MIME) types in the future.  At the
+    moment, only image/* is specified, but it's not difficult to
+    imagine audio/* also.  On the other hand, probably video/* is
+    out of the question.  Feedback in this area most welcome.
+
+- new "retrieve repl" commands: backward, forward, blob
+
+    The first two change the "current node" numerically, ignoring
+    the ‘next’, and ‘prev’ pointers.
+
+    The latter displays BLOB-INDEX entry and BLOB-DATA for the
+    specified ID.
+
+- "retrieve dump" displays blobs, too
+
+    The ‘dump’ and ‘dump/abbrev’ commands now also display blob
+    index and blob data, analogously to the node data.
+
+- changes to spit.el
+
+  - new commands: ‘[’, ‘]’
+
+    These are ‘spit-%backward’ and ‘spit-%forward’, respectively,
+    which in turn run the ‘backward’ and ‘forward’ repl commands.
+
+  - prettier node names after ‘M-s’
+
+    Node names are cached by both ‘M-i’ and ‘M-s’, the latter more
+    fully and w/ precedence.  To see this in action, do:
+
+     M-x spit RET d/coreutils.ixin RET
+
+    then:
+
+     M-d    ; node identifiers (not pretty)
+     M-i    ; names w/ ‘variable-pitch’ face cached
+     M-d    ; pretty
+     M-s    ; names w/ fully-propertized face cached
+     M-d    ; even more pretty
+     M-i    ; no cache update
+     M-d    ; still OK
+
+    On a slow computer (like the author's), try d/rcs.ixin instead.
+
+    Note that this caching conflates node names with sectioning tree
+    names, which loses if these do not correspond "well enough", or
+    if there are multiple sectioning elements "in" a node.  The
+    latter causes Texinfo 4.13.93 to issue a warning; a rigorous
+    renderer should do likewise, or compensate accordingly.
+
+  - ‘M-m’ output prettier
+
+    The INVITATIONS are now displayed w/ pretty face, etc.  This is
+    quite dramatic for d/coreutils.ixin, for example.
+
+  - ‘s’ decorates ‘(ixcc ...)’
+
+    The ‘(ixcc ...)’ forms are displayed as buttons (that have no
+    action) with the coordinate replaced with a cached rendering
+    (from ‘M-d’, ‘M-i’ or ‘M-s’), if available.  For example:
+
+     (ixcc "(node 0)")
+
+    will be replaced with
+
+     (ixcc "Top")
+
+    where the "ixcc" part is a button.  There is at this time
+    support for families ‘node’, ‘blob’ (see below) and ‘(dts NAME)’
+    only.  When there is no cached rendering available, i.e., for
+    family ‘(floatset TYPE)’, the coordinate is anyway decorated
+    with the family in red, the position yellow.
+
+    Relatedly, typing ‘tab’ or ‘backtab’ now runs command
+    ‘forward-button’ or ‘backward-button’, respectively.
+
+  - ‘C-M-d’ (aka ‘spit-%list-dts’) deleted
+
+    The output for this command is largely redundant w/ that of
+    ‘M-d’ (aka ‘spit-%dump-dts’).
+
+  - image blobs displayed inline
+
+    E.g., spec/ixin.ixin node 1 (Introduction) shows the logo.
+
+- spec document renamed: The IXIN Chronicles
+
+    Its scope is now expanded beyond the spec proper to include
+    other stuff (i.e., opportunities to exercise the utils), such as
+    invocation (usage) and implementation notes for the utilities,
+    interesting character sequences from d/prob.xml, how to compute
+    the node base and blob base, etc.
+
+    Relatedly, there are now many more terms in the indices.
+
+- mkixin uses temporary dir for temporary files
+
+    This means you can use "make -j" in d/, now.  Previously, the
+    temporary filenames were hardcoded, confusing peer processes,
+    and resulting in corrupted output.
+@end verbatim
+
+@c MAINTAINME: Move this to the next.
+@paragraphindent asis
 
 
 @c ---------------------------------------------------------------------------

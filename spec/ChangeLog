@@ -1,3 +1,10 @@
+2013-02-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Add release notes to The IXIN Chronicles.
+
+	* ixin.texi (Top): Add "Release Notes" to menu.
+	(Release Notes): New node/unnumbered.
+
 2013-02-14  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Specify / handle tweaks, tweakrefs.
