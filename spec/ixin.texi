@@ -55,6 +55,11 @@ Texts.  A copy of the license is included in the appendix entitled
 @insertcopying
 @end titlepage
 
+@c heading / footing
+@headings off
+@everyheading @thischapter{} @| @| @thispage{}
+@everyfooting @thistitle{} @value{VERSION} @| @| @thissection{}
+
 @contents
 
 @macro qqq

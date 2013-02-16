@@ -1,3 +1,9 @@
+2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spec] Use custom headers/footers.
+
+	* ixin.texi: ...here, after ‘@end titlepage’.
+
 2013-02-15  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Add release notes to The IXIN Chronicles.
