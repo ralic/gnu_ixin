@@ -777,7 +777,32 @@ on @var{name}.  In the following table, the first column is the
 @item O
 @tab @t{everyheading}
 @tab 3 values: each a renderable@*
-     sequence or @thesymhy{}
+     sequence@footnote{@samp{mkixin} may produce a renderable sequence
+that contains unsubstituted @code{@@value} and @code{@@macro} commands.
+For example, given @code{@@set VERSION 4.20}, the @file{.texi} input:
+
+@example
+@@everyheading version @@value@{VERSION@} @@| @@|
+@end example
+
+@noindent
+yields:
+
+@example
+(everyheading ("version " (value (@@) "VERSION")) - -)
+@end example
+
+@noindent
+instead of the expected:
+
+@example
+(everyheading ("version " "4.20") - -)
+@end example
+
+@noindent
+This affects @code{everyheading}, @code{everyfooting}, and
+@code{clickstyle}.}
+              or @thesymhy{}
 @item O
 @tab @t{everyheadingmarks}
 @tab sym: @t{top bottom}

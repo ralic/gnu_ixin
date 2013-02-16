@@ -1,5 +1,11 @@
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec] Mention ‘mkixin’ infelicity for settings renderable sequence.
+
+	* ixin.texi (settings): ...here, in table, w/ a new footnote.
+
+2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Use custom headers/footers.
 
 	* ixin.texi: ...here, after ‘@end titlepage’.
