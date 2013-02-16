@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with IXIN.  If not, see <http://www.gnu.org/licenses/>.
 
-VERSION = 1.7
+VERSION = 1.8
 
 all clean demo demo-% try-%:
 	$(MAKE) $(MAKEFLAGS) -C d $@

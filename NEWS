@@ -2,6 +2,158 @@ NEWS for IXIN
 See end for copying conditions.
 
 
+- 1.8 | 2013-02-16
+
+  - bugfixes
+
+    - mkixin records blob lengths individually, not cumulatively
+
+	Before, for two blobs of lengths A and B, BLOBS-INDEX would
+	record lengths A and A+B.
+
+    - spit.el command docstrings in the right place
+
+	Previously, docstrings followed the ‘interactive’ form, and thus
+	were invisible to the help system.  Ugh, brain fade deluxe.
+
+  - BLOBS-INDEX entry TYPE destructured
+
+	This used to be a simple symbol, e.g., ‘image/png’.  Now, it is
+	a list of the form: (MAJOR MINOR [ATTRIBUTES]), where ATTRIBUTES
+	is a plist (alternating sequence of symbol NAME and string VALUE
+	pairs).  Examples:
+
+	  (image png)
+	  (image jpeg)
+	  (image svg+xml charset "US-ASCII")
+
+  - blobs specified to be unique
+
+	Multiple @image to the same file should produce one blob, w/ the
+	the same ixcc position.
+
+  - support for makeinfo 4.13 dropped
+
+	The utility mkixin exits errorfully if the input SXML appears to
+	be from makeinfo 4.13 or earlier.  Likewise (and before), the
+	utility a1-nf3-mixp exits failurefully if the input XML declares
+	its DTD to be V4.13.  That DTD is no longer distributed.
+
+	Also, d/prob.{xml,sxml,ixin} and spec/z4.{README,xml,sxml,ixin}
+	have been removed.  Thus, all .xml is from makeinfo 4.13.93,
+	now.
+
+  - SETTINGS / TWEAKS can have zero or multiple VALUEs
+
+	Previously, SETTINGS (in META) and TWEAKS (in each NODE-INDEX
+	entry) had the form:
+
+	  (NAME VALUE)
+
+	Now they have the form:
+
+	  (NAME [VALUE...])
+
+	That is, there may be zero or multiple VALUEs.  Accordingly,
+	these settings now have a more precise specification:
+
+	  novalidate
+	  everyheading
+	  everyfooting
+	  pagesizes
+
+  - new type: ‘real’
+
+	This is primarily to support the ‘pagesizes’ setting.
+
+  - ‘pagesizes’ uses ‘real’ instead of ‘integer’
+
+	For instance, this allows a VALUE of ‘(22.2 cm)’.
+
+  - texinfo.tex redistributed
+
+	This is from Texinfo 4.13.97, in subdir spec/.
+
+  - images detected in META
+
+	See the title and copyright pages of The IXIN Chronicles, for
+	instance.  Note that due to blobs uniqueness (see above), the
+	five displayed images (one on title page, three on copyright
+	page, one in Introduction) are saved as two in ixin.ixin.
+
+  - release notes included in The IXIN Chronicles
+
+	This narcicisim is actually to test various changes in settings
+	(e.g., ‘@paragraphindent’), or so we tell ourselves...
+
+  - new element: ‘(ixset (@ (serial "N")))’
+
+	In the node data, tweaks are replaced with the element ‘ixset’
+	with attribute ‘serial’.  The attribute value N is the 0-based
+	index into the corresponding node-index entry's TWEAKS list.
+
+	For example, spec/ixin.texi uses ‘@paragraphindent’ in node 37
+	(aka "Release Notes").  This manifests as ‘(paragraphindent 0)’
+	in the node index and ‘(ixset (@ (serial "0")))’ in the node
+	data.  To see this, use commands:
+
+	  $ c/retrieve spec/ixin.ixin dump-index
+	  $ c/retrieve spec/ixin.ixin dump-node "Release Notes"
+
+  - changes to spit.el
+
+    - syntax table defined
+
+	This is basically the Emacs Lisp syntax table, but with newline
+	modified to be whitespace instead of endcomment.
+
+    - structure highlighted / parens diminished
+
+	In output for both ‘s’ and ‘M-m’, the SXML elements are now
+	highlighted, and the surrounding parens deleted.  Empty SXML
+	attribute lists are discarded, or represented as a single ‘-’
+	(hyphen) should a child element begin on the same line (rare).
+	Non-empty SXML attribute lists are highlighted, and the
+	surrounding parens and initial ‘@’ deleted.
+
+    - ‘t’ bound to ‘toggle-truncate-lines’
+
+	This makes it easier to switch attention from structure to
+	content and back.
+
+    - ‘s’ (aka ‘spit-%show’) also displays settings / tweaks
+
+	If at node beginning (more precisely, prior to the start), there
+	are settings or tweaks "in effect", these are now displayed
+	ordered most recent to most past, with same-NAMEd past entries
+	suppressed, one per line:
+
+	  NAME (N) [VALUE...]
+
+	N, usually 1 but not always, is the count of VALUEs.
+	The type of each VALUE depends on NAME.
+
+	Note that you need to ‘M-m’ and ‘M-i’ to cache ‘settings’ and
+	‘tweaks’ so that they can be be "in effect".  For example, here
+	is how a spit session for spec/ixin.ixin might go:
+
+	  s      ; see ‘Top’ w/o settings
+	  M-m    ; cache ‘settings’
+	  s      ; same, now w/ settings: document{language,encoding}
+	         ;       headings, every{heading,footing}
+	  M-i    ; cache ‘tweaks’
+	  s      ; same as before (no tweaks yet in effect)
+	  6 * n  ; arrive at ‘Release Notes’
+	  s      ; similar to before (still no tweaks in effect)
+	  n      ; arrive at ‘Program and Doubt Index’
+	  s      ; see also ‘paragraphindent (1) asis’
+	  [      ; arrive at ‘version X.Y’
+	  s      ; see ‘paragraphindent (1) 0’
+
+	Obviously a real (non-proof-of-concept) renderer would handle
+	this caching transparently.
+
+
 - 1.7 | 2013-01-11
 
   - bugfix: a1-nf3-mixp now respects attribute ‘xml:space’

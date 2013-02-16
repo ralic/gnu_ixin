@@ -1,5 +1,9 @@
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	Release: 1.8
+
+2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Add version 1.8 release notes.
 
 	* ixin.texi (Release Notes): Add "version 1.8" to menu.
