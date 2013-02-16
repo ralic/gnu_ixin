@@ -1,5 +1,12 @@
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spec int] Add version 1.8 release notes.
+
+	* ixin.texi (Release Notes): Add "version 1.8" to menu.
+	(version 1.8): New node/unnumberedsec.
+
+2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec] Mention ‘mkixin’ infelicity for settings renderable sequence.
 
 	* ixin.texi (settings): ...here, in table, w/ a new footnote.
