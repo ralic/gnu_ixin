@@ -1,3 +1,11 @@
+2013-02-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[spec int] Fix typo: Include "(news)" heading.
+
+	Omission from 2013-02-16, "Add version 1.8 release notes".
+
+	* ixin.texi (version 1.8): ...here.
+
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.8

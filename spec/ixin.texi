@@ -2387,6 +2387,7 @@ Shirking, still (@file{spit.el} does not yet actually render w/
 We're now surfing w/ Texinfo 4.13.97 (released a few days ago), too.
 Still a few bumps to smooth out, but overall feeling pretty good.
 
+@heading (news)
 @verbatim
 - bugfixes
 
