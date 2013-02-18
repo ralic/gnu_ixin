@@ -1,5 +1,12 @@
 2013-02-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	No longer distribute {epsf,texinfo}.tex.
+
+	* epsf.tex: Delete file.
+	* texinfo.tex: Likewise.
+
+2013-02-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[spec int] Fix typo: Include "(news)" heading.
 
 	Omission from 2013-02-16, "Add version 1.8 release notes".
