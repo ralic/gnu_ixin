@@ -26,12 +26,16 @@ See end for copying conditions.
   build on Texinfo, adding to it the capability of producing files
   that are:
 
+  - fully semantic
   - arbitrarily accessible
   - runtime configurable (e.g., paragraph indentation)
+
+  The last point is also of interest to info.el (Emacs) hackers.
 
   See also:
   http://mail.gnu.org/archive/html/gnu-system-discuss/
   http://mail.gnu.org/archive/html/help-texinfo/
+  [[http://mail.gnu.org/archive/html/emacs-devel/]]
 
 * dependencies
 
