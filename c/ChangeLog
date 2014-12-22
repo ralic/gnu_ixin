@@ -1,3 +1,10 @@
+2014-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	Fix bug: Make a1-nf3-from-nf1 handle childless elements.
+
+	* a1-nf3-from-nf1 (nf3<-): If the tail of a form is null,
+	don't bother checking for well-formed attribute list.
+
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.8

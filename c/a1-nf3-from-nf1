@@ -34,7 +34,8 @@ exec ${GUILE-guile} -e main -s $0 "$@" # -*- scheme -*-
   (if (not (pair? x))
       x
       (let* ((tail (cdr x))
-             (first (car tail))
+             (first (and (pair? tail)
+                         (car tail)))
              (cool? (and (pair? first)
                          (eq? '@ (car first)))))
         (cons* (car x)
