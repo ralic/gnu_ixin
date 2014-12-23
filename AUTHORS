@@ -1,0 +1,31 @@
+AUTHORS of IXIN
+
+
+Thien-Thi Nguyen
+- wrote
+  c/a1-nf1
+  c/a1-nf3-from-nf1
+  c/a1-nf3-guile2
+  c/a1-nf3-mixp
+  c/mkixin
+  c/retrieve
+  c/spit.el
+  c/z-fixed-pp.scm
+  c/zomg
+  d/common.mk
+  d/zow
+  spec/ixin.texi
+  spec/logo.svg
+  (plus all GNUmakefile files)
+- generated d/*.xml from Texinfo source (not distributed) from:
+  - GNU Alive
+  - GNU Coreutils
+  - GNU Hello
+  - GNU RCS
+  - GNU Serveez
+
+GNU Texinfo authors
+- provided dtd/5.0.dtd (named texinfo.dtd in the Texinfo tarball)
+
+Ricardo Wurmus
+- added entity-substitution support in c/a1-nf3-guile2
