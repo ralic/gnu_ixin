@@ -23,50 +23,68 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 ;;; Commentary:
 
 ;; This is supposed to do what a1-nf3-mixp does, using Guile 2
-;; facilities.  Unfortunately, those facilities are practically
-;; undocumented (as of Guile 2.0.6), and so this program fails:
-;;
-;;| -*- mode: compilation -*-
-;;| Compilation started at Wed Nov 28 16:41:23
-;;|
-;;| ./a1-nf3-guile2 hello.xml
-;;| Backtrace:
-;;| In ice-9/boot-9.scm:
-;;|  157: 8 [catch #t #<catch-closure 9e60e30> ...]
-;;| In unknown file:
-;;|    ?: 7 [apply-smob/1 #<catch-closure 9e60e30>]
-;;| In ice-9/boot-9.scm:
-;;|   63: 6 [call-with-prompt prompt0 ...]
-;;| In ice-9/eval.scm:
-;;|  414: 5 [eval # #]
-;;|  399: 4 [eval # #]
-;;| In ice-9/r4rs.scm:
-;;|  147: 3 [call-with-input-file "hello.xml" #<procedure xml->sxml (#:optional port)>]
-;;| In sxml/upstream/SSAX.scm:
-;;| 2846: 2 [ssax:xml->sxml #<input: hello.xml 5> ()]
-;;| 2846: 1 [loop #<input: hello.xml 5> () ...]
-;;| 2846: 0 [loop #<input: hello.xml 5> () #f ()]
-;;|
-;;| sxml/upstream/SSAX.scm:2846:12: In procedure loop:
-;;| sxml/upstream/SSAX.scm:2846:12: Throw to key `parser-error' with args `(#<input: hello.xml 5> "[wf-entdeclared] broken for " copyright)'.
-;;|
-;;| Compilation exited abnormally with code 1 at Wed Nov 28 16:41:23
-;;
-;; because it's written in ignorance.  Too bad.  Maybe next time.
+;; facilities.
 
 ;;; Code:
 
 (setlocale LC_ALL "")
 
 (define-module (a1-nf3-guile2)
-  #:export (main))
+  #:export (main)
+  #:use-module ((sxml simple) #:select (xml->sxml))
+  #:use-module ((ice-9 rdelim) #:select (read-string))
+  #:use-module (ice-9 regex)
+  #:use-module (ice-9 pretty-print))
 
-(use-modules
- (sxml simple)
- (ice-9 pretty-print))
+;; Map a system id to a pair of public id and DTD.  We need this
+;; because the XML parser only provides us with the system id.
+(define system-id-map
+  (list
+   `("http://www.gnu.org/software/texinfo/dtd/5.0/texinfo.dtd" .
+     ,(with-input-from-file "zomg" read))))
+
+;; This pattern matches all entity definitions, including (unused)
+;; parameter entities.
+(define entity-pattern
+  (make-regexp
+   "<!ENTITY (% )?([^ ]+) +((SYSTEM|PUBLIC) ([^ ]+) +)?\"([^\"]+)\"( NDATA [^ >]+)? *>"))
+
+(define (match-to-entity m)
+  "Convert a regexp match record to an entity pair."
+  (let ((parameter-entity? (match:substring m 1))
+        (name              (string->symbol (match:substring m 2)))
+        (ext-id-group      (match:substring m 3))
+        (ext-id-type       (match:substring m 4))
+        (ext-id            (match:substring m 5))
+        (resource          (match:substring m 6)))
+    (if parameter-entity?
+        #f ; not supported
+        (cons name resource))))
+
+(define (parse-entities filename)
+  "Open FILENAME, extract all entity pattern matches, and return entity alist."
+  (let ((str (with-input-from-file filename read-string)))
+    (fold-matches entity-pattern str '()
+                  (lambda (match acc)
+                    (let ((entity (match-to-entity match)))
+                      (if entity
+                          (cons entity acc)
+                          acc))))))
+
+(define (doctype-handler docname systemid internal-subset?)
+  "Find DTD file to the given SYSTEMID and return parsed entities."
+  (let ((public-id-pair (assoc-ref system-id-map systemid)))
+    (if (not public-id-pair)
+        (error "Unsupported doctype:" docname systemid)
+        (let* ((dtd-file (cdr public-id-pair))
+               (entities (parse-entities dtd-file)))
+          (values #:entities entities #:namespaces '())))))
 
 (define (one port)
-  (pretty-print (xml->sxml port))
+  (let ((sxml (xml->sxml port
+                         #:trim-whitespace? #t
+                         #:doctype-handler doctype-handler)))
+    (pretty-print sxml))
   (force-output))
 
 (define (main args)

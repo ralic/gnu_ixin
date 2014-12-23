@@ -1,3 +1,16 @@
+2014-12-23  Ricardo Wurmus  <rekado@elephly.net>
+
+	a1-nf3-guile2: Support entity-substitution.
+
+	* a1-nf3-guile2: Convert ‘use-modules’ form into
+	‘#:use-module’ clauses of single ‘define-module’ form;
+	import ‘(ice-9 rdelim) read-string’ and ‘(ice-9 regex)’.
+	(system-id-map): New alist.
+	(entity-pattern): New regexp object.
+	(match-to-entity, parse-entities, doctype-handler): New procs.
+	(one): Call ‘xml->sxml’ specifying inter-element whitespace
+	trimming and ‘doctype-handler’ as the DOCTYPE handler.
+
 2014-12-22  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Fix bug: Make a1-nf3-from-nf1 handle childless elements.
