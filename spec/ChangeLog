@@ -1,3 +1,9 @@
+2014-12-25  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[dist] Distribute HTML spec, too.
+
+	* GNUmakefile (HTML): New target.
+
 2013-02-18  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	No longer distribute {epsf,texinfo}.tex.

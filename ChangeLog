@@ -1,3 +1,10 @@
+2014-12-25  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[dist] Distribute HTML spec, too.
+
+	* GNUmakefile (dist): Add commands to build spec/HTML/,
+	create $(dd)/spec/, and move the spec/HTML/ there.
+
 2013-02-16  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	Release: 1.8

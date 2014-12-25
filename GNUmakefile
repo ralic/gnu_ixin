@@ -36,8 +36,10 @@ dist-files := \
  ChangeLog
 
 dist:
+	$(MAKE) -C spec HTML
 	rm -rf $(dd)
-	mkdir $(dd)
+	mkdir $(dd) $(dd)/spec
+	mv spec/HTML $(dd)/spec
 	cp -p --parents $(dist-files) $(dd)
 	tar cf $(dd).tar.xz --auto-compress $(dd)
 	rm -rf $(dd)

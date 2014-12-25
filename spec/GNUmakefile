@@ -44,6 +44,10 @@ todo.texi: ../README
 ixin.xml: $(input)
 	$(MAKEINFO) -o $@ --xml --no-split $<
 
+HTML: $(input)
+	$(MAKEINFO) --html -o $@ $<
+	ln -f *.png HTML/
+
 check: all ixin.sxml try-ixin
 
 ixin.pdf: $(input)
