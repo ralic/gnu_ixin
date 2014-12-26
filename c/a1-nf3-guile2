@@ -31,6 +31,7 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 
 (define-module (a1-nf3-guile2)
   #:export (main)
+  #:use-module ((srfi srfi-1) #:select (find))
   #:use-module ((sxml simple) #:select (xml->sxml))
   #:use-module ((ice-9 rdelim) #:select (read-string))
   #:use-module (ice-9 regex)
@@ -84,6 +85,11 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
   (let ((sxml (xml->sxml port
                          #:trim-whitespace? #t
                          #:doctype-handler doctype-handler)))
+    ;; First, get rid of ‘*TOP*’ and other cruft.
+    (set! sxml (find (lambda (x)
+                       (and (pair? x)
+                            (eq? 'texinfo (car x))))
+                     sxml))
     (pretty-print sxml))
   (force-output))
 
