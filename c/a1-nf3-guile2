@@ -23,7 +23,8 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 ;;; Commentary:
 
 ;; This is supposed to do what a1-nf3-mixp does, using Guile 2
-;; facilities.
+;; facilities.  Unfortunately, Guile 2.0.11 does not maintain
+;; input-order for attributes -- see ‘reorder-attributes!’ (blech!).
 
 ;;; Code:
 
@@ -31,7 +32,8 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 
 (define-module (a1-nf3-guile2)
   #:export (main)
-  #:use-module ((srfi srfi-1) #:select (find))
+  #:use-module ((srfi srfi-1) #:select (find split-at))
+  #:use-module ((srfi srfi-11) #:select (let-values))
   #:use-module ((sxml simple) #:select (xml->sxml))
   #:use-module ((ice-9 rdelim) #:select (read-string))
   #:use-module (ice-9 regex)
@@ -81,6 +83,39 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
                (entities (parse-entities dtd-file)))
           (values #:entities entities #:namespaces '())))))
 
+(define (reorder-attributes! tree)
+  ;; Unfortunately, this proc uses heuristics derived by examining
+  ;; the output w/ and w/o the futzing for hello and coreutils.
+  ;; Imperfections remain; the mimicry is incomplete.  :-/
+  (or (not (pair? tree))
+      (if (and (pair? (cdr tree))
+               (pair? (cadr tree))
+               (eq? '@ (caadr tree)))
+          (let* ((attrs (cadr tree))
+                 (ls (cdr attrs)))
+            ;; Heuristcs, blech!
+            (case (length attrs)
+              ;; If 2nd attr name is ‘line’, leave it alone.
+              ;; Otherwise, reverse.
+              ;;   wrong: (@ (spaces " ") (file "hello.info"))
+              ;;   right: (@ (file "hello.info") (spaces " "))
+              ((3) (or (eq? 'line (caadr ls))
+                       (set-cdr! attrs (reverse ls))))
+              ;; If 1st attr name is ‘spaces’, just reverse.
+              ;; If any attr name is ‘spaces’, leave it alone.
+              ;; Otherwise, "rotate right".
+              ;;   wrong: (@ (to "cp") (line " op cp") (from "op")))
+              ;;   right: (@ (from "op") (to "cp") (line " op cp")))
+              ((4) (cond ((eq? 'spaces (caar ls))
+                          (set-cdr! attrs (reverse ls)))
+                         ((memq 'spaces (map car ls))
+                          #f)
+                         (else
+                          (let-values (((ntail nhead) (split-at ls 2)))
+                            (set-cdr! attrs (append nhead ntail)))))))
+            (reorder-attributes! (cddr tree)))
+          (for-each reorder-attributes! (cdr tree)))))
+
 (define (one port)
   (let ((sxml (xml->sxml port
                          #:trim-whitespace? #t
@@ -90,6 +125,8 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
                        (and (pair? x)
                             (eq? 'texinfo (car x))))
                      sxml))
+    ;; Then, reorder attributes.
+    (reorder-attributes! sxml)
     (pretty-print sxml))
   (force-output))
 

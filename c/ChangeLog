@@ -1,5 +1,13 @@
 2014-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	a1-nf3-guile2: Reorder attributes, heuristically.
+
+	* a1-nf3-guile2: Import SRFI 1 ‘split-at’, SRFI 11 ‘let-values’.
+	(reorder-attributes!): New proc.
+	(one): Call it on the ‘(texinfo ...)’ tree.
+
+2014-12-26  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	a1-nf3-guile2: Omit ‘*TOP*’, etc.
 
 	* a1-nf3-guile2: Import SRFI 1 ‘find’.
