@@ -1,5 +1,11 @@
 2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[spit] Abandon hope for shr.el rebasing.
+
+	* spit.el (spit-%show): Update ‘spit-spit-spit’ message.
+
+2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Drop abstraction: open-input-file-if-exists
 
 	* a1-nf3-mixp (HOME): Delete.

@@ -71,7 +71,7 @@ See end for copying conditions.
 	- reduced bloat (not every doc has these)
       - convert: settings / dts / flosets / blobs
     - resolve ‘???’ doubts
-  - make spit.el use shr.el
+  - make spit.el use builtin high-level tree/face facilities
   - fix a1-nf3-guile2
   - (depending on viability) clean up impl
 

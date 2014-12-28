@@ -19,13 +19,9 @@
 
 ;;; Commentary:
 
-;; This uses external command ./retrieve and feature ‘shr'
+;; This uses external command ./retrieve and face-mucking
 ;; to vet the IXIN file format by rendering what it can and
 ;; complaining about what it can't.
-;;
-;; (Actually, it doesn't yet use shr.el, but it will Real Soon Now.)
-;; This also explains somewhat the shameless angry fruit salad style.
-;; We're just playing around this time...
 
 ;;; Code:
 
@@ -420,7 +416,7 @@ The type of each VALUE depends on NAME."
                                        " ")))
             (setq infl (assq-delete-all name infl))))
         (insert "\n"))))
-  (spit-spit-spit "hey ttn, why not use shr.el? (hint hint)"))
+  (spit-spit-spit "hey ttn, why not use something more high-level (hint hint)"))
 
 (defun spit-%dump-meta ()
   "Do ‘(dump-meta)’, prettify, save title, and cache some metainfo.
