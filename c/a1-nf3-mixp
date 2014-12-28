@@ -55,29 +55,13 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
 (define (fse s . args)
   (apply simple-format (current-error-port) s args))
 
-(define HOME (getenv "HOME"))
-
-(define (expand-file-name filename)
-  (cond ((string-prefix? "~" filename)
-         (in-vicinity HOME (substring/shared filename 1)))
-        ((string-prefix? "/" filename)
-         filename)
-        (else
-         (in-vicinity (dirname (car (command-line)))
-                      filename))))
-
-(define (open-input-file-if-exists filename)
-  (let ((filename (expand-file-name filename)))
-    (and (file-exists? filename)
-         (open-input-file filename))))
-
 (define (parser)
   (let ((p (parser-create)))
 
     (define (external-entity-ref context base system-id public-id)
       (cond ((or (find-dtd-filename system-id)
                  (find-dtd-filename public-id))
-             => open-input-file-if-exists)
+             => open-input-file)
             (else
              (fse "~A: cannot open external entity ref~%"
                   (basename (car (command-line))))

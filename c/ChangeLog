@@ -1,5 +1,13 @@
 2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
+	[int] Drop abstraction: open-input-file-if-exists
+
+	* a1-nf3-mixp (HOME): Delete.
+	(expand-file-name, open-input-file-if-exists): Delete procs.
+	(parser external-entity-ref): Use ‘open-input-file’ directly.
+
+2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
 	[int] Factor and extend DTD filename search.
 
 	U ≡ "Load ./z-dtd.scm; import ‘(z-dtd) find-dtd-filename’".
