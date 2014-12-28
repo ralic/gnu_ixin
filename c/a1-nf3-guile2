@@ -28,23 +28,19 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 
 ;;; Code:
 
+(load "./z-dtd.scm")
+
 (setlocale LC_ALL "")
 
 (define-module (a1-nf3-guile2)
   #:export (main)
+  #:use-module ((z-dtd) #:select (find-dtd-filename))
   #:use-module ((srfi srfi-1) #:select (find split-at))
   #:use-module ((srfi srfi-11) #:select (let-values))
   #:use-module ((sxml simple) #:select (xml->sxml))
   #:use-module ((ice-9 rdelim) #:select (read-string))
   #:use-module (ice-9 regex)
   #:use-module (ice-9 pretty-print))
-
-;; Map a system id to a pair of public id and DTD.  We need this
-;; because the XML parser only provides us with the system id.
-(define system-id-map
-  (list
-   `("http://www.gnu.org/software/texinfo/dtd/5.0/texinfo.dtd" .
-     ,(with-input-from-file "zomg" read))))
 
 ;; This pattern matches all entity definitions, including (unused)
 ;; parameter entities.
@@ -76,12 +72,11 @@ exec ${GUILE-guile} -e '(a1-nf3-guile2)' -s $0 "$@" # -*-scheme-*-
 
 (define (doctype-handler docname systemid internal-subset?)
   "Find DTD file to the given SYSTEMID and return parsed entities."
-  (let ((public-id-pair (assoc-ref system-id-map systemid)))
-    (if (not public-id-pair)
+  (let ((dtd-file (find-dtd-filename systemid)))
+    (if (not dtd-file)
         (error "Unsupported doctype:" docname systemid)
-        (let* ((dtd-file (cdr public-id-pair))
-               (entities (parse-entities dtd-file)))
-          (values #:entities entities #:namespaces '())))))
+        (values #:entities (parse-entities dtd-file)
+                #:namespaces '()))))
 
 (define (reorder-attributes! tree)
   ;; Unfortunately, this proc uses heuristics derived by examining

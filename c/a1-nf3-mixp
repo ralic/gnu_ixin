@@ -22,18 +22,20 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
 
 ;;; Commentary:
 
-;; This is "ttn-do xml2sexp", stripped down and
-;; de-generalized to hard code ‘--map DIR/zomg --sxml 3’
-;; with DIR the same as the program invocation filename's.
+;; This is "ttn-do xml2sexp", stripped down and de-generalized
+;; to hard code ‘--sxml 3’ and to look for the DTD filename map
+;; in the same dir as the program invocation filename's.
 
 ;;; Code:
 
 (setlocale LC_ALL "")
 
+(load "./z-dtd.scm")
 (load "./z-fixed-pp.scm")
 
 (define-module (a1-nf3-mixp)
   #:export (main)
+  #:use-module ((z-dtd) #:select (find-dtd-filename))
   #:use-module ((srfi srfi-13) #:select (string-prefix?
                                          substring/shared
                                          string-concatenate-reverse
@@ -64,31 +66,17 @@ exec ${GUILE-guile} -e '(a1-nf3-mixp)' -s $0 "$@" # -*-scheme-*-
          (in-vicinity (dirname (car (command-line)))
                       filename))))
 
-(define (forms<-port port)
-  (let loop ((acc '()))
-    (let ((form (read port)))
-      (if (eof-object? form)
-          (reverse! acc)
-          (loop (cons form acc))))))
-
 (define (open-input-file-if-exists filename)
   (let ((filename (expand-file-name filename)))
     (and (file-exists? filename)
          (open-input-file filename))))
 
 (define (parser)
-  (let ((eemap (expand-file-name "zomg"))
-        (p (parser-create)))
+  (let ((p (parser-create)))
 
     (define (external-entity-ref context base system-id public-id)
-      (and (string? eemap)
-           (set! eemap (false-if-exception
-                        (forms<-port (open-input-file-if-exists
-                                      (expand-file-name eemap))))))
-      (cond ((and (not (string-prefix? "http://" system-id))
-                  (open-input-file-if-exists system-id)))
-            ((and (pair? eemap)
-                  (assoc-ref eemap public-id))
+      (cond ((or (find-dtd-filename system-id)
+                 (find-dtd-filename public-id))
              => open-input-file-if-exists)
             (else
              (fse "~A: cannot open external entity ref~%"

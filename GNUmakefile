@@ -30,7 +30,7 @@ dist-files := \
  d/*.xml d/*.sxml d/*.ixin d/zow \
  d/common.mk d/GNUmakefile d/ChangeLog \
  c/a1-* c/mkixin c/retrieve \
- c/z-fixed-pp.scm c/zomg \
+ c/z-dtd.scm c/z-fixed-pp.scm \
  c/spit.el \
  c/ChangeLog \
  ChangeLog

@@ -10,8 +10,8 @@ Thien-Thi Nguyen
   c/mkixin
   c/retrieve
   c/spit.el
+  c/z-dtd.scm
   c/z-fixed-pp.scm
-  c/zomg
   d/common.mk
   d/zow
   spec/ixin.texi

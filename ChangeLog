@@ -1,3 +1,9 @@
+2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[int] Factor and extend DTD filename search.
+
+	* GNUmakefile (dist-files): Add c/z-dtd.scm; drop z/zomg.
+
 2014-12-25  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[dist] Distribute HTML spec, too.
