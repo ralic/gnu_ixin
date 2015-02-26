@@ -1,0 +1,45 @@
+HACKING IXIN                                               -*- org -*-
+
+This file is both a guide for newcomers and a todo list for oldstayers.
+It lives in the repo but is not included in the distribution.
+
+* see "to be done" in [[file:README][README]]
+
+* portability
+  |--------+-------+-----+-------|
+  |  guile | build | run | notes |
+  |--------+-------+-----+-------|
+  |  1.8.8 | yes   | yes |       |
+  | 2.0.11 | yes   | yes |       |
+  |--------+-------+-----+-------|
+
+* bootstrap tools
+*** GNU make
+*** GNU Guile (see [[portability]] above)
+
+* coding standards
+*** Emacs Lisp, Scheme: use Emacs defaults
+*** ChangeLog
+***** ttn-style: TITLE LF LF {BLURB LF LF}* BODY
+***** exclude titles suffixed "; nfc." (no functional change)
+
+* copyright update policy
+*** individual files
+*** individual years
+*** update on release
+
+* repo branch discipline
+*** no ‘master’ -- do not panic!
+*** archive
+    This branch is for what was already released.  It will never be rebased.
+    Its tip will always have a commit title starting with "Release".
+*** p -- "perhaps", "probably"
+    This branch is where largely-stable changes intended for the next release
+    live.  It's very unlikely to undergo rebase, but not entirely impossible.
+    (Since Guile-SDL is not so popular, we don't bother announcing it.)
+*** q-TOPIC -- "questionably", "querulously"
+    These are experimental, exploring the particular TOPIC.  They are intended
+    to be ephemeral, undergoing rebase, amendment, and ultimately removal.
+*** z-TOPIC -- "zleeping, znoring, zoftly"
+    These branches have changes that will never be part of a release.
+    They are rebased every once in a while for exercise.
