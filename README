@@ -3,8 +3,15 @@ See end for copying conditions.
 
 * What is it?
 
-  IXIN is an EXPERIMENTAL distribution of EXPERIMENTAL code and
-  some pre-built IXIN files.  IXIN stands for "indexed texinfo".
+  This is a distribution of code to manipulate the IXIN
+  (or "indexed info") file format, and some pre-built IXIN
+  files.  Like HTML, IXIN is normally not viewed directly,
+  and is instead "rendered" by another program.
+
+  The programs here that generate IXIN are provisional;
+  long-term it will be GNU Texinfo that authoritatively
+  generates IXIN.  (When things are suitably settled, this
+  project will be retired.)
 
   All code is under GPLv3+.  All (.xml) docs are under GFDL.
 
