@@ -24,6 +24,7 @@ all clean demo demo-% try-%:
 
 dd := ixin-$(VERSION)
 dist-files := \
+ AUTHORS THANKS \
  COPYING README NEWS \
  dtd/* \
  spec/* \

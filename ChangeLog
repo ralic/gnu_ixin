@@ -1,3 +1,9 @@
+2015-03-01  Thien-Thi Nguyen  <ttn@gnuvola.org>
+
+	[dist] Distribute AUTHORS and THANKS, too.
+
+	* GNUmakefile (dist-files): Add AUTHORS, THANKS.
+
 2014-12-28  Thien-Thi Nguyen  <ttn@gnuvola.org>
 
 	[int] Factor and extend DTD filename search.
